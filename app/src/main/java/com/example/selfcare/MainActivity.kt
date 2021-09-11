@@ -8,6 +8,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.selfcare.presentation.components.ReminderCard
 import com.example.selfcare.ui.theme.SelfCareTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,7 +18,8 @@ class MainActivity : ComponentActivity() {
             SelfCareTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    Greeting("Android")
+//                    Greeting("Android")
+                    ReminderCard()
                 }
             }
         }
@@ -32,7 +34,9 @@ fun Greeting(name: String) {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    SelfCareTheme {
-        Greeting("Android")
-    }
+//    SelfCareTheme {
+//        Greeting("Android")
+//    }
+    ReminderCard()
+
 }
