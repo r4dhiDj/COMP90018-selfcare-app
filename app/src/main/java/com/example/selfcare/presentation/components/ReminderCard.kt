@@ -11,7 +11,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.material.ButtonDefaults.textButtonColors
 import androidx.compose.ui.graphics.Color
-
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 
 @Composable
 fun ReminderCard (

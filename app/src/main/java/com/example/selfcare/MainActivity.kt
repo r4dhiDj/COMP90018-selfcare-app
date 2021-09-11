@@ -8,18 +8,20 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.fragment.app.FragmentActivity
+import com.example.selfcare.presentation.components.CreateReminder
 import com.example.selfcare.presentation.components.ReminderCard
 import com.example.selfcare.ui.theme.SelfCareTheme
 
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             SelfCareTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-//                    Greeting("Android")
                     ReminderCard()
+                    CreateReminder(activity = this)
                 }
             }
         }
