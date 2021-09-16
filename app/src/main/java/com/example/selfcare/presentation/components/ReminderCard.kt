@@ -13,9 +13,10 @@ import androidx.compose.material.ButtonDefaults.textButtonColors
 import androidx.compose.ui.graphics.Color
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.navigation.NavController
 
 @Composable
-fun ReminderCard (
+fun ReminderCard (navController: NavController
 //    reminder: Reminder,
 //    onClick: () -> Unit,
 ) {
