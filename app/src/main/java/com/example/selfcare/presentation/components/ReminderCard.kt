@@ -16,7 +16,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 
 @Composable
-fun ReminderCard (
+fun ReminderCard (navController: NavController
 //    reminder: Reminder,
 //    onClick: () -> Unit,
 ) {
