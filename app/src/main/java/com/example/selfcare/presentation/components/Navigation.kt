@@ -17,7 +17,7 @@ fun Navigation() {
         composable(
             route = Screen.ReminderScreen.route
         ) {
-            ReminderCard(navController = navController)
+            ReminderList(navController = navController)
         }
         composable(
             route = Screen.StoreScreen.route

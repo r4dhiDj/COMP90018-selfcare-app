@@ -10,6 +10,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.FragmentActivity
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.selfcare.presentation.components.CreateReminder
 import com.example.selfcare.presentation.components.MenuScreen
 import com.example.selfcare.presentation.components.Navigation
@@ -24,9 +26,6 @@ class MainActivity : FragmentActivity() {
             SelfCareTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-//                    ReminderCard()
-//                    CreateReminder(activity = this)
-//                    MenuScreen()
                     Navigation()
                 }
             }
@@ -42,9 +41,5 @@ fun Greeting(name: String) {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-//    SelfCareTheme {
-//        Greeting("Android")
-//    }
-//    ReminderCard()
 
 }
