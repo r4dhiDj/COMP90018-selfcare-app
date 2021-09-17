@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.FragmentActivity
 import com.example.selfcare.presentation.components.CreateReminder
-import com.example.selfcare.presentation.components.HomeScreen
+import com.example.selfcare.presentation.components.MenuScreen
 import com.example.selfcare.presentation.components.Navigation
 import com.example.selfcare.presentation.components.ReminderCard
 import com.example.selfcare.ui.theme.SelfCareTheme
@@ -26,7 +26,7 @@ class MainActivity : FragmentActivity() {
                 Surface(color = MaterialTheme.colors.background) {
 //                    ReminderCard()
 //                    CreateReminder(activity = this)
-//                    HomeScreen()
+//                    MenuScreen()
                     Navigation()
                 }
             }
