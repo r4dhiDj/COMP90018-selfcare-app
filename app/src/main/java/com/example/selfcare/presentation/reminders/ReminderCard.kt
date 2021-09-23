@@ -10,14 +10,8 @@ import androidx.compose.ui.graphics.Color
 import com.example.selfcare.data.model.Reminder
 
 @Composable
-<<<<<<< HEAD:app/src/main/java/com/example/selfcare/presentation/reminders/ReminderCard.kt
 fun ReminderCard (
     reminder: Reminder
-=======
-fun ReminderCard (navController: NavController
-//    reminder: Reminder,
-//    onClick: () -> Unit,
->>>>>>> 25fd0420ff873d9d564e24cab098387f16feb19c:app/src/main/java/com/example/selfcare/presentation/components/ReminderCard.kt
 ) {
 
     Card(

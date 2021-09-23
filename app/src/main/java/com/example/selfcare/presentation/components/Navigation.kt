@@ -22,7 +22,6 @@ fun Navigation(context: Context) {
         composable(
             route = Screen.ReminderScreen.route
         ) {
-<<<<<<< HEAD
             val reminderViewModel = hiltViewModel<ReminderViewModel>()
             ReminderScreen(reminderViewModel, navController = navController)
         }
@@ -31,23 +30,17 @@ fun Navigation(context: Context) {
         ) {
             val reminderViewModel = hiltViewModel<ReminderViewModel>()
             CreateReminderScreen(reminderViewModel, navController = navController)
-=======
-            ReminderCard(navController = navController)
->>>>>>> 25fd0420ff873d9d564e24cab098387f16feb19c
         }
         composable(
             route = Screen.StoreScreen.route
         ) {
             StoreScreen(navController = navController)
         }
-<<<<<<< HEAD
 
-=======
         composable(
             route = Screen.SettingsScreen.route
         ){
             SettingsScreen(navController = navController, context)
         }
->>>>>>> 25fd0420ff873d9d564e24cab098387f16feb19c
     }
 }
