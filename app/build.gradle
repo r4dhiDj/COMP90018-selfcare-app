@@ -35,8 +35,6 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
         useIR = true
-
-
     }
     buildFeatures {
         compose true
@@ -110,4 +108,13 @@ dependencies {
     // Obj - a simple Wavefront OBJ file loader
     // https://github.com/javagl/Obj
     implementation 'de.javagl:obj:0.3.0'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.4.0'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
+    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha04"
+    //implementation "androidx.compose.runtime:runtime-livedata:1.1.0-alpha04"
 }

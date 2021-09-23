@@ -5,9 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -16,17 +14,30 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.asLiveData
 import androidx.navigation.NavController
 import com.example.selfcare.R
+import com.example.selfcare.data.SettingsDataStore
 import com.example.selfcare.ui.theme.IBMPlexMono
 import com.example.selfcare.ui.theme.Pink700
 import com.example.selfcare.ui.theme.SelfCareTheme
+import kotlinx.coroutines.launch
+
 
 @Composable
-fun SettingsScreen (navController: NavController, context: Context
+fun SettingsScreen (navController: NavController, context: Context, lifecycleOwner: LifecycleOwner
 ) {
-    val darkModeState = remember { mutableStateOf(false) }
-    val notificationState = remember { mutableStateOf(true) }
+
+    var settingsDataStore = SettingsDataStore(context)
+    val composableScope = rememberCoroutineScope()
+
+    var darkModeState = remember { mutableStateOf(false) }
+    var notificationState = remember { mutableStateOf(true) }
+
+    settingsDataStore.darkModeFlow.asLiveData().observe(lifecycleOwner, {
+        darkModeState.value = it
+    })
 
 
     //TODO: move to where notification should be called
@@ -96,7 +107,12 @@ fun SettingsScreen (navController: NavController, context: Context
                     )
                     Switch(
                         checked = darkModeState.value,
-                        onCheckedChange = { darkModeState.value = it },
+                        onCheckedChange = {
+                            //darkModeState.value = it
+                            composableScope.launch{
+                                settingsDataStore.storeUser(
+                                    !darkModeState.value)
+                            } },
                         colors = SwitchDefaults.colors(
                             checkedThumbColor = MaterialTheme.colors.primary,
                             checkedTrackColor = MaterialTheme.colors.primary,
@@ -105,6 +121,19 @@ fun SettingsScreen (navController: NavController, context: Context
                         )
                     )
                 }
+
+
+                /**Button(
+                    colors = ButtonDefaults.textButtonColors(
+                        backgroundColor = MaterialTheme.colors.error),
+                    onClick = { composableScope.launch{
+                        settingsDataStore.storeUser(
+
+                            !darkModeState.value)
+                    } }
+                ) {
+                    Text(color = Color.White, text = "$darkModeState.value")
+                }*/
 
 
 
@@ -149,13 +178,15 @@ fun SettingsScreen (navController: NavController, context: Context
                     Button(
                         colors = ButtonDefaults.textButtonColors(
                             backgroundColor = MaterialTheme.colors.error),
-                        onClick = { /*TODO*/ }
+                        onClick = {
+                            composableScope.launch{
+                                settingsDataStore.deleteSettingsData()
+                            }
+                        }
                     ) {
                         Text(color = Color.White, text = "Reset")
                     }
                 }
-
-
 
 
                 //Rows below are just to test navigation, to be move later.
@@ -186,5 +217,9 @@ fun SettingsScreen (navController: NavController, context: Context
         }
     }
 }
+
+
+
+
 
 
