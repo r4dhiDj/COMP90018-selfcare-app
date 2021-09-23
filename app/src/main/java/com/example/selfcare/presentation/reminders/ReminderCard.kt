@@ -1,25 +1,19 @@
-package com.example.selfcare.presentation.components
+package com.example.selfcare.presentation.reminders
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.material.ButtonDefaults.textButtonColors
 import androidx.compose.ui.graphics.Color
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.navigation.NavController
+import com.example.selfcare.data.model.Reminder
 
 @Composable
 fun ReminderCard (
-//    reminder: Reminder,
-//    onClick: () -> Unit,
+    reminder: Reminder
 ) {
+
     Card(
         shape = MaterialTheme.shapes.small,
         modifier = Modifier
@@ -28,7 +22,6 @@ fun ReminderCard (
                 top = 6.dp,
             )
             .fillMaxWidth(),
-//            .clickable(onClick = onClick),
             elevation = 8.dp
     ) {
         Column{
@@ -40,12 +33,12 @@ fun ReminderCard (
                 Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Reminder to sleep!", // TODO: Change to some binded string
+                    text = reminder.title,
                     modifier = Modifier,
                     style = MaterialTheme.typography.h6
                 )
                 Button(onClick = { /* TODO */ }) {
-                    Text("Activate!")
+                    Text("Activate")
                 }
             }
             Row(
@@ -56,7 +49,7 @@ fun ReminderCard (
                 Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Every Day | 11:00", // frequency + time Reminder.getFrequency + Reminder.getTime
+                    text = reminder.time, // frequency + time
                 )
                 TextButton(onClick = { /*TODO*/ },
                     modifier = Modifier
