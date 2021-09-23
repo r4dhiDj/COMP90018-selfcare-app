@@ -16,7 +16,6 @@ import com.example.selfcare.presentation.components.*
 import com.example.selfcare.ui.theme.SelfCareTheme
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import androidx.lifecycle.asLiveData
 import com.example.selfcare.data.SettingsDataStore
 import androidx.compose.runtime.mutableStateOf
@@ -31,17 +30,18 @@ class MainActivity : AppCompatActivity() {
     lateinit var settingsDataStore: SettingsDataStore
     val isDarkMode =  mutableStateOf(true)
 
+    @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         settingsDataStore = SettingsDataStore(this)
         setInitialTheme()
         observeData()
         setContent {
-            SelfCareTheme {
+            SelfCareTheme(isDarkMode.value) {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
                     createNotificationChannel(this)
-                    Navigation(this)
+                    Navigation(this, this)
 
                 }
             }
