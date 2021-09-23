@@ -50,6 +50,7 @@ fun ReminderCard (
             ) {
                 Text(
                     text = reminder.time, // frequency + time
+                // W0W
                 )
                 TextButton(onClick = { /*TODO*/ },
                     modifier = Modifier
