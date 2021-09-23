@@ -6,4 +6,5 @@ sealed class Screen(val route: String) {
     object StoreScreen: Screen("store_screen")
     object CreateReminderScreen: Screen("create_reminder_screen")
     object SettingsScreen: Screen("settings_screen")
+    object ARActivity: Screen("ARactivity")
 }

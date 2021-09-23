@@ -227,7 +227,7 @@ fun FeatureItem(
             .clickable {
                 when (feature.title) {
                     "chat" -> Log.v("test", "chat pressed")
-                    "go live" -> Log.v("test", "go live pressed")
+                    "go live" -> feature.navController.navigate(Screen.ARActivity.route)
                     "reminders" -> feature.navController.navigate(Screen.ReminderScreen.route)
                     "breathe" -> Log.v("test", "breathe pressed")
                     "store" -> feature.navController.navigate(Screen.StoreScreen.route)
@@ -260,6 +260,7 @@ fun FeatureItem(
 
     }
 }
+
 
 //@Preview(showBackground = true)
 //@Composable
