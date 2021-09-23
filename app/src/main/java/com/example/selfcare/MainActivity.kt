@@ -9,7 +9,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.FragmentActivity
+<<<<<<< HEAD
 import com.example.selfcare.presentation.components.Navigation
+=======
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.selfcare.presentation.components.*
+>>>>>>> 25fd0420ff873d9d564e24cab098387f16feb19c
 import com.example.selfcare.ui.theme.SelfCareTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,7 +28,9 @@ class MainActivity : FragmentActivity() {
             SelfCareTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    Navigation()
+                    createNotificationChannel(this)
+                    Navigation(this)
+
                 }
             }
         }

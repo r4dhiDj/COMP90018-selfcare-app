@@ -35,3 +35,12 @@ val Green200 = Color(0xFFDDFBC5)
 val Green400 = Color(0xFF9CE8A7)
 val Green500 = Color(0xFF90DB8E)
 val Green700 = Color(0xFF3D5025)
+
+
+val Grey1 = Color(0xFF777675)
+val Grey2 = Color(0xFF666666)
+val Grey3 = Color(0xFF393938)
+
+
+val RedErrorDark = Color(0xFFB00020)
+val RedErrorLight = Color(0xFFEF5350)

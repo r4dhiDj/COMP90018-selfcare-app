@@ -4,7 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../../../layout/compose-model-1631335108590.xml" value="0.12964527027027026" />
+        <entry key="../../../../layout/compose-model-1631877181159.xml" value="0.1" />
         <entry key="..\:/Users/L/Documents/GitHub/COMP90018-selfcare-app/app/src/main/res/drawable/ic_baseline_chat_bubble_24.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_chevron_left.xml" value="0.1305" />
+        <entry key="app/src/main/res/drawable/ic_play.xml" value="0.1305" />
+        <entry key="app/src/main/res/drawable/ic_robot_love.xml" value="0.1305" />
       </map>
     </option>
   </component>

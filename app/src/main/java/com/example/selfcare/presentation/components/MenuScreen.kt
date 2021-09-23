@@ -231,7 +231,7 @@ fun FeatureItem(
                     "reminders" -> feature.navController.navigate(Screen.ReminderScreen.route)
                     "breathe" -> Log.v("test", "breathe pressed")
                     "store" -> feature.navController.navigate(Screen.StoreScreen.route)
-                    "settings" -> Log.v("test", "settings pressed")
+                    "settings" -> feature.navController.navigate(Screen.SettingsScreen.route)
                 }
             },
              verticalArrangement = Arrangement.Center,

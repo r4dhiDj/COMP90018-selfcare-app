@@ -1,5 +1,6 @@
 package com.example.selfcare.presentation.components
 
+import android.content.Context
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -12,7 +13,7 @@ import com.example.selfcare.viewmodels.ReminderViewModel
 
 @ExperimentalFoundationApi
 @Composable
-fun Navigation() {
+fun Navigation(context: Context) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Screen.MenuScreen.route) {
         composable(route = Screen.MenuScreen.route) {
@@ -21,6 +22,7 @@ fun Navigation() {
         composable(
             route = Screen.ReminderScreen.route
         ) {
+<<<<<<< HEAD
             val reminderViewModel = hiltViewModel<ReminderViewModel>()
             ReminderScreen(reminderViewModel, navController = navController)
         }
@@ -29,12 +31,23 @@ fun Navigation() {
         ) {
             val reminderViewModel = hiltViewModel<ReminderViewModel>()
             CreateReminderScreen(reminderViewModel, navController = navController)
+=======
+            ReminderCard(navController = navController)
+>>>>>>> 25fd0420ff873d9d564e24cab098387f16feb19c
         }
         composable(
             route = Screen.StoreScreen.route
         ) {
             StoreScreen(navController = navController)
         }
+<<<<<<< HEAD
 
+=======
+        composable(
+            route = Screen.SettingsScreen.route
+        ){
+            SettingsScreen(navController = navController, context)
+        }
+>>>>>>> 25fd0420ff873d9d564e24cab098387f16feb19c
     }
 }
