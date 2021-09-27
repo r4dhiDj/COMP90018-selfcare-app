@@ -1,9 +1,14 @@
 package com.example.selfcare.presentation.components
 
 import android.content.Context
+import android.content.Context.VIBRATOR_SERVICE
 import android.content.Intent
+import android.media.MediaPlayer
+import android.os.Vibrator
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -12,6 +17,8 @@ import com.example.selfcare.presentation.reminders.CreateReminderScreen
 import com.example.selfcare.presentation.reminders.ReminderScreen
 import com.example.selfcare.viewmodels.ReminderViewModel
 import com.example.selfcare.AR_Activity
+import com.example.selfcare.R
+import com.example.selfcare.viewmodels.BreatheViewModel
 
 @ExperimentalFoundationApi
 @Composable
@@ -46,6 +53,12 @@ fun Navigation(context: Context) {
         }
         composable(route = Screen.ARActivity.route) {
             context.startActivity(Intent(context, AR_Activity::class.java))
+        }
+        composable(route = Screen.BreatheScreen.route) {
+            val breatheVM = hiltViewModel<BreatheViewModel>()
+            val vibrator = context.getSystemService(VIBRATOR_SERVICE) as Vibrator
+            val mediaPlayer = MediaPlayer.create(context, R.raw.relaxing).apply{isLooping = true}
+            BreatheScreen(navController,breatheVM,vibrator,mediaPlayer)
         }
 
     }

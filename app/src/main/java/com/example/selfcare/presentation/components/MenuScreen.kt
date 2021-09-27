@@ -229,7 +229,7 @@ fun FeatureItem(
                     "chat" -> Log.v("test", "chat pressed")
                     "go live" -> feature.navController.navigate(Screen.ARActivity.route)
                     "reminders" -> feature.navController.navigate(Screen.ReminderScreen.route)
-                    "breathe" -> Log.v("test", "breathe pressed")
+                    "breathe" -> feature.navController.navigate(Screen.BreatheScreen.route)
                     "store" -> feature.navController.navigate(Screen.StoreScreen.route)
                     "settings" -> feature.navController.navigate(Screen.SettingsScreen.route)
                 }

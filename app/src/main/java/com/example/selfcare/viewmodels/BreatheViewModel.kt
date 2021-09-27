@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModel
 
 class BreatheViewModel: ViewModel() {
     var isStarted by mutableStateOf(false)
-    var isMusic by mutableStateOf(true)
+    var isMusic by mutableStateOf(false)
     var numberPicked by mutableStateOf(1 )
 
     fun toggleMusic() {
@@ -28,7 +28,7 @@ class BreatheViewModel: ViewModel() {
 
     fun resetToDefault() {
         isStarted = false
-        isMusic = true
+        isMusic = false
         numberPicked = 1
     }
 
