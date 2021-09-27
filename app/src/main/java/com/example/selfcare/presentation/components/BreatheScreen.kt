@@ -85,6 +85,11 @@ fun settingScreen(breatheVM: BreatheViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        Text(
+            text = "Relax with this guided breathing exercise",
+            style = MaterialTheme.typography.h3
+        )
+        Spacer(modifier = Modifier.height(30.dp))
         NumberWheelPicker(breatheVM)
         MusicCheckBox(breatheVM)
         Button(
@@ -111,6 +116,11 @@ fun exercisingScreen(breatheVM: BreatheViewModel, vibrator: Vibrator, mediaPlaye
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        Text(
+            text = "Breathe as instructed by the animation",
+            style = MaterialTheme.typography.h3
+        )
+        Spacer(modifier = Modifier.height(30.dp))
         Row {
             // coroutine, I don't really understand this...
             LaunchedEffect(secondsLeft, { true }) {
@@ -196,7 +206,7 @@ fun MusicCheckBox(breatheVM: BreatheViewModel) {
         modifier = Modifier.padding(0.dp, 40.dp)
     ) {
         Text(text = "Music", style = MaterialTheme.typography.h3)
-        Spacer(modifier = Modifier.width(20.dp))
+        Spacer(modifier = Modifier.width(10.dp))
         Checkbox(
             checked = breatheVM.isMusic,
             modifier = Modifier
