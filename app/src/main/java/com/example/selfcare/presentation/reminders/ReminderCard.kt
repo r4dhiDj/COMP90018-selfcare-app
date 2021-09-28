@@ -7,11 +7,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.selfcare.data.model.Reminder
 
+@ExperimentalMaterialApi
 @Composable
 fun ReminderCard (
-    reminder: Reminder
+    reminder: Reminder,
+    navigateToReminder: (reminderId: Int) -> Unit
 ) {
 
     Card(
@@ -22,7 +25,10 @@ fun ReminderCard (
                 top = 6.dp,
             )
             .fillMaxWidth(),
-            elevation = 8.dp
+            elevation = 8.dp,
+        onClick = {
+            navigateToReminder(reminder.id)
+        }
     ) {
         Column{
             Row(
@@ -33,8 +39,8 @@ fun ReminderCard (
                 Alignment.CenterVertically
             ) {
                 Text(
-                    text = reminder.title,
                     modifier = Modifier,
+                    text = reminder.title,
                     style = MaterialTheme.typography.h6
                 )
                 Button(onClick = { /* TODO */ }) {
@@ -50,7 +56,6 @@ fun ReminderCard (
             ) {
                 Text(
                     text = reminder.time, // frequency + time
-                // W0W
                 )
                 TextButton(onClick = { /*TODO*/ },
                     modifier = Modifier
@@ -66,8 +71,9 @@ fun ReminderCard (
     }
 }
 
-//@Preview
-//@Composable
-//fun ComposablePreview() {
-//    ReminderCard()
-//}
+@ExperimentalMaterialApi
+@Preview
+@Composable
+fun ReminderPreview() {
+    ReminderCard(reminder = Reminder(0, "Feed Cat", "11:00"), navigateToReminder = {})
+}
