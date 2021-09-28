@@ -1,5 +1,6 @@
 package com.example.selfcare
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.opengl.GLES20
@@ -17,14 +18,16 @@ import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 import com.example.selfcare.presentation.components.helpers.*
 import com.example.selfcare.presentation.components.rendering.*
-//import kotlinx.android.synthetic.main.activity_main.*
+import com.example.selfcare.R
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+
 
 class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
     private val TAG: String = AR_Activity::class.java.simpleName
 
     private var installRequested = false
 
-    private var mode: Mode = Mode.VIKING
+    private var mode: Mode = Mode.STEVE
 
     private var session: Session? = null
 
@@ -39,13 +42,15 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
     private val pointCloudRenderer: PointCloudRenderer = PointCloudRenderer()
 
     // TODO: Declare ObjectRenderers and PlaneAttachments here
-    private val vikingObject = ObjectRenderer()
-    private val cannonObject = ObjectRenderer()
-    private val targetObject = ObjectRenderer()
+    private val steveObject = ObjectRenderer()
+    private val spidermanObject = ObjectRenderer()
+    private val coinObject = ObjectRenderer()
+    private val amogusObject = ObjectRenderer()
 
-    private var vikingAttachment: PlaneAttachment? = null
-    private var cannonAttachment: PlaneAttachment? = null
-    private var targetAttachment: PlaneAttachment? = null
+    private var steveAttachment: PlaneAttachment? = null
+    private var spidermanAttachment: PlaneAttachment? = null
+    private var coinAttachment: PlaneAttachment? = null
+    private var amogusAttachment: PlaneAttachment? = null
 
     // Temporary matrix allocated here to reduce number of allocations and taps for each frame.
     private val maxAllocationSize = 16
@@ -54,6 +59,8 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
     private lateinit var surfaceView: GLSurfaceView
 
+    private var clicked = false
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +68,7 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ar_activity)
+
 
         surfaceView = findViewById(R.id.surfaceView)
 
@@ -74,15 +82,46 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
     }
 
-    fun onRadioButtonClicked(view: View) {
+    fun onAddButtonClicked(view: View) {
+        if (view.id == R.id.addButton) {
+            setVisibility(clicked);
+            clicked = !clicked
+        }
+    }
+
+    fun setVisibility(clicked: Boolean) {
+        var mascotButton = findViewById<FloatingActionButton>(R.id.mascotButton)
+        var coinButton = findViewById<FloatingActionButton>(R.id.coinrunButton)
+        if(!clicked) {
+            mascotButton.visibility = View.VISIBLE
+            coinButton.visibility = View.VISIBLE
+        }
+        else {
+            mascotButton.visibility = View.INVISIBLE
+            coinButton.visibility = View.INVISIBLE
+        }
+    }
+
+    fun setMode(view: View) {
         when (view.id) {
-            R.id.radioCannon -> mode = Mode.CANNON
-            R.id.radioTarget -> mode = Mode.TARGET
-            else -> mode = Mode.VIKING
+            R.id.mascotButton -> mode = Mode.SPIDERMAN
+            R.id.coinrunButton -> mode = Mode.COIN
+
         }
     }
 
 
+    fun onRadioButtonClicked(view: View) {
+        when (view.id) {
+            R.id.radioSpiderman -> mode = Mode.SPIDERMAN
+            R.id.radioCoin -> mode = Mode.COIN
+            R.id.radioAmogus -> mode = Mode.AMOGUS
+            else -> mode = Mode.STEVE
+        }
+    }
+
+
+    @SuppressLint("ClickableViewAccessibility")
     private fun setupSurfaceView() {
         // Set up renderer.
         surfaceView.preserveEGLContextOnPause = true
@@ -237,17 +276,19 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
             // TODO - set up the objects
             // 1
-            vikingObject.createOnGlThread(this, getString(R.string.model_viking_obj), getString(
-                R.string.model_viking_png))
-            cannonObject.createOnGlThread(this, getString(R.string.model_cannon_obj), getString(
-                R.string.model_cannon_png))
-            targetObject.createOnGlThread(this, getString(R.string.model_target_obj), getString(
-                R.string.model_target_png))
+            steveObject.createOnGlThread(this, getString(R.string.model_steve_obj), getString(
+                R.string.model_steve_png))
+            spidermanObject.createOnGlThread(this, getString(R.string.model_spiderman_obj), getString(
+                R.string.model_spiderman_png))
+            coinObject.createOnGlThread(this, getString(R.string.model_coin_obj), getString(
+                R.string.model_coin_png))
+            amogusObject.createOnGlThread(this, getString(R.string.model_amogus_obj), getString(R.string.model_amogus_png))
 
             // 2
-            targetObject.setMaterialProperties(0.0f, 3.5f, 1.0f, 6.0f)
-            vikingObject.setMaterialProperties(0.0f, 3.5f, 1.0f, 6.0f)
-            cannonObject.setMaterialProperties(0.0f, 3.5f, 1.0f, 6.0f)
+            coinObject.setMaterialProperties(0.0f, 3.5f, 1.0f, 6.0f)
+            steveObject.setMaterialProperties(0.0f, 3.5f, 1.0f, 6.0f)
+            spidermanObject.setMaterialProperties(0.0f, 3.5f, 1.0f, 6.0f)
+            amogusObject.setMaterialProperties(0.0f, 3.5f, 1.0f, 6.0f)
 
         } catch (e: IOException) {
             Log.e(TAG, getString(R.string.failed_to_read_asset), e)
@@ -293,27 +334,35 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
                 // TODO: Call drawObject() for Viking, Cannon and Target here
                 drawObject(
-                    vikingObject,
-                    vikingAttachment,
-                    Mode.VIKING.scaleFactor,
+                    steveObject,
+                    steveAttachment,
+                    Mode.STEVE.scaleFactor,
                     projectionMatrix,
                     viewMatrix,
                     lightIntensity
                 )
 
                 drawObject(
-                    cannonObject,
-                    cannonAttachment,
-                    Mode.CANNON.scaleFactor,
+                    spidermanObject,
+                    spidermanAttachment,
+                    Mode.SPIDERMAN.scaleFactor,
                     projectionMatrix,
                     viewMatrix,
                     lightIntensity
                 )
 
                 drawObject(
-                    targetObject,
-                    targetAttachment,
-                    Mode.TARGET.scaleFactor,
+                    coinObject,
+                    coinAttachment,
+                    Mode.COIN.scaleFactor,
+                    projectionMatrix,
+                    viewMatrix,
+                    lightIntensity
+                )
+                drawObject(
+                    amogusObject,
+                    amogusAttachment,
+                    Mode.AMOGUS.scaleFactor,
                     projectionMatrix,
                     viewMatrix,
                     lightIntensity
@@ -454,9 +503,10 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
                             == Point.OrientationMode.ESTIMATED_SURFACE_NORMAL)
                 ) {
                     when (mode) {
-                        Mode.VIKING -> vikingAttachment = addSessionAnchorFromAttachment(vikingAttachment, hit)
-                        Mode.CANNON -> cannonAttachment = addSessionAnchorFromAttachment(cannonAttachment, hit)
-                        Mode.TARGET -> targetAttachment = addSessionAnchorFromAttachment(targetAttachment, hit)
+                        Mode.STEVE -> steveAttachment = addSessionAnchorFromAttachment(steveAttachment, hit)
+                        Mode.SPIDERMAN -> spidermanAttachment = addSessionAnchorFromAttachment(spidermanAttachment, hit)
+                        Mode.COIN -> coinAttachment = addSessionAnchorFromAttachment(coinAttachment, hit)
+                        Mode.AMOGUS -> amogusAttachment = addSessionAnchorFromAttachment(amogusAttachment, hit)
                     }
                     // TODO: Create an anchor if a plane or an oriented point was hit
                     break

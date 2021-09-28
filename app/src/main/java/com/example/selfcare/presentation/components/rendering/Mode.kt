@@ -1,5 +1,5 @@
 package com.example.selfcare.presentation.components.rendering
 
 enum class Mode(val scaleFactor: Float) {
-  VIKING(1.0f), CANNON(0.2f), TARGET(0.5f)
+  STEVE(1.0f), SPIDERMAN(0.75f), COIN(0.5f), AMOGUS(0.5f)
 }

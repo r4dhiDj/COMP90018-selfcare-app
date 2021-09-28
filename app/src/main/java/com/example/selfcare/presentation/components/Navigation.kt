@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,6 +18,7 @@ import com.example.selfcare.AR_Activity
 @Composable
 fun Navigation(context: Context) {
     val navController = rememberNavController()
+    val NavContext = LocalContext.current
     NavHost(navController = navController, startDestination = Screen.MenuScreen.route) {
         composable(route = Screen.MenuScreen.route) {
             MenuScreen(navController = navController)
@@ -45,7 +47,7 @@ fun Navigation(context: Context) {
             SettingsScreen(navController = navController, context)
         }
         composable(route = Screen.ARActivity.route) {
-            context.startActivity(Intent(context, AR_Activity::class.java))
+            context.startActivity(Intent(NavContext, AR_Activity::class.java))
         }
 
     }
