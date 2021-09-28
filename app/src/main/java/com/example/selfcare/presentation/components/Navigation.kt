@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -15,12 +16,18 @@ import com.example.selfcare.presentation.reminders.CreateReminderScreen
 import com.example.selfcare.presentation.reminders.ReminderScreen
 import com.example.selfcare.viewmodels.ReminderViewModel
 import com.example.selfcare.AR_Activity
+import com.example.selfcare.presentation.components.rendering.SettingsScreen
+import com.example.selfcare.viewmodels.MainViewModel
 
 @ExperimentalFoundationApi
 @Composable
-fun Navigation(context: Context, lifecycleOwner: LifecycleOwner) {
+fun Navigation(viewModel: MainViewModel) {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Screen.MenuScreen.route) {
+    val context = LocalContext.current
+    NavHost(navController = navController, startDestination = Screen.WelcomeScreen.route) {
+        composable(route = Screen.WelcomeScreen.route){
+            WelcomeScreen(viewModel = viewModel, navController = navController )
+        }
         composable(route = Screen.MenuScreen.route) {
             MenuScreen(navController = navController)
         }
@@ -44,7 +51,7 @@ fun Navigation(context: Context, lifecycleOwner: LifecycleOwner) {
         composable(
             route = Screen.SettingsScreen.route
         ){
-            SettingsScreen(navController = navController, context, lifecycleOwner)
+            SettingsScreen(viewModel, navController = navController)
 
             //SettingsScreenVM(navController = navController, context, SettingsViewModel() )
         }
