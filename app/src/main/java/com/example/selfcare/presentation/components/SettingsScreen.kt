@@ -32,7 +32,6 @@ fun SettingsScreen(
     var username by remember { mutableStateOf("") }
     var darkMode by remember { mutableStateOf(false) }
     var notifMode by remember { mutableStateOf(true) }
-    var firstTime by remember { mutableStateOf(false) }
     //TODO: move to where notification should be called
     var callNotif by remember { mutableStateOf(false) }
     var clickNewUsername by remember { mutableStateOf(false) }
@@ -236,6 +235,15 @@ fun SettingsScreen(
                         backgroundColor = MaterialTheme.colors.error),
                     onClick = {
                         viewModel.deleteSettingsData()
+
+                        // to be removed once how to refresh @ clear is figured out
+                        username = ""
+                        darkMode = false
+                        notifMode = true
+                        viewModel.setDarkMode(darkMode)
+                        viewModel.setUsername(username)
+                        viewModel.setNotifMode(notifMode)
+
                     }
                 ) {
                     Text(color = Color.White, text = "Reset")

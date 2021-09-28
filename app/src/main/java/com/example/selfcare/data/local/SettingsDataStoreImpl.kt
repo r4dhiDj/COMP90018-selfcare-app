@@ -39,7 +39,7 @@ class SettingsDataStoreImpl @Inject constructor(
 
     override val username: Flow<String>
     get() = dataStore.data.map{
-        it[USERNAME_KEY] ?: "MATE"
+        it[USERNAME_KEY] ?: ""
     }
 
     override suspend fun storeDarkMode(isDarkMode: Boolean) {
