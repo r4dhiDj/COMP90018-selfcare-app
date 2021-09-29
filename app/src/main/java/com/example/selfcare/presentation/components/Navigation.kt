@@ -47,7 +47,8 @@ fun Navigation(context: Context,
             reminderViewModel = reminderViewModel
         )
         reminderComposable(
-            navigateToReminder = reminderNav.list
+            navigateToReminderScreen = reminderNav.list,
+            reminderViewModel = reminderViewModel
         )
         composable(
             route = Screen.StoreScreen.route

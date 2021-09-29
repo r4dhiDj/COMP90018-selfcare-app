@@ -21,8 +21,7 @@ import java.util.*
 import javax.inject.Inject
 
 /**
- * The [ReminderViewModel] takes in a [reminderRepository] to request data, and alters this data
- * into a [ReminderViewState] that can be exposed by [viewState]
+ * The [ReminderViewModel] takes in a [reminderRepository] to request data
  */
 
 @HiltViewModel
@@ -35,8 +34,8 @@ class ReminderViewModel @Inject constructor (
     // Publicly exposed to our composables
     val allReminders: StateFlow<RequestState<List<Reminder>>> = _allReminders
 
+    // Obtains all reminders from the database
     fun getAllReminders() {
-
         _allReminders.value = RequestState.Loading
             try {
                 viewModelScope.launch {
@@ -50,6 +49,18 @@ class ReminderViewModel @Inject constructor (
             }
 
 
+    }
+
+    private val _selectedReminder: MutableStateFlow<Reminder?> = MutableStateFlow(null)
+    val selectedReminder: StateFlow<Reminder?> = _selectedReminder
+
+    // Gets a single reminder from the database
+    fun getSelectedReminder(reminderId: Int) {
+        viewModelScope.launch {
+            reminderRepository.getReminder(reminderId = reminderId).collect { reminder ->
+                _selectedReminder.value = reminder
+            }
+        }
     }
 
 
