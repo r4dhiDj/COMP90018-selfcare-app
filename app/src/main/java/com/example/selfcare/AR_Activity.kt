@@ -18,7 +18,6 @@ import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 import com.example.selfcare.presentation.components.helpers.*
 import com.example.selfcare.presentation.components.rendering.*
-import com.example.selfcare.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -89,6 +88,10 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
         }
     }
 
+    fun settingsPressed(view: View) {
+        Log.e("test", "settings pressed")
+    }
+
     fun setVisibility(clicked: Boolean) {
         var mascotButton = findViewById<FloatingActionButton>(R.id.mascotButton)
         var coinButton = findViewById<FloatingActionButton>(R.id.coinrunButton)
@@ -111,14 +114,14 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
     }
 
 
-    fun onRadioButtonClicked(view: View) {
-        when (view.id) {
-            R.id.radioSpiderman -> mode = Mode.SPIDERMAN
-            R.id.radioCoin -> mode = Mode.COIN
-            R.id.radioAmogus -> mode = Mode.AMOGUS
-            else -> mode = Mode.STEVE
-        }
-    }
+//    fun onRadioButtonClicked(view: View) {
+//        when (view.id) {
+//            R.id.radioSpiderman -> mode = Mode.SPIDERMAN
+//            R.id.radioCoin -> mode = Mode.COIN
+//            R.id.radioAmogus -> mode = Mode.AMOGUS
+//            else -> mode = Mode.STEVE
+//        }
+//    }
 
 
     @SuppressLint("ClickableViewAccessibility")
