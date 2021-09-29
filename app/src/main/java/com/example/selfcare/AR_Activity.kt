@@ -9,6 +9,8 @@ import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import com.google.ar.core.*
 import com.google.ar.core.exceptions.*
@@ -60,6 +62,11 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
     private var clicked = false
 
+    //FAB animations
+    private val rotateOpen: Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim)}
+    private val rotateClose: Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim)}
+    private val fromBottom: Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.from_bottom_anim)}
+    private val toBottom: Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.to_bottom_anim)}
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,7 +91,24 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
     fun onAddButtonClicked(view: View) {
         if (view.id == R.id.addButton) {
             setVisibility(clicked);
+            setAnimation(clicked)
             clicked = !clicked
+        }
+    }
+
+    fun setAnimation(clicked: Boolean) {
+        val addButton = findViewById<FloatingActionButton>(R.id.addButton)
+        val mascotButton = findViewById<FloatingActionButton>(R.id.mascotButton)
+        val coinButton = findViewById<FloatingActionButton>(R.id.coinrunButton)
+        if(!clicked) {
+            mascotButton.startAnimation(fromBottom)
+            coinButton.startAnimation(fromBottom)
+            addButton.startAnimation(rotateOpen)
+        }
+        else {
+            mascotButton.startAnimation(toBottom)
+            coinButton.startAnimation(toBottom)
+            addButton.startAnimation(rotateClose)
         }
     }
 
