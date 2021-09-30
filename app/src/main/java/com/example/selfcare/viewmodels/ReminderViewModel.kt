@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.ui.graphics.vectormath.min
 import androidx.ui.viewmodel.viewModel
 import com.example.selfcare.data.model.Reminder
 import com.example.selfcare.data.model.repositories.ReminderRepository
@@ -61,6 +62,19 @@ class ReminderViewModel @Inject constructor (
                 _selectedReminder.value = reminder
             }
         }
+    }
+
+    /**
+     * Time related methods, gets the current time from the system
+     */
+    var hour = 0
+    var minute = 0
+
+    fun getCurrentTime() {
+        val currentTime = Calendar.getInstance()
+        hour = currentTime.get(Calendar.HOUR)
+        minute = currentTime.get(Calendar.MINUTE)
+
     }
 
 

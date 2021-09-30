@@ -32,7 +32,8 @@ fun NavGraphBuilder.reminderComposable(
 
         CreateReminderScreen(
             selectedReminder = selectedReminder,
-            navigateToReminderScreen = navigateToReminderScreen
+            navigateToReminderScreen = navigateToReminderScreen,
+            reminderViewModel = reminderViewModel
         )
 
     }

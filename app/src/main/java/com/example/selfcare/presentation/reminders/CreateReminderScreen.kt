@@ -29,7 +29,8 @@ import com.google.android.material.timepicker.TimeFormat
 @Composable
 fun CreateReminderScreen (
     selectedReminder: Reminder?,
-    navigateToReminderScreen: (Action) -> Unit
+    navigateToReminderScreen: (Action) -> Unit,
+    reminderViewModel: ReminderViewModel
 ) {
 
     Scaffold(
@@ -40,71 +41,18 @@ fun CreateReminderScreen (
             )
         },
         content = {
+            ReminderContent(
+                title = "",
+                onTitleChange = {},
+                time = "",
+                onTimeChange = {},
+                reminderViewModel = reminderViewModel
+            )
 
         }
     )
 
-//    // text value saved in reminder viewmodel
-//    val reminderText = reminderViewModel.reminderText
-//    val activity = LocalContext.current as MainActivity
-//
-//    Card(
-//        modifier = Modifier
-//            .padding(top = 12.dp, bottom = 12.dp, start = 20.dp, end = 20.dp)
-//    ) {
-//        Column(
-//            modifier = Modifier
-//                .padding(top = 12.dp, bottom = 12.dp, start = 10.dp, end = 10.dp)
-//        ) {
-//            Text(
-//                text = "Reminder",
-//                modifier = Modifier
-//            )
-//            OutlinedTextField(
-//                value = reminderText,
-//                onValueChange = { newValue ->
-//                    reminderViewModel.onTextChanged(newValue)
-//                                },
-//                modifier = Modifier
-//                    .padding(top = 5.dp, bottom = 5.dp, start = 8.dp, end = 8.dp)
-//                    .align(Alignment.CenterHorizontally)
-//            )
-//            Text(
-//                text = "Set Time"
-//            )
-//
-//            Button(
-//                onClick = { showTimePicker(activity, reminderViewModel)},
-//                modifier = Modifier
-//                    .align(Alignment.CenterHorizontally)
-//            ) {
-//                Text(text = "Select Time")
-//                Icon(
-//                    painter = painterResource(id = R.drawable.ic_baseline_timer_24),
-//                    contentDescription = "store",
-//                    modifier = Modifier
-//                        .padding(10.dp)
-//                        .clip(RoundedCornerShape(20.dp))
-//                )
-//            }
-//
-//            Text(
-//                text = "Confirm"
-//            )
-//
-//            // Button to add TODO: replace with fab
-//            Row(
-//                modifier = Modifier
-//                    .fillMaxWidth(),
-//                Arrangement.SpaceEvenly
-//            ) {
-//                Button(onClick = { reminderViewModel.createReminder() }) {
-//                    Text(text = "OK")
-//                }
-//            }
-//
-//        }
-//    }
+
 }
 
 
@@ -127,32 +75,3 @@ fun CreateReminderScreen (
 //}
 
 
-/**
- * Displays the time picker to the user
- */
-
-//fun showTimePicker(activity: MainActivity,
-//reminderViewModel: ReminderViewModel
-//) {
-//
-//    // Obtains the current time of the system
-//    reminderViewModel.getCurrentTime()
-//    Log.d("TIME PICKER", "showTimePicker: ${reminderViewModel.hour} ")
-//
-//    // Builds the time picker
-//    val picker = MaterialTimePicker.Builder()
-//        .setTimeFormat(TimeFormat.CLOCK_12H)
-//        .setHour(reminderViewModel.hour)
-//        .setMinute(reminderViewModel.minute)
-//        .setTitleText("Select Reminder Time")
-//        .build()
-//
-//    picker.show(activity.supportFragmentManager, picker.toString())
-//
-//    // Sets the ViewModel's attributes according to the picker's time
-//    picker.addOnPositiveButtonClickListener{
-//        reminderViewModel.savedHour = picker.hour
-//        reminderViewModel.savedMinute = picker.minute
-//    }
-//
-//}
