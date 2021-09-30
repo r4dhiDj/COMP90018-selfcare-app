@@ -7,11 +7,15 @@ import android.opengl.GLES20
 import android.opengl.GLSurfaceView
 import android.util.Log
 import android.view.GestureDetector
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.compose.ui.layout.Layout
 import com.google.ar.core.*
 import com.google.ar.core.exceptions.*
 import java.io.IOException
@@ -20,6 +24,7 @@ import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 import com.example.selfcare.presentation.components.helpers.*
 import com.example.selfcare.presentation.components.rendering.*
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -60,13 +65,14 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
     private lateinit var surfaceView: GLSurfaceView
 
-    private var clicked = false
+    private var addClicked = false
 
     //FAB animations
     private val rotateOpen: Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim)}
     private val rotateClose: Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim)}
     private val fromBottom: Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.from_bottom_anim)}
     private val toBottom: Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.to_bottom_anim)}
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,9 +96,9 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
     fun onAddButtonClicked(view: View) {
         if (view.id == R.id.addButton) {
-            setVisibility(clicked);
-            setAnimation(clicked)
-            clicked = !clicked
+            setVisibility(addClicked);
+            setAnimation(addClicked)
+            addClicked = !addClicked
         }
     }
 
@@ -113,7 +119,16 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
     }
 
     fun settingsPressed(view: View) {
-        Log.e("test", "settings pressed")
+        val bottomSheetDialog = BottomSheetDialog(
+            this, R.style.BottomSheetDialogTheme
+        )
+        val bottomSheetView = LayoutInflater.from(applicationContext).inflate(
+            R.layout.settings_ar_dialog,
+            findViewById(R.id.bottomSheet) as LinearLayout?
+        )
+
+        bottomSheetDialog.setContentView(bottomSheetView)
+        bottomSheetDialog.show()
     }
 
     fun setVisibility(clicked: Boolean) {
