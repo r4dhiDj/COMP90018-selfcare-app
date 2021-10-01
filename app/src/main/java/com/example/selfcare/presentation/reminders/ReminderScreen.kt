@@ -42,7 +42,11 @@ fun ReminderScreen (
         reminderViewModel.getAllReminders()
     }
 
+    val action by reminderViewModel.action
+
     val allReminders by reminderViewModel.allReminders.collectAsState()
+
+    reminderViewModel.handleDatabaseActions(action = action)
 
     Scaffold(
         topBar = {

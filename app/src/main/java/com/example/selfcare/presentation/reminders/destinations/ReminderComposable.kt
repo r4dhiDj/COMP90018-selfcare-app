@@ -1,5 +1,6 @@
 package com.example.selfcare.presentation.reminders.destinations
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavGraphBuilder
@@ -29,6 +30,10 @@ fun NavGraphBuilder.reminderComposable(
         reminderViewModel.getSelectedReminder(reminderId = reminderId)
 
         val selectedReminder by reminderViewModel.selectedReminder.collectAsState()
+        
+        LaunchedEffect(key1 = selectedReminder) {
+            reminderViewModel.updateReminderFields(reminder = selectedReminder)
+        }
 
         CreateReminderScreen(
             selectedReminder = selectedReminder,

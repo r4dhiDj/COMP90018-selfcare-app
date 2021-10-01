@@ -51,7 +51,7 @@ fun ReminderContent (
             activity = activity,
             reminderViewModel = reminderViewModel,
             time = time,
-            onTimeChange = onTimeChange
+            onTimeChange = { onTimeChange(it) }
         )
 
 
@@ -125,7 +125,7 @@ fun showTimePicker(
 
     // Builds the time picker
     val picker = MaterialTimePicker.Builder()
-        .setTimeFormat(TimeFormat.CLOCK_12H)
+        .setTimeFormat(TimeFormat.CLOCK_24H)
         .setHour(reminderViewModel.hour)
         .setMinute(reminderViewModel.minute)
         .setTitleText("Select Reminder Time")
@@ -135,8 +135,7 @@ fun showTimePicker(
 
     // Sets the ViewModel's attributes according to the picker's time
     picker.addOnPositiveButtonClickListener{
-        onTimeChange(picker.hour.toString() + ":" + picker.minute.toString())
-
+        onTimeChange(String.format("%02d:%02d", picker.hour, picker.minute))
     }
 
 }
