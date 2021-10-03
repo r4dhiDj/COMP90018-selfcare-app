@@ -32,7 +32,9 @@ fun NavGraphBuilder.reminderComposable(
         val selectedReminder by reminderViewModel.selectedReminder.collectAsState()
         
         LaunchedEffect(key1 = selectedReminder) {
-            reminderViewModel.updateReminderFields(reminder = selectedReminder)
+            if (selectedReminder != null || reminderId == -1 ) {
+                reminderViewModel.updateReminderFields(reminder = selectedReminder)
+            }
         }
 
         CreateReminderScreen(

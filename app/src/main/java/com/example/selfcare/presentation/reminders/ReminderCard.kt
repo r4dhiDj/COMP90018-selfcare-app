@@ -57,15 +57,15 @@ fun ReminderCard (
                 Text(
                     text = reminder.time, // frequency + time
                 )
-                TextButton(onClick = { /*TODO*/ },
-                    modifier = Modifier
-                        .wrapContentWidth(Alignment.End),
-                    colors = ButtonDefaults.textButtonColors(
-                        contentColor = Color(0xffff0000)
-
-                    )) {
-                    Text("Delete")
-                }
+//                TextButton(onClick = { /*TODO*/ },
+//                    modifier = Modifier
+//                        .wrapContentWidth(Alignment.End),
+//                    colors = ButtonDefaults.textButtonColors(
+//                        contentColor = Color(0xffff0000)
+//
+//                    )) {
+//                    Text("Delete")
+//                }
             }
         }
     }

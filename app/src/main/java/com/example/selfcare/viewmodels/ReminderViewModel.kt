@@ -97,7 +97,6 @@ class ReminderViewModel @Inject constructor (
                 title = title.value,
                 time = time.value
             )
-            Log.d("TEST", "updateReminder: " + reminder.toString())
             reminderRepository.updateReminder(reminder = reminder)
         }
     }
@@ -107,14 +106,12 @@ class ReminderViewModel @Inject constructor (
      */
     private fun deleteReminder() {
         viewModelScope.launch(Dispatchers.IO) {
-
             val reminder = Reminder(
                 id = id.value,
                 title = title.value,
                 time = time.value
             )
 
-            Log.d("TEST", "deleteReminder: " + reminder.toString())
             reminderRepository.deleteReminder(reminder = reminder)
 
         }
@@ -131,29 +128,6 @@ class ReminderViewModel @Inject constructor (
 
         }
     }
-
-    /**
-     * Undo deletion of reminder
-     */
-
-    private fun undoReminderDelete() {
-        viewModelScope.launch(Dispatchers.IO) {
-
-            if (action.value == Action.DELETE) {
-                val reminder = Reminder(
-                        id = id.value,
-                        title = title.value,
-                        time = time.value
-                )
-
-                Log.d("TEST", "undoReminderDelete: " + reminder.toString());
-
-                reminderRepository.addReminder(reminder)
-            }
-
-        }
-    }
-
 
 
     /**
@@ -175,11 +149,12 @@ class ReminderViewModel @Inject constructor (
                 deleteAllReminders()
             }
             Action.UNDO -> {
-                undoReminderDelete()
+                addReminder()
             } else -> {
-                this.action.value = Action.NO_ACTION
+
             }
         }
+        this.action.value = Action.NO_ACTION
     }
 
 

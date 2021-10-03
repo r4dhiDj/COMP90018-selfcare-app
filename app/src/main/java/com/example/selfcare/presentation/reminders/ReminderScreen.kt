@@ -53,6 +53,9 @@ fun ReminderScreen (
     DisplaySnackBar(
         scaffoldState = scaffoldState,
         handleDatabaseActions = { reminderViewModel.handleDatabaseActions(action = action) },
+        onUndoClicked = {
+          reminderViewModel.action.value = it
+        },
         reminderTitle = reminderViewModel.title.value,
         action = action
     )
@@ -207,6 +210,7 @@ fun DisplayReminders (
 fun DisplaySnackBar(
     scaffoldState: ScaffoldState,
     handleDatabaseActions: () -> Unit,
+    onUndoClicked: (Action) -> Unit,
     reminderTitle: String,
     action: Action
 ) {
@@ -219,11 +223,32 @@ fun DisplaySnackBar(
             scope.launch {
                 val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
                     message = "${action.name}: $reminderTitle",
-                    actionLabel = "OK"
+                    actionLabel = setActionLabel(action = action)
+                )
+                undoDeletedTask(
+                    action = action,
+                    snackBarResult = snackbarResult,
+                    onUndoClicked = onUndoClicked
                 )
             }
         }
     }
+}
 
+private fun setActionLabel(action: Action): String {
+    return if(action.name == "DELETE") {
+        "UNDO"
+    } else {
+        "OK"
+    }
+}
 
+private fun undoDeletedTask(
+    action: Action,
+    snackBarResult: SnackbarResult,
+    onUndoClicked: (Action) -> Unit
+) {
+    if (snackBarResult == SnackbarResult.ActionPerformed && action == Action.DELETE) {
+        onUndoClicked(Action.UNDO)
+    }
 }
