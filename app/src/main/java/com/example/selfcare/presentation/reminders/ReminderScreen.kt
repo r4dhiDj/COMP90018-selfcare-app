@@ -23,7 +23,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.selfcare.R
 import com.example.selfcare.ui.theme.Typography
+import com.example.selfcare.util.Action
 import com.example.selfcare.util.RequestState
+import kotlinx.coroutines.launch
 
 /**
  * [ReminderScreen] is the key screen to display the Reminders to the user and for them to edit and update
@@ -46,9 +48,17 @@ fun ReminderScreen (
 
     val allReminders by reminderViewModel.allReminders.collectAsState()
 
-    reminderViewModel.handleDatabaseActions(action = action)
+    val scaffoldState = rememberScaffoldState()
+
+    DisplaySnackBar(
+        scaffoldState = scaffoldState,
+        handleDatabaseActions = { reminderViewModel.handleDatabaseActions(action = action) },
+        reminderTitle = reminderViewModel.title.value,
+        action = action
+    )
 
     Scaffold(
+        scaffoldState = scaffoldState,
         topBar = {
             ListAppBar(
                 reminderViewModel = reminderViewModel
@@ -193,4 +203,27 @@ fun DisplayReminders (
     }
 }
 
+@Composable
+fun DisplaySnackBar(
+    scaffoldState: ScaffoldState,
+    handleDatabaseActions: () -> Unit,
+    reminderTitle: String,
+    action: Action
+) {
+    handleDatabaseActions()
 
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(key1 = action) {
+        if (action != Action.NO_ACTION) {
+            scope.launch {
+                val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
+                    message = "${action.name}: $reminderTitle",
+                    actionLabel = "OK"
+                )
+            }
+        }
+    }
+
+
+}

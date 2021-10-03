@@ -75,9 +75,9 @@ class ReminderViewModel @Inject constructor (
     }
 
     /**
-     * Adds a task to the database (repository)
+     * Adds a reminder to the database (repository)
      */
-    private fun addTask() {
+    private fun addReminder() {
         viewModelScope.launch(Dispatchers.IO) {
             val reminder = Reminder(
                 title = title.value,
@@ -88,16 +88,37 @@ class ReminderViewModel @Inject constructor (
     }
 
     /**
+     * Updates a reminder to the database (repository)
+     */
+    private fun updateReminder() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val reminder = Reminder(
+                id = id.value,
+                title = title.value,
+                time = time.value
+            )
+            Log.d("TEST", "updateReminder: " + reminder.toString())
+            reminderRepository.updateReminder(reminder = reminder)
+        }
+    }
+
+    /**
+     * Deletes a reminder
+     */
+    
+
+
+    /**
      * Handles database actions
      */
 
     fun handleDatabaseActions(action: Action) {
         when (action) {
             Action.ADD -> {
-                addTask()
+                addReminder()
             }
             Action.UPDATE -> {
-
+                updateReminder()
             }
             Action.DELETE -> {
 
@@ -135,10 +156,12 @@ class ReminderViewModel @Inject constructor (
 
     fun updateReminderFields(reminder: Reminder?) {
         if (reminder != null ) {
+            id.value = reminder.id
             title.value = reminder.title
             time.value = reminder.time
         } else {
             getCurrentTime()
+            id.value = 0
             title.value = ""
             time.value = String.format("%02d:%02d", hour, minute)
         }
