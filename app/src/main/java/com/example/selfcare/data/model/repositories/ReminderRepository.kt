@@ -32,7 +32,7 @@ class ReminderRepository @Inject constructor(private val reminderDao: ReminderDa
         reminderDao.deleteReminder(reminder = reminder)
     }
 
-    suspend fun deleteAllTasks(){
+    suspend fun deleteAllReminders(){
         reminderDao.deleteAllReminders()
     }
 
