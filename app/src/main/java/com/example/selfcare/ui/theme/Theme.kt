@@ -53,7 +53,7 @@ private val LightColorPalette = lightColors(
 
 
 @Composable
-fun SelfCareTheme(darkMode: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
+fun SelfCareTheme(darkMode: Boolean, content: @Composable() () -> Unit) {
     val colors = if (darkMode) {
         DarkColorPalette
     } else {
