@@ -118,7 +118,7 @@ class ReminderViewModel @Inject constructor (
     }
 
     /**
-     * Deletes a reminder
+     * Deletes all reminders
      */
     private fun deleteAllReminders() {
         viewModelScope.launch(Dispatchers.IO) {

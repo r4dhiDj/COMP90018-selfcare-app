@@ -1,7 +1,5 @@
 package com.example.selfcare.presentation.reminders
 
-import android.util.Log
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -9,14 +7,9 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import com.example.selfcare.data.model.Reminder
-import com.example.selfcare.presentation.components.Screen
 import com.example.selfcare.viewmodels.ReminderViewModel
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -102,13 +95,15 @@ fun ListAppBar(
     reminderViewModel: ReminderViewModel
 ) {
     ReminderTopBar (
-        onDeleteClicked = {}
+        onDeleteAllConfirmed = {
+            reminderViewModel.action.value = Action.DELETE_ALL
+        }
     )
 }
 
 @Composable
 fun ReminderTopBar(
-    onDeleteClicked: () -> Unit
+    onDeleteAllConfirmed: () -> Unit
 ) {
     TopAppBar(
         title = {
@@ -116,7 +111,7 @@ fun ReminderTopBar(
         },
         actions = {
             ListBarActions (
-                onDeleteClicked = onDeleteClicked
+                onDeleteAllConfirmed = onDeleteAllConfirmed
             )
         },
         backgroundColor = MaterialTheme.colors.primary
@@ -125,14 +120,25 @@ fun ReminderTopBar(
 
 @Composable
 fun ListBarActions(
-    onDeleteClicked: () -> Unit
+    onDeleteAllConfirmed: () -> Unit
 ) {
-    DeleteAllAction(onDeleteClicked = onDeleteClicked)
+
+    var openDialog by remember { mutableStateOf(false) }
+
+    DeleteAllDialog(
+        title = stringResource(id = R.string.delete_all_reminders),
+        message = stringResource(id = R.string.delete_all_reminders_confirmation),
+        openDialog = openDialog,
+        closeDialog = { openDialog = false },
+        onYesClicked = { onDeleteAllConfirmed() }
+    )
+
+    DeleteAllAction(onDeleteAllConfirmed = {openDialog = true})
 }
 
 @Composable
 fun DeleteAllAction (
-    onDeleteClicked: () -> Unit
+    onDeleteAllConfirmed: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false)}
 
@@ -151,7 +157,7 @@ fun DeleteAllAction (
             DropdownMenuItem(
                 onClick = {
                     expanded = false
-                    onDeleteClicked()
+                    onDeleteAllConfirmed()
                 }
             ) {
                 Text(
@@ -222,7 +228,7 @@ fun DisplaySnackBar(
         if (action != Action.NO_ACTION) {
             scope.launch {
                 val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
-                    message = "${action.name}: $reminderTitle",
+                    message = setMessage(action = action, reminderTitle = reminderTitle),
                     actionLabel = setActionLabel(action = action)
                 )
                 undoDeletedTask(
@@ -232,6 +238,13 @@ fun DisplaySnackBar(
                 )
             }
         }
+    }
+}
+
+private fun setMessage(action: Action, reminderTitle: String) : String {
+    return when(action) {
+        Action.DELETE_ALL -> "All Reminders Removed."
+        else -> "${action.name}: $reminderTitle"
     }
 }
 

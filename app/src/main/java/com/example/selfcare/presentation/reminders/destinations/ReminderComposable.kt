@@ -27,7 +27,11 @@ fun NavGraphBuilder.reminderComposable(
     ) { navBackStackEntry ->
         val reminderId = navBackStackEntry.arguments!!.getInt(REMINDER_ARGUMENT_KEY)
         // Uses the ID to request the reminder from the database
-        reminderViewModel.getSelectedReminder(reminderId = reminderId)
+
+
+        LaunchedEffect(key1 = reminderId) {
+            reminderViewModel.getSelectedReminder(reminderId = reminderId)
+        }
 
         val selectedReminder by reminderViewModel.selectedReminder.collectAsState()
         
