@@ -14,8 +14,6 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.compose.ui.layout.Layout
 import com.google.ar.core.*
 import com.google.ar.core.exceptions.*
 import java.io.IOException
@@ -47,7 +45,6 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
     private val planeRenderer: PlaneRenderer = PlaneRenderer()
     private val pointCloudRenderer: PointCloudRenderer = PointCloudRenderer()
 
-    // TODO: Declare ObjectRenderers and PlaneAttachments here
     private val steveObject = ObjectRenderer()
     private val spidermanObject = ObjectRenderer()
     private val coinObject = ObjectRenderer()
@@ -316,7 +313,6 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
             planeRenderer.createOnGlThread(this, getString(R.string.model_grid_png))
             pointCloudRenderer.createOnGlThread(this)
 
-            // TODO - set up the objects
             // 1
             steveObject.createOnGlThread(this, getString(R.string.model_steve_obj), getString(
                 R.string.model_steve_png))
@@ -374,7 +370,6 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
                 checkPlaneDetected()
                 visualizePlanes(camera, projectionMatrix)
 
-                // TODO: Call drawObject() for Viking, Cannon and Target here
                 drawObject(
                     steveObject,
                     steveAttachment,
@@ -550,14 +545,13 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
                         Mode.COIN -> coinAttachment = addSessionAnchorFromAttachment(coinAttachment, hit)
                         Mode.AMOGUS -> amogusAttachment = addSessionAnchorFromAttachment(amogusAttachment, hit)
                     }
-                    // TODO: Create an anchor if a plane or an oriented point was hit
                     break
                 }
             }
         }
     }
 
-    // TODO: Add addSessionAnchorFromAttachment() function here
+    // Create an anchor if a plane or an oriented point was hit
     private fun addSessionAnchorFromAttachment(
         previousAttachment: PlaneAttachment?,
         hit: HitResult

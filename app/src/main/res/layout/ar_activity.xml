@@ -6,62 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".AR_Activity">
 
-<!--    <RadioGroup-->
-<!--        android:id="@+id/radioGroup"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="@dimen/padding_standard"-->
-<!--        android:gravity="center"-->
-<!--        android:orientation="horizontal"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent">-->
-
-<!--        <RadioButton-->
-<!--            android:id="@+id/radioSteve"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="@dimen/padding_standard"-->
-<!--            android:layout_marginEnd="@dimen/padding_standard"-->
-<!--            android:layout_marginBottom="@dimen/padding_half"-->
-<!--            android:checked="true"-->
-<!--            android:onClick="onRadioButtonClicked"-->
-<!--            android:text="@string/Steve" />-->
-
-<!--        <RadioButton-->
-<!--            android:id="@+id/radioSpiderman"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="@dimen/padding_standard"-->
-<!--            android:layout_marginEnd="@dimen/padding_standard"-->
-<!--            android:layout_marginBottom="@dimen/padding_half"-->
-<!--            android:checked="false"-->
-<!--            android:onClick="onRadioButtonClicked"-->
-<!--            android:text="@string/spiderman" />-->
-
-<!--        <RadioButton-->
-<!--            android:id="@+id/radioCoin"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="@dimen/padding_standard"-->
-<!--            android:layout_marginEnd="@dimen/padding_standard"-->
-<!--            android:layout_marginBottom="@dimen/padding_half"-->
-<!--            android:checked="false"-->
-<!--            android:onClick="onRadioButtonClicked"-->
-<!--            android:text="@string/coin" />-->
-
-<!--        <RadioButton-->
-<!--            android:id="@+id/radioAmogus"-->
-<!--            android:layout_width="75dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="@dimen/padding_standard"-->
-<!--            android:layout_marginEnd="@dimen/padding_standard"-->
-<!--            android:layout_marginBottom="@dimen/padding_half"-->
-<!--            android:checked="false"-->
-<!--            android:onClick="onRadioButtonClicked"-->
-<!--            android:text="@string/amogus" />-->
-
-<!--    </RadioGroup>-->
 
     <android.opengl.GLSurfaceView
         android:id="@+id/surfaceView"
@@ -94,8 +38,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="128dp"
-        android:backgroundTint="@color/teal_700"
+        android:layout_marginBottom="64dp"
+        android:backgroundTint="@color/purple_700"
+        app:borderWidth="0dp"
+        app:tint="@color/white"
         android:clickable="true"
         android:focusable="true"
         android:onClick="onAddButtonClicked"
@@ -110,9 +56,10 @@
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:focusable="true"
-        android:backgroundTint="@color/teal_700"
-        android:tint="@android:color/white"
-        android:visibility="invisible"
+        android:backgroundTint="@color/purple_700"
+        app:tint="@color/white"
+        app:borderWidth="0dp"
+        android:visibility="gone"
         android:onClick="setMode"
         app:layout_constraintBottom_toTopOf="@+id/addButton"
         app:layout_constraintEnd_toEndOf="@+id/addButton"
@@ -125,9 +72,10 @@
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:focusable="true"
-        android:backgroundTint="@color/teal_700"
-        android:tint="@android:color/white"
-        android:visibility="invisible"
+        android:backgroundTint="@color/purple_700"
+        app:tint="@color/white"
+        app:borderWidth="0dp"
+        android:visibility="gone"
         android:onClick="setMode"
         app:layout_constraintBottom_toTopOf="@+id/mascotButton"
         app:layout_constraintEnd_toEndOf="@+id/mascotButton"

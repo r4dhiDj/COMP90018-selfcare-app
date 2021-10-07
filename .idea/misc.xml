@@ -4,9 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../../../layout/compose-model-1631335108590.xml" value="0.12964527027027026" />
-        <entry key="../../../../layout/compose-model-1632577178299.xml" value="0.14888888888888888" />
-        <entry key="../../../../layout/compose-model-1632806613923.xml" value="0.1" />
-        <entry key="../../../../layout/compose-model-1632838709126.xml" value="0.1" />
+        <entry key="..\:/Users/L/Documents/GitHub/COMP90018-selfcare-app/app/src/main/res/drawable/bottom_sheet_background.xml" value="0.4546875" />
         <entry key="..\:/Users/L/Documents/GitHub/COMP90018-selfcare-app/app/src/main/res/drawable/dialog_bg.xml" value="0.38333333333333336" />
         <entry key="..\:/Users/L/Documents/GitHub/COMP90018-selfcare-app/app/src/main/res/drawable/ic_baseline_chat_bubble_24.xml" value="0.1" />
         <entry key="..\:/Users/L/Documents/GitHub/COMP90018-selfcare-app/app/src/main/res/drawable/ic_plus.xml" value="0.4875" />
@@ -14,7 +12,8 @@
         <entry key="..\:/Users/L/Documents/GitHub/COMP90018-selfcare-app/app/src/main/res/layout/AR_activity.xml" value="0.1" />
         <entry key="..\:/Users/L/Documents/GitHub/COMP90018-selfcare-app/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Users/L/Documents/GitHub/COMP90018-selfcare-app/app/src/main/res/layout/activity_main2.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/L/Documents/GitHub/COMP90018-selfcare-app/app/src/main/res/layout/ar_activity.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/L/Documents/GitHub/COMP90018-selfcare-app/app/src/main/res/layout/ar_activity.xml" value="0.33" />
+        <entry key="..\:/Users/L/Documents/GitHub/COMP90018-selfcare-app/app/src/main/res/layout/ar_pref.xml" value="0.2692502532928065" />
         <entry key="..\:/Users/L/Documents/GitHub/COMP90018-selfcare-app/app/src/main/res/layout/camera_host.xml" value="0.4" />
         <entry key="..\:/Users/L/Documents/GitHub/COMP90018-selfcare-app/app/src/main/res/layout/settings_ar_dialog.xml" value="0.2674772036474164" />
       </map>

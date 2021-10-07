@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import androidx.ui.material.darkColorPalette
 import com.example.selfcare.ui.theme.*
 import com.example.selfcare.viewmodels.BreatheViewModel
 import kotlinx.coroutines.delay
@@ -31,7 +32,7 @@ fun BreatheScreen(navController: NavController,
                   breatheVM: BreatheViewModel,
                   vibrator: Vibrator,
                   mediaPlayer: MediaPlayer) {
-    SelfCareTheme {
+    SelfCareTheme (true){
         Scaffold(
             topBar = {
                 TopAppBar(
