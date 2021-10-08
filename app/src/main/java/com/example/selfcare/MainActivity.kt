@@ -26,13 +26,10 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+
+
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    // Write a message to the database
-    val database = Firebase.database("https://selfcare-579e3-default-rtdb.firebaseio.com/")
-    val myRef = database.getReference("message");
-
-    // myRef.setValue("Hello, World!")
 
     @ExperimentalFoundationApi
     lateinit var settingsDataStore: SettingsDataStore
@@ -40,6 +37,12 @@ class MainActivity : AppCompatActivity() {
 
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Write a message to the database
+        val database = Firebase.database("https://selfcare-579e3-default-rtdb.firebaseio.com/")
+
+//        val myRef = database.getReference("message")
+//        myRef.setValue("Hello, World!")
+
         super.onCreate(savedInstanceState)
         settingsDataStore = SettingsDataStore(this)
         setInitialTheme()
