@@ -21,11 +21,19 @@ import com.example.selfcare.data.SettingsDataStore
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    // Write a message to the database
+    val database = Firebase.database("https://selfcare-579e3-default-rtdb.firebaseio.com/")
+    val myRef = database.getReference("message");
+
+    // myRef.setValue("Hello, World!")
+
     @ExperimentalFoundationApi
     lateinit var settingsDataStore: SettingsDataStore
     val isDarkMode =  mutableStateOf(true)

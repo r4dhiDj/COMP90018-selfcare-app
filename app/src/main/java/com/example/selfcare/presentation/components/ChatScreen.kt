@@ -45,7 +45,7 @@ fun ChatScreen(navController: NavController) {
 //                TODO("a message card component")
 //                TODO("bottom text input bar")
 //                TODO("Data class for message")
-//                TODO("viewmodel / database for storing all chat histories")
+//                TODO("viewmodel for storing all chat histories")
 //                TODO("Internet connection")
 
                 LazyColumn(
