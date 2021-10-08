@@ -51,6 +51,10 @@ fun Navigation(context: Context, lifecycleOwner: LifecycleOwner) {
         composable(route = Screen.ARActivity.route) {
             context.startActivity(Intent(context, AR_Activity::class.java))
         }
+        composable(route = Screen.ChatScreen.route) {
+            ChatScreen(navController)
+        }
+
 
     }
 }
