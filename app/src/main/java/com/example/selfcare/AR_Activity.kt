@@ -13,8 +13,8 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.*
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.google.ar.core.*
 import com.google.ar.core.exceptions.*
 import java.io.IOException
@@ -76,9 +76,9 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
     private val toBottom: Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.to_bottom_anim)}
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
+
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ar_activity)
@@ -121,6 +121,7 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
     }
 
     fun settingsPressed(view: View) {
+
         val bottomSheetDialog = BottomSheetDialog(
             this, R.style.BottomSheetDialogTheme
         )
@@ -129,8 +130,23 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
             findViewById(R.id.bottomSheet) as LinearLayout?
         )
 
+
+        bottomSheetView.findViewById<View>(R.id.steveButton).setOnClickListener {
+            mode = Mode.STEVE
+
+        }
+        bottomSheetView.findViewById<View>(R.id.spidermanButton).setOnClickListener {
+            mode = Mode.SPIDERMAN
+        }
+        bottomSheetView.findViewById<View>(R.id.amogusButton).setOnClickListener {
+            mode = Mode.AMOGUS
+        }
+
         bottomSheetDialog.setContentView(bottomSheetView)
         bottomSheetDialog.show()
+
+
+
     }
 
     fun setVisibility(clicked: Boolean) {
@@ -153,6 +169,7 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
         }
     }
+
 
 
 //    fun onRadioButtonClicked(view: View) {
@@ -550,9 +567,9 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
     private fun handleTap(frame: Frame, camera: Camera) {
         val tap = queuedSingleTaps.poll()
 
+
         if (tap != null && camera.trackingState == TrackingState.TRACKING) {
             Log.d(TAG, "handleTap: $tap")
-
             // Check if any plane was hit, and if it was hit inside the plane polygon
             for (hit in frame.hitTest(tap)) {
                 val trackable = hit.trackable

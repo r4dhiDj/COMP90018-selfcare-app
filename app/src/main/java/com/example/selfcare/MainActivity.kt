@@ -15,7 +15,7 @@ import com.example.selfcare.ui.theme.SelfCareTheme
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.LaunchedEffect
-import androidx.lifecycle.asLiveData
+//import androidx.lifecycle.asLiveData
 import androidx.compose.runtime.mutableStateOf
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.selfcare.data.local.SettingsDataStoreImpl
