@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
+import android.opengl.Matrix
 import android.util.Log
 import android.view.GestureDetector
 import android.view.LayoutInflater
@@ -56,9 +57,12 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
     private var amogusAttachment: PlaneAttachment? = null
 
     // Temporary matrix allocated here to reduce number of allocations and taps for each frame.
-    private val maxAllocationSize = 16
+    private val maxAllocationSize = 20
     private val anchorMatrix = FloatArray(maxAllocationSize)
     private val queuedSingleTaps = ArrayBlockingQueue<MotionEvent>(maxAllocationSize)
+
+    // Virtual Objects
+    private var coinAnchors = mutableListOf<Anchor>()
 
     private lateinit var surfaceView: GLSurfaceView
 
@@ -388,14 +392,14 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
                     lightIntensity
                 )
 
-                drawObject(
-                    coinObject,
-                    coinAttachment,
-                    Mode.COIN.scaleFactor,
-                    projectionMatrix,
-                    viewMatrix,
-                    lightIntensity
-                )
+                for (anchor in coinAnchors) {
+                    anchor.pose.toMatrix(anchorMatrix, 0)
+
+                    // Update shader properties and draw
+                    coinObject.updateModelMatrix(anchorMatrix, Mode.COIN.scaleFactor)
+                    coinObject.draw(viewMatrix, projectionMatrix, lightIntensity)
+                }
+
                 drawObject(
                     amogusObject,
                     amogusAttachment,
@@ -526,6 +530,7 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
      */
     private fun handleTap(frame: Frame, camera: Camera) {
         val tap = queuedSingleTaps.poll()
+        Log.d(TAG, "handleTap: $tap")
 
         if (tap != null && camera.trackingState == TrackingState.TRACKING) {
             // Check if any plane was hit, and if it was hit inside the plane polygon
@@ -542,7 +547,7 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
                     when (mode) {
                         Mode.STEVE -> steveAttachment = addSessionAnchorFromAttachment(steveAttachment, hit)
                         Mode.SPIDERMAN -> spidermanAttachment = addSessionAnchorFromAttachment(spidermanAttachment, hit)
-                        Mode.COIN -> coinAttachment = addSessionAnchorFromAttachment(coinAttachment, hit)
+                        Mode.COIN -> coinAttachment = addSessionAnchorCoin(hit)
                         Mode.AMOGUS -> amogusAttachment = addSessionAnchorFromAttachment(amogusAttachment, hit)
                     }
                     break
@@ -562,6 +567,27 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
         // 2
         val plane = hit.trackable as Plane
         val anchor = session!!.createAnchor(hit.hitPose)
+
+        // 3
+        return PlaneAttachment(plane, anchor)
+    }
+
+
+    private fun addSessionAnchorCoin(
+        hit: HitResult
+    ): PlaneAttachment? {
+        // 1
+        if (coinAnchors.size > 15) {
+            coinAnchors[0].detach()
+            coinAnchors.removeAt(0)
+        }
+
+        // 2
+        val plane = hit.trackable as Plane
+        val anchor = session!!.createAnchor(hit.hitPose)
+
+        coinAnchors.add(anchor)
+        Log.d(TAG, "addSessionAnchorCoin: $coinAnchors")
 
         // 3
         return PlaneAttachment(plane, anchor)
