@@ -31,7 +31,7 @@ fun BreatheScreen(navController: NavController,
                   breatheVM: BreatheViewModel,
                   vibrator: Vibrator,
                   mediaPlayer: MediaPlayer) {
-    SelfCareTheme {
+    SelfCareTheme(true) {
         Scaffold(
             topBar = {
                 TopAppBar(

@@ -63,7 +63,7 @@ fun Navigation(viewModel: MainViewModel) {
             //SettingsScreenVM(navController = navController, context, SettingsViewModel() )
         }
         composable(route = Screen.ARActivity.route) {
-            context.startActivity(Intent(NavContext, AR_Activity::class.java))
+            context.startActivity(Intent(context, AR_Activity::class.java))
         }
         composable(route = Screen.BreatheScreen.route) {
             val breatheVM = hiltViewModel<BreatheViewModel>()
