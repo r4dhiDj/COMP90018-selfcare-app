@@ -25,6 +25,7 @@ import com.example.selfcare.presentation.components.helpers.*
 import com.example.selfcare.presentation.components.rendering.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlin.math.abs
 
 
 class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
@@ -392,12 +393,30 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
                     lightIntensity
                 )
 
-                for (anchor in coinAnchors) {
-                    anchor.pose.toMatrix(anchorMatrix, 0)
 
-                    // Update shader properties and draw
-                    coinObject.updateModelMatrix(anchorMatrix, Mode.COIN.scaleFactor)
-                    coinObject.draw(viewMatrix, projectionMatrix, lightIntensity)
+                for (anchor in coinAnchors) {
+
+                    val cameraX = camera.pose.tx()
+                    val cameraY = camera.pose.ty()
+                    val anchorX = anchor.pose.tx()
+                    val anchorY = anchor.pose.ty()
+                    val distX = abs(cameraX - anchorX)
+                    val distY = abs(cameraY - anchorY)
+
+                    if (distX < 0.01 && distY < 0.01) {
+
+                        Log.d(TAG, "REACHING COIN!!!")
+                        Log.d(TAG, "Camera pos - x: $cameraX, y: $cameraY")
+                        Log.d(TAG, "Anchor pos - x: $anchorX, y: $anchorY")
+
+//                        anchor.detach()
+//                        coinAnchors.remove(anchor)
+                    } else {
+                        anchor.pose.toMatrix(anchorMatrix, 0)
+                        // Update shader properties and draw
+                        coinObject.updateModelMatrix(anchorMatrix, Mode.COIN.scaleFactor)
+                        coinObject.draw(viewMatrix, projectionMatrix, lightIntensity)
+                    }
                 }
 
                 drawObject(
@@ -530,9 +549,10 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
      */
     private fun handleTap(frame: Frame, camera: Camera) {
         val tap = queuedSingleTaps.poll()
-        Log.d(TAG, "handleTap: $tap")
 
         if (tap != null && camera.trackingState == TrackingState.TRACKING) {
+            Log.d(TAG, "handleTap: $tap")
+
             // Check if any plane was hit, and if it was hit inside the plane polygon
             for (hit in frame.hitTest(tap)) {
                 val trackable = hit.trackable
