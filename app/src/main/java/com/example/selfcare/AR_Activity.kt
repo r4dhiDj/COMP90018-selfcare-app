@@ -410,6 +410,23 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
                     lightIntensity
                 )
 
+                // Spawns initial Coins
+                if (hasTrackingPlane()) {
+                    val allPlanes = session!!.getAllTrackables(Plane::class.java)
+
+                    if (coinAnchors.size < 15 && allPlanes.size < 10) {
+                        for (plane in allPlanes) {
+//                            val spawn = Math.random()
+//                            if (spawn > 0.5) {
+//
+//                            }
+                            val anchor = session!!.createAnchor(plane.centerPose)
+                            coinAnchors.add(anchor)
+                        }
+                        Log.d(TAG, "onDrawFrame: ${coinAnchors.size} + ${coinAnchors}")
+                    }
+                }
+
 
                 for (anchor in coinAnchors) {
 
@@ -420,14 +437,14 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
                     val distX = abs(cameraX - anchorX)
                     val distY = abs(cameraY - anchorY)
 
-                    if (distX < 0.01 && distY < 0.01) {
+                    if (distX < 0.5 && distY < 0.5) {
 
                         Log.d(TAG, "REACHING COIN!!!")
                         Log.d(TAG, "Camera pos - x: $cameraX, y: $cameraY")
                         Log.d(TAG, "Anchor pos - x: $anchorX, y: $anchorY")
 
-//                        anchor.detach()
-//                        coinAnchors.remove(anchor)
+                        anchor.detach()
+                        coinAnchors.remove(anchor)
                     } else {
                         anchor.pose.toMatrix(anchorMatrix, 0)
                         // Update shader properties and draw
@@ -584,7 +601,7 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
                     when (mode) {
                         Mode.STEVE -> steveAttachment = addSessionAnchorFromAttachment(steveAttachment, hit)
                         Mode.SPIDERMAN -> spidermanAttachment = addSessionAnchorFromAttachment(spidermanAttachment, hit)
-                        Mode.COIN -> coinAttachment = addSessionAnchorCoin(hit)
+//                        Mode.COIN -> coinAttachment = addSessionAnchorCoin(hit)
                         Mode.AMOGUS -> amogusAttachment = addSessionAnchorFromAttachment(amogusAttachment, hit)
                     }
                     break
