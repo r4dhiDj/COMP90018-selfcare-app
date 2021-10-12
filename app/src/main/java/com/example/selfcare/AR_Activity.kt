@@ -65,7 +65,7 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
     // Virtual Objects
     private var coinAnchors = mutableListOf<Anchor>()
-    private var coinPlanes = hashMapOf<Plane, Boolean>()
+    private var coinPlanes = hashMapOf<Plane, Int>()
 
     private lateinit var surfaceView: GLSurfaceView
 
@@ -416,12 +416,12 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
                 if (hasTrackingPlane()) {
                     val allPlanes = session!!.getAllTrackables(Plane::class.java)
 
-                    if (coinAnchors.size < 5) {
+                    if (coinAnchors.size < 9) {
                         for (plane in allPlanes) {
-                            if (coinPlanes.containsKey(plane) && coinPlanes.get(plane) == false) {
+                            if (coinPlanes.containsKey(plane) && coinPlanes.get(plane)!! < 3) {
                                 val anchor = session!!.createAnchor(plane.centerPose)
                                 coinAnchors.add(anchor)
-                                coinPlanes[plane] = true
+                                coinPlanes[plane] = coinPlanes[plane]!! + 1
                             }
                         }
                         Log.d(TAG, "onDrawFrame: ${coinAnchors.size} + ${coinAnchors}")
@@ -573,8 +573,8 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
         for (plane in allPlanes) {
             if (plane.trackingState == TrackingState.TRACKING) {
 
-                if (coinPlanes.size < 15 && !coinPlanes.containsKey(plane)) {
-                    coinPlanes[plane] = false
+                if (coinPlanes.size < 3 && !coinPlanes.containsKey(plane)) {
+                    coinPlanes[plane] = 0
                 }
 
                 return true
