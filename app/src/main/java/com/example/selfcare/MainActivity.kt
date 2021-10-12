@@ -1,6 +1,8 @@
 package com.example.selfcare
 
 import android.os.Bundle
+import android.util.Log
+import android.util.Log.*
 
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -40,8 +42,9 @@ class MainActivity : AppCompatActivity() {
         // Write a message to the database
         val database = Firebase.database("https://selfcare-579e3-default-rtdb.firebaseio.com/")
 
-//        val myRef = database.getReference("message")
+        val myRef = database.getReference("message")
 //        myRef.setValue("Hello, World!")
+//        Log.i("sth", myRef.toString())
 
         super.onCreate(savedInstanceState)
         settingsDataStore = SettingsDataStore(this)

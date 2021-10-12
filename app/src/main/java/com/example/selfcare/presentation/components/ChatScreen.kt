@@ -2,6 +2,7 @@ package com.example.selfcare.presentation.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -9,16 +10,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.selfcare.R
+import com.example.selfcare.data.model.defaultMessage
 import com.example.selfcare.ui.theme.Pink200
 import com.example.selfcare.ui.theme.Pink700
 import com.example.selfcare.ui.theme.SelfCareTheme
 
 @Composable
 fun ChatScreen(navController: NavController) {
+    val messages = defaultMessage
     SelfCareTheme(darkMode = false) {
         Scaffold (
             topBar = {
@@ -43,20 +44,18 @@ fun ChatScreen(navController: NavController) {
             content = {
 //                TODO("a lazyColumn containing all the message cards")
 //                TODO("a message card component")
-//                TODO("bottom text input bar")
 //                TODO("Data class for message")
 //                TODO("viewmodel for storing all chat histories")
 //                TODO("Internet connection")
-
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(18.dp),
+                        .padding(40.dp),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    items(30) {
-                        Text("chat")
+                    items(messages) { msg ->
+                        ChatCard(msg)
                     }
                 }
             },
