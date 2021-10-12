@@ -62,8 +62,10 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
     private val anchorMatrix = FloatArray(maxAllocationSize)
     private val queuedSingleTaps = ArrayBlockingQueue<MotionEvent>(maxAllocationSize)
 
+
     // Virtual Objects
     private var coinAnchors = mutableListOf<Anchor>()
+    private var coinPlanes = hashMapOf<Plane, Boolean>()
 
     private lateinit var surfaceView: GLSurfaceView
 
@@ -414,14 +416,13 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
                 if (hasTrackingPlane()) {
                     val allPlanes = session!!.getAllTrackables(Plane::class.java)
 
-                    if (coinAnchors.size < 15 && allPlanes.size < 10) {
+                    if (coinAnchors.size < 5) {
                         for (plane in allPlanes) {
-//                            val spawn = Math.random()
-//                            if (spawn > 0.5) {
-//
-//                            }
-                            val anchor = session!!.createAnchor(plane.centerPose)
-                            coinAnchors.add(anchor)
+                            if (coinPlanes.containsKey(plane) && coinPlanes.get(plane) == false) {
+                                val anchor = session!!.createAnchor(plane.centerPose)
+                                coinAnchors.add(anchor)
+                                coinPlanes[plane] = true
+                            }
                         }
                         Log.d(TAG, "onDrawFrame: ${coinAnchors.size} + ${coinAnchors}")
                     }
@@ -571,6 +572,11 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
         for (plane in allPlanes) {
             if (plane.trackingState == TrackingState.TRACKING) {
+
+                if (coinPlanes.size < 15 && !coinPlanes.containsKey(plane)) {
+                    coinPlanes[plane] = false
+                }
+
                 return true
             }
         }
