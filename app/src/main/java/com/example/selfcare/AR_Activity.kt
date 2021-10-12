@@ -417,9 +417,20 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
                     val allPlanes = session!!.getAllTrackables(Plane::class.java)
 
                     if (coinAnchors.size < 9) {
-                        for (plane in allPlanes) {
-                            if (coinPlanes.containsKey(plane) && coinPlanes.get(plane)!! < 3) {
-                                val anchor = session!!.createAnchor(plane.centerPose)
+                        for (plane in coinPlanes.keys) {
+                            if (coinPlanes.get(plane)!! < 3) {
+
+                                val randomOffsetX = Math.random() + 1
+                                val randomOffsetY = Math.random() + 1
+                                val planeCenterPose = plane.centerPose
+                                val anchorPose = Pose(floatArrayOf(
+                                    (planeCenterPose.tx() + randomOffsetX).toFloat(),
+                                    (planeCenterPose.ty() + randomOffsetY).toFloat(),
+                                    planeCenterPose.tz()
+                                ), planeCenterPose.rotationQuaternion)
+
+                                val anchor = session!!.createAnchor(anchorPose)
+//                                val anchor = session!!.createAnchor(plane.centerPose)
                                 coinAnchors.add(anchor)
                                 coinPlanes[plane] = coinPlanes[plane]!! + 1
                             }
