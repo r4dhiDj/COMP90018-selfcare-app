@@ -21,6 +21,8 @@ import com.example.selfcare.data.SettingsDataStore
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -32,6 +34,10 @@ class MainActivity : AppCompatActivity() {
 
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
+        val database = Firebase.database("https://kotlin-self-care-default-rtdb.firebaseio.com/")
+        val myRef = database.getReference("message")
+//        myRef.setValue("Hello, World!")
+
         super.onCreate(savedInstanceState)
         settingsDataStore = SettingsDataStore(this)
         setInitialTheme()
