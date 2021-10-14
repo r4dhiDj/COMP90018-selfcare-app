@@ -15,6 +15,7 @@ import com.example.selfcare.presentation.reminders.CreateReminderScreen
 import com.example.selfcare.presentation.reminders.ReminderScreen
 import com.example.selfcare.viewmodels.ReminderViewModel
 import com.example.selfcare.AR_Activity
+import com.tikhonov.chatapp.components.ChatApp
 
 @ExperimentalFoundationApi
 @Composable
@@ -50,6 +51,9 @@ fun Navigation(context: Context, lifecycleOwner: LifecycleOwner) {
         }
         composable(route = Screen.ARActivity.route) {
             context.startActivity(Intent(context, AR_Activity::class.java))
+        }
+        composable(route = Screen.ChatScreen.route) {
+            ChatApp(navController = navController)
         }
 
     }

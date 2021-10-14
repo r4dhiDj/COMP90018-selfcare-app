@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity() {
                 Surface(color = MaterialTheme.colors.background) {
                     createNotificationChannel(this)
                     Navigation(this, this)
-
                 }
             }
         }

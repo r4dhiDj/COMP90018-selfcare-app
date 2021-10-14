@@ -11,17 +11,17 @@ import com.tikhonov.chatapp.ui.theme.ChatAppTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.navigation.NavController
 import com.tikhonov.chatapp.defaultMessage
 import java.sql.Date
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 
 @Composable
-fun ChatApp() {
+fun ChatApp(navController: NavController) {
     var user1Message by remember { mutableStateOf("") }
     var user2Message by remember { mutableStateOf("") }
     val chat = remember {mutableStateListOf(Message("Hi how can i help you?",true))}  // <-- mutableStateOf doesn't work
-
 
     Column() {
         Row(
@@ -86,10 +86,10 @@ private fun addTextToChat(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultChatAppPreview() {
-    ChatAppTheme {
-        ChatApp()
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun DefaultChatAppPreview() {
+//    ChatAppTheme {
+//        ChatApp()
+//    }
+//}
