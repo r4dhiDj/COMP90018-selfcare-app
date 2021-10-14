@@ -1,6 +1,7 @@
 package com.example.selfcare
 
 import android.os.Bundle
+import android.util.Log
 
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -21,7 +22,11 @@ import com.example.selfcare.data.SettingsDataStore
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -37,6 +42,19 @@ class MainActivity : AppCompatActivity() {
         val database = Firebase.database("https://kotlin-self-care-default-rtdb.firebaseio.com/")
         val myRef = database.getReference("message")
 //        myRef.setValue("Hello, World!")
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                val value = dataSnapshot.getValue<String>()
+                Log.d("tag1111", "Value is: $value")
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+                Log.w("2", "Failed to read value.", error.toException())
+            }
+        })
 
         super.onCreate(savedInstanceState)
         settingsDataStore = SettingsDataStore(this)
