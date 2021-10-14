@@ -12,6 +12,7 @@ import java.io.IOException
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
+
 /**
  * Renders an object loaded from an OBJ file in OpenGL.
  */
