@@ -1,15 +1,9 @@
 package com.example.selfcare.presentation.components
 
 import android.content.Context
-import android.content.Context.VIBRATOR_SERVICE
 import android.content.Intent
-import android.media.MediaPlayer
-import android.os.Vibrator
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -22,20 +16,12 @@ import com.example.selfcare.presentation.reminders.ReminderScreen
 import com.example.selfcare.viewmodels.ReminderViewModel
 import com.example.selfcare.AR_Activity
 import com.tikhonov.chatapp.components.ChatApp
-import com.example.selfcare.presentation.components.rendering.SettingsScreen
-import com.example.selfcare.viewmodels.MainViewModel
-import com.example.selfcare.R
-import com.example.selfcare.viewmodels.BreatheViewModel
 
 @ExperimentalFoundationApi
 @Composable
-fun Navigation(viewModel: MainViewModel) {
+fun Navigation(context: Context, lifecycleOwner: LifecycleOwner) {
     val navController = rememberNavController()
-    val context = LocalContext.current
-    NavHost(navController = navController, startDestination = Screen.WelcomeScreen.route) {
-        composable(route = Screen.WelcomeScreen.route){
-            WelcomeScreen(viewModel = viewModel, navController = navController )
-        }
+    NavHost(navController = navController, startDestination = Screen.MenuScreen.route) {
         composable(route = Screen.MenuScreen.route) {
             MenuScreen(navController = navController)
         }
@@ -59,7 +45,7 @@ fun Navigation(viewModel: MainViewModel) {
         composable(
             route = Screen.SettingsScreen.route
         ){
-            SettingsScreen(viewModel, navController = navController)
+            SettingsScreen(navController = navController, context, lifecycleOwner)
 
             //SettingsScreenVM(navController = navController, context, SettingsViewModel() )
         }
@@ -68,12 +54,6 @@ fun Navigation(viewModel: MainViewModel) {
         }
         composable(route = Screen.ChatScreen.route) {
             ChatApp(navController = navController)
-        }
-        composable(route = Screen.BreatheScreen.route) {
-            val breatheVM = hiltViewModel<BreatheViewModel>()
-            val vibrator = context.getSystemService(VIBRATOR_SERVICE) as Vibrator
-            val mediaPlayer = MediaPlayer.create(context, R.raw.relaxing).apply{isLooping = true}
-            BreatheScreen(navController,breatheVM,vibrator,mediaPlayer)
         }
 
     }
