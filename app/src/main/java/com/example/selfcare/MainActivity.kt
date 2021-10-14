@@ -47,14 +47,38 @@ class MainActivity : AppCompatActivity() {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 val value = dataSnapshot.getValue<String>()
-                Log.d("tag1111", "Value is: $value")
+                Log.d("DBReadSuccess", "Value is: $value")
             }
 
             override fun onCancelled(error: DatabaseError) {
                 // Failed to read value
-                Log.w("2", "Failed to read value.", error.toException())
+                Log.w("DBReadFailure", "Failed to read value.", error.toException())
             }
         })
+
+
+        val objRef = database.getReference("whatever") // auto create if the key does not exist
+        val defaultMessage = Message("Hi how can i help you",false) // directly store the object
+        objRef.setValue(defaultMessage)
+
+        // read a non-existing entry -> return null
+        val anotherRef = database.getReference("DNE")
+//        myRef.setValue("Hello, World!")
+        anotherRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                val value = dataSnapshot.getValue<String>()
+                Log.d("DBReadSuccess", "Value is: $value")
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+                Log.w("DBReadFailure", "Failed to read value.", error.toException())
+            }
+        })
+
+
 
         super.onCreate(savedInstanceState)
         settingsDataStore = SettingsDataStore(this)
