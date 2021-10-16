@@ -3,6 +3,7 @@ package com.example.selfcare
 import android.os.Bundle
 
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -14,9 +15,15 @@ import com.example.selfcare.presentation.components.*
 import com.example.selfcare.ui.theme.SelfCareTheme
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.lifecycle.asLiveData
+import com.example.selfcare.data.SettingsDataStore
 import androidx.compose.runtime.LaunchedEffect
 //import androidx.lifecycle.asLiveData
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.example.selfcare.viewmodels.ReminderViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.selfcare.data.local.SettingsDataStoreImpl
 import com.example.selfcare.viewmodels.MainViewModel
@@ -29,6 +36,10 @@ class MainActivity : AppCompatActivity() {
     //lateinit var settingsDataStoreImpl: SettingsDataStoreImpl
     //val isDarkMode =  mutableStateOf(true)
 
+    // Instantiate ViewModels
+    private val reminderViewModel: ReminderViewModel by viewModels()
+
+    @ExperimentalMaterialApi
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +78,11 @@ class MainActivity : AppCompatActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
                     createNotificationChannel(this)
-                    Navigation(this, this)
+                    Navigation(
+                        this,
+                        this,
+                        reminderViewModel = reminderViewModel
+                    )
 
                 }
             }

@@ -26,6 +26,8 @@
     <string name="model_amogus_png">models/amogus.png</string>
     <string name="failed_to_read_asset">Failed to read an asset file</string>
     <string name="exception_on_opengl">Exception on the OpenGL thread</string>
+    <string name="delete_all_reminders">Remove all tasks?</string>
+    <string name="delete_all_reminders_confirmation">Are you sure you want to remove all reminders? There\'s no going back! </string>
 
     <string-array name="mascots">
         <item>Steve</item>
