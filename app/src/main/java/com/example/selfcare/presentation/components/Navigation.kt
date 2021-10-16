@@ -39,6 +39,7 @@ import com.example.selfcare.viewmodels.BreatheViewModel
 @Composable
 fun Navigation(context: Context,
                lifecycleOwner: LifecycleOwner,
+               viewModel: MainViewModel,
                reminderViewModel: ReminderViewModel
 ) {
     val navController = rememberNavController()

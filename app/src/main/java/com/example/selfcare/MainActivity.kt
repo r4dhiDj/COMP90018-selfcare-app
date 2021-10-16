@@ -17,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.lifecycle.asLiveData
-import com.example.selfcare.data.SettingsDataStore
+
 import androidx.compose.runtime.LaunchedEffect
 //import androidx.lifecycle.asLiveData
 import androidx.compose.runtime.mutableStateOf
@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @ExperimentalMaterialApi
     @ExperimentalFoundationApi
     @Composable
     private fun AppMain(viewModel: MainViewModel){
@@ -62,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         SelfCareTheme(darkMode = darkMode) {
             Surface(color = MaterialTheme.colors.background) {
                 createNotificationChannel(this)
-                Navigation(viewModel)
+                Navigation(this, this, viewModel=viewModel, reminderViewModel = reminderViewModel)
             }
         }
 
