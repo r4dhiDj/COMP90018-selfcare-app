@@ -43,9 +43,6 @@ fun ReminderCard (
                     text = reminder.title,
                     style = MaterialTheme.typography.h6
                 )
-                Button(onClick = { /* TODO */ }) {
-                    Text("Activate")
-                }
             }
             Row(
                 modifier = Modifier
