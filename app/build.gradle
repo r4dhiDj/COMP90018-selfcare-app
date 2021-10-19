@@ -6,6 +6,8 @@ plugins {
 
 }
 
+apply plugin: 'com.google.gms.google-services'
+
 android {
     compileSdk 30
 
@@ -112,6 +114,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
-    implementation "androidx.datastore:datastore-preferences:1.0.0"
+    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha04"
     //implementation "androidx.compose.runtime:runtime-livedata:1.1.0-alpha04"
+    implementation platform('com.google.firebase:firebase-bom:28.4.2')
+    implementation 'com.google.firebase:firebase-database-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 }
