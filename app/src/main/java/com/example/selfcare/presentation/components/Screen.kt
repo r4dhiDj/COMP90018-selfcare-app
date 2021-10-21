@@ -8,5 +8,7 @@ sealed class Screen(val route: String) {
     object SettingsScreen: Screen("settings_screen")
     object ARActivity: Screen("ARactivity")
     object ChatScreen: Screen("chat_screen")
+    object RegisterScreen: Screen("register_screen")
+    object LoginScreen: Screen("login_screen")
     object WelcomeScreen: Screen("welcome_screen")
 }

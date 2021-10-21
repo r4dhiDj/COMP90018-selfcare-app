@@ -1,6 +1,9 @@
 package com.example.selfcare
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -21,6 +24,9 @@ import androidx.lifecycle.asLiveData
 import androidx.compose.runtime.LaunchedEffect
 //import androidx.lifecycle.asLiveData
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.selfcare.viewmodels.ReminderViewModel
@@ -32,12 +38,6 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    // @ExperimentalFoundationApi
-    //lateinit var settingsDataStoreImpl: SettingsDataStoreImpl
-    //val isDarkMode =  mutableStateOf(true)
-
-    // Instantiate ViewModels
-    private val reminderViewModel: ReminderViewModel by viewModels()
 
     @ExperimentalMaterialApi
     @ExperimentalFoundationApi
@@ -48,31 +48,46 @@ class MainActivity : AppCompatActivity() {
         //observeData()
         setContent {
             val viewModel = hiltViewModel<MainViewModel>()
-            AppMain(viewModel)
+            AppMain(viewModel, this)
         }
     }
+
 
     @ExperimentalMaterialApi
     @ExperimentalFoundationApi
     @Composable
-    private fun AppMain(viewModel: MainViewModel){
+    private fun AppMain(viewModel: MainViewModel, activityContext: ComponentActivity){
         LaunchedEffect(false) {
             viewModel.getDarkMode()
         }
         val darkMode = viewModel.darkModeState.value
         SelfCareTheme(darkMode = darkMode) {
             Surface(color = MaterialTheme.colors.background) {
-                createNotificationChannel(this)
-                Navigation(viewModel, this)
+                val context = LocalContext.current
+                createNotificationChannel(context)
+                Navigation(viewModel, activityContext)
+
             }
         }
 
-    }    }
+
+
+
+        }
+    }
 
 
 
 
 
+/**
+    @ExperimentalFoundationApi
+    private fun observeData() {
+        settingsDataStore.darkModeFlow.asLiveData().observe(this, {
+            isDarkMode.value = it
+        })
+    }
+>>>>>>> Stashed changes
 
 /**
 SelfCareTheme(isDarkMode.value) {
@@ -113,4 +128,4 @@ fun Greeting(name: String) {
 @Composable
 fun DefaultPreview() {
 
-}
+}*/

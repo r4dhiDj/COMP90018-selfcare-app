@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.selfcare.ui.theme.IBMPlexMono
 import com.example.selfcare.viewmodels.MainViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun WelcomeScreen(viewModel: MainViewModel,
@@ -23,7 +24,17 @@ fun WelcomeScreen(viewModel: MainViewModel,
         viewModel.getUsername()
         username = viewModel.username.value
     }
+    /**
 
+    val actions = remember(navController) { Action(navController) }
+    //TODO add login and register to welcome screen, action to welcome screen
+    var goToMain = actions.home
+    var goToRegister = actions.register
+    var goToLogin= actions.login
+    if(FirebaseAuth.getInstance().currentUser!= null){
+        goToMain}
+    else { goToRegister }
+*/
     Card(
         modifier = Modifier
             .fillMaxSize(),
@@ -59,7 +70,7 @@ fun WelcomeScreen(viewModel: MainViewModel,
 
                 }
             }
-            Row() {
+            Row( ) {
                 Button(
                     modifier = Modifier.padding(end = 10.dp),
                     onClick = {

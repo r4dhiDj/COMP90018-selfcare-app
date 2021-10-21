@@ -5,9 +5,14 @@ import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.selfcare.data.local.SettingsDataStoreImpl
+//import com.example.selfcare.data.model.repositories.AuthRepository
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.internal.Contexts.getApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
@@ -19,11 +24,27 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val settingsDataStoreImpl: SettingsDataStoreImpl,
+    //private val authRepository: AuthRepository
 ) : ViewModel() {
     var firstTime: MutableState<Boolean> =  mutableStateOf(false)
     var darkModeState: MutableState<Boolean> = mutableStateOf(false)
     var notifModeState: MutableState<Boolean> = mutableStateOf(true)
     var username: MutableState<String> = mutableStateOf("MATE")
+
+    private val _loading = MutableLiveData(false)
+    val loading: LiveData<Boolean> = _loading
+
+    private val _signedIn = MutableLiveData(false)
+    val signedIn: LiveData<Boolean> = _signedIn
+
+    private val _error = MutableLiveData<String?>(null)
+    val error: LiveData<String?> = _error
+
+    fun removeError() {
+        _error.value = null
+    }
+
+
 
 
     fun getFirstTime() {
