@@ -15,15 +15,20 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.selfcare.presentation.components.Screen
+import com.example.selfcare.viewmodels.MainViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 
 @Composable
-fun RegisterScreen(navController: NavController, activityContext: ComponentActivity){
+fun RegisterScreen(viewModel: MainViewModel, navController: NavController, activityContext: ComponentActivity){
     val auth = Firebase.auth
     var email by remember {mutableStateOf("")}
     var password by remember {mutableStateOf("")}
+    if (Firebase.auth.currentUser!= null) {
+        navController.popBackStack()
+        navController.navigate(Screen.WelcomeScreen.route)
+    }
     Card(
         modifier = Modifier
             .fillMaxSize(),
@@ -87,12 +92,13 @@ fun RegisterScreen(navController: NavController, activityContext: ComponentActiv
                 Button(
                     onClick = {
                         navController.popBackStack()
-                        navController.navigate(Screen.LoginScreen.route)}
-                ){
+                        navController.navigate(Screen.LoginScreen.route)
+                    }
+                ) {
                     Text(color = Color.White, text = "Login instead")
                 }
                 Button(
-                    enabled = !(email.trim() == "" || password.trim() ==""),
+                    enabled = !(email.trim() == "" || password.trim() == ""),
                     onClick = {
                         auth.createUserWithEmailAndPassword(
                             email.trim(),
@@ -100,6 +106,7 @@ fun RegisterScreen(navController: NavController, activityContext: ComponentActiv
                         )
                             .addOnCompleteListener(activityContext) { task ->
                                 if (task.isSuccessful) {
+                                    viewModel.setUserEmail(email.trim())
                                     navController.popBackStack() //so back button doesn't return to register page
                                     navController.navigate(Screen.WelcomeScreen.route)
                                 } else {

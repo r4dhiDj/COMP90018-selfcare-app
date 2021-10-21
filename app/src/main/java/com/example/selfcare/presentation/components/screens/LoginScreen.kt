@@ -15,15 +15,20 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.selfcare.presentation.components.Screen
+import com.example.selfcare.viewmodels.MainViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 
 @Composable
-fun LoginScreen(navController: NavController, activityContext: ComponentActivity){
+fun LoginScreen(viewModel: MainViewModel, navController: NavController, activityContext: ComponentActivity){
     val auth = Firebase.auth
     var email by remember {mutableStateOf("")}
     var password by remember {mutableStateOf("")}
+    if (Firebase.auth.currentUser!= null) {
+        navController.popBackStack()
+        navController.navigate(Screen.WelcomeScreen.route)
+    }
     Card(
         modifier = Modifier
             .fillMaxSize(),
@@ -101,6 +106,7 @@ fun LoginScreen(navController: NavController, activityContext: ComponentActivity
                         )
                             .addOnCompleteListener(activityContext) { task ->
                                 if (task.isSuccessful) {
+                                    viewModel.setUserEmail(email.trim())
                                     navController.popBackStack() //so back button doesn't return to register page
                                     navController.navigate(Screen.WelcomeScreen.route)
                                 } else {

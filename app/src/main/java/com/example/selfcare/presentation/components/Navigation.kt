@@ -62,11 +62,11 @@ fun Navigation(viewModel: MainViewModel, activityContext: ComponentActivity) {
             ChatScreen(navController = navController)
         }
         composable(route = Screen.LoginScreen.route) {
-            LoginScreen(navController = navController, activityContext)
+            LoginScreen(viewModel, navController = navController, activityContext)
         }
 
         composable(route = Screen.RegisterScreen.route) {
-            RegisterScreen(navController = navController, activityContext)
+            RegisterScreen(viewModel, navController = navController, activityContext)
         }
 
     }
