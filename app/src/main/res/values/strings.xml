@@ -25,7 +25,5 @@
     <string name="exception_on_opengl">Exception on the OpenGL thread</string>
     <string name="user1_name">George</string>
     <string name="user2_name">Marta</string>
-    <string name="delete_all_reminders">Remove all tasks?</string>
-    <string name="delete_all_reminders_confirmation">Are you sure you want to remove all reminders? There\'s no going back! </string>
 
 </resources>

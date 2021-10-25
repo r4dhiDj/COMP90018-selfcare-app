@@ -3,44 +3,25 @@ package com.example.selfcare.presentation.components
 import android.content.Intent
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.internal.composableLambda
-import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
 import com.example.selfcare.presentation.reminders.CreateReminderScreen
 import com.example.selfcare.presentation.reminders.ReminderScreen
 import com.example.selfcare.viewmodels.ReminderViewModel
 import com.example.selfcare.AR_Activity
-import com.example.selfcare.presentation.reminders.ReminderNav
-import com.example.selfcare.presentation.reminders.destinations.listComposable
-import com.example.selfcare.presentation.reminders.destinations.reminderComposable
 import com.example.selfcare.presentation.components.rendering.SettingsScreen
 import com.example.selfcare.viewmodels.MainViewModel
 import com.example.selfcare.presentation.components.screens.LoginScreen
 import com.example.selfcare.presentation.components.screens.RegisterScreen
 
-@ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
-fun Navigation(context: Context,
-               lifecycleOwner: LifecycleOwner,
-               viewModel: MainViewModel,
-               reminderViewModel: ReminderViewModel
-) {
+fun Navigation(viewModel: MainViewModel, activityContext: ComponentActivity) {
     val navController = rememberNavController()
-    val reminderNav = remember(navController) {
-        ReminderNav(navController = navController)
-    }
     val context = LocalContext.current
 
     NavHost(navController = navController, startDestination = Screen.RegisterScreen.route) {
@@ -50,14 +31,18 @@ fun Navigation(context: Context,
         composable(route = Screen.MenuScreen.route) {
             MenuScreen(navController = navController)
         }
-        listComposable(
-            navigateToReminder = reminderNav.reminder,
-            reminderViewModel = reminderViewModel
-        )
-        reminderComposable(
-            navigateToReminderScreen = reminderNav.list,
-            reminderViewModel = reminderViewModel
-        )
+        composable(
+            route = Screen.ReminderScreen.route
+        ) {
+            val reminderViewModel = hiltViewModel<ReminderViewModel>()
+            ReminderScreen(reminderViewModel, navController = navController)
+        }
+        composable(
+            route = Screen.CreateReminderScreen.route
+        ) {
+            val reminderViewModel = hiltViewModel<ReminderViewModel>()
+            CreateReminderScreen(reminderViewModel, navController = navController)
+        }
         composable(
             route = Screen.StoreScreen.route
         ) {

@@ -24,6 +24,9 @@ import androidx.lifecycle.asLiveData
 import androidx.compose.runtime.LaunchedEffect
 //import androidx.lifecycle.asLiveData
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.selfcare.viewmodels.ReminderViewModel
@@ -35,9 +38,6 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
-    // Instantiate ViewModels
-    private val reminderViewModel: ReminderViewModel by viewModels()
 
     @ExperimentalMaterialApi
     @ExperimentalFoundationApi
@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     @ExperimentalMaterialApi
     @ExperimentalFoundationApi
     @Composable
@@ -62,8 +63,10 @@ class MainActivity : AppCompatActivity() {
         val darkMode = viewModel.darkModeState.value
         SelfCareTheme(darkMode = darkMode) {
             Surface(color = MaterialTheme.colors.background) {
-                createNotificationChannel(this)
-                Navigation(this, this, viewModel=viewModel, reminderViewModel = reminderViewModel)
+                val context = LocalContext.current
+                createNotificationChannel(context)
+                Navigation(viewModel, activityContext)
+
             }
         }
 
@@ -75,16 +78,6 @@ class MainActivity : AppCompatActivity() {
 
 
 
-            /**
-            SelfCareTheme(isDarkMode.value) {
-                // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
-                    createNotificationChannel(this)
-                    Navigation(
-                        this,
-                        this,
-                        reminderViewModel = reminderViewModel
-                    )
 
 
 /**
