@@ -32,13 +32,14 @@ import com.example.selfcare.presentation.reminders.destinations.reminderComposab
 import com.example.selfcare.presentation.components.rendering.SettingsScreen
 import com.example.selfcare.viewmodels.MainViewModel
 import com.example.selfcare.R
+import com.example.selfcare.presentation.components.screens.LoginScreen
+import com.example.selfcare.presentation.components.screens.RegisterScreen
 import com.example.selfcare.viewmodels.BreatheViewModel
 
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
-fun Navigation(context: Context,
-               lifecycleOwner: LifecycleOwner,
+fun Navigation(activityContext: ComponentActivity,
                viewModel: MainViewModel,
                reminderViewModel: ReminderViewModel
 ) {
@@ -47,7 +48,7 @@ fun Navigation(context: Context,
         ReminderNav(navController = navController)
     }
     val context = LocalContext.current
-    NavHost(navController = navController, startDestination = Screen.WelcomeScreen.route) {
+    NavHost(navController = navController, startDestination = Screen.RegisterScreen.route) {
         composable(route = Screen.WelcomeScreen.route){
             WelcomeScreen(viewModel = viewModel, navController = navController )
         }
@@ -86,6 +87,12 @@ fun Navigation(context: Context,
 
         composable(route = Screen.RegisterScreen.route) {
             RegisterScreen(viewModel, navController = navController, activityContext)
+        }
+        composable(route = Screen.BreatheScreen.route) {
+            val breatheVM = hiltViewModel<BreatheViewModel>()
+            val vibrator = context.getSystemService(VIBRATOR_SERVICE) as Vibrator
+            val mediaPlayer = MediaPlayer.create(context, R.raw.relaxing).apply{isLooping = true}
+            BreatheScreen(navController,breatheVM,vibrator,mediaPlayer)
         }
 
     }

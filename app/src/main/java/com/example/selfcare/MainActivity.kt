@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         SelfCareTheme(darkMode = darkMode) {
             Surface(color = MaterialTheme.colors.background) {
                 createNotificationChannel(this)
-                Navigation(this, this, viewModel=viewModel, reminderViewModel = reminderViewModel)
+                Navigation(this, viewModel=viewModel, reminderViewModel = reminderViewModel)
             }
         }
 
