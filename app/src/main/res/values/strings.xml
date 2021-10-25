@@ -23,5 +23,7 @@
     <string name="model_target_png">models/target.png</string>
     <string name="failed_to_read_asset">Failed to read an asset file</string>
     <string name="exception_on_opengl">Exception on the OpenGL thread</string>
+    <string name="user1_name">George</string>
+    <string name="user2_name">Marta</string>
 
 </resources>

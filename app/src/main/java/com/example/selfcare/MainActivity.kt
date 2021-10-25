@@ -1,69 +1,123 @@
 package com.example.selfcare
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-
 import androidx.activity.ComponentActivity
+
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.fragment.app.FragmentActivity
 import com.example.selfcare.presentation.components.Navigation
 import com.example.selfcare.presentation.components.*
 import com.example.selfcare.ui.theme.SelfCareTheme
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.lifecycle.asLiveData
-import com.example.selfcare.data.SettingsDataStore
+
+import androidx.compose.runtime.LaunchedEffect
+//import androidx.lifecycle.asLiveData
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.selfcare.viewmodels.ReminderViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.selfcare.data.local.SettingsDataStoreImpl
+import com.example.selfcare.viewmodels.MainViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    @ExperimentalFoundationApi
-    lateinit var settingsDataStore: SettingsDataStore
-    val isDarkMode =  mutableStateOf(true)
 
+    @ExperimentalMaterialApi
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        settingsDataStore = SettingsDataStore(this)
-        setInitialTheme()
-        observeData()
+        //settingsDataStore = SettingsDataStore(this)
+        //setInitialTheme()
+        //observeData()
         setContent {
-            SelfCareTheme(isDarkMode.value) {
-                // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
-                    createNotificationChannel(this)
-                    Navigation(this, this)
-
-                }
-            }
+            val viewModel = hiltViewModel<MainViewModel>()
+            AppMain(viewModel, this)
         }
     }
 
 
+    @ExperimentalMaterialApi
+    @ExperimentalFoundationApi
+    @Composable
+    private fun AppMain(viewModel: MainViewModel, activityContext: ComponentActivity){
+        LaunchedEffect(false) {
+            viewModel.getDarkMode()
+        }
+        val darkMode = viewModel.darkModeState.value
+        SelfCareTheme(darkMode = darkMode) {
+            Surface(color = MaterialTheme.colors.background) {
+                val context = LocalContext.current
+                createNotificationChannel(context)
+                Navigation(viewModel, activityContext)
+
+            }
+        }
+
+
+
+
+        }
+    }
+
+
+
+
+
+/**
     @ExperimentalFoundationApi
     private fun observeData() {
         settingsDataStore.darkModeFlow.asLiveData().observe(this, {
             isDarkMode.value = it
         })
     }
+>>>>>>> Stashed changes
 
-    @ExperimentalFoundationApi
-    private fun setInitialTheme(){
-        GlobalScope.launch{
-            settingsDataStore.storeUser(
-                false)
-        }
-    }
+/**
+SelfCareTheme(isDarkMode.value) {
+// A surface container using the 'background' color from the theme
+Surface(color = MaterialTheme.colors.background) {
+createNotificationChannel(this)
+Navigation(
+this,
+this,
+reminderViewModel = reminderViewModel
+)
 }
+}
+}
+}
+@ExperimentalFoundationApi
+private fun observeData() {
+settingsDataStore.darkModeFlow.asLiveData().observe(this, {
+isDarkMode.value = it
+})
+}
+@ExperimentalFoundationApi
+private fun setInitialTheme(){
+GlobalScope.launch{
+settingsDataStore.storeDarkMode(
+false)
+}
+}
+}
+ */
 
 @Composable
 fun Greeting(name: String) {
@@ -74,4 +128,4 @@ fun Greeting(name: String) {
 @Composable
 fun DefaultPreview() {
 
-}
+}*/

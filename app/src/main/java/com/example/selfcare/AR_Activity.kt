@@ -9,6 +9,8 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import com.google.ar.core.*
 import com.google.ar.core.exceptions.*
 import java.io.IOException
@@ -17,6 +19,9 @@ import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 import com.example.selfcare.presentation.components.helpers.*
 import com.example.selfcare.presentation.components.rendering.*
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+
 //import kotlinx.android.synthetic.main.activity_main.*
 
 class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
@@ -54,10 +59,19 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
     private lateinit var surfaceView: GLSurfaceView
 
+    private lateinit var uid: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
+
+        val user = Firebase.auth.currentUser
+        user?.let{
+            uid = user.uid
+            Log.d("USER UID ", user.uid)
+        }
+
+
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ar_activity)
