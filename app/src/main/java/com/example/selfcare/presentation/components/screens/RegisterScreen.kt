@@ -28,6 +28,7 @@ fun RegisterScreen(viewModel: MainViewModel, navController: NavController, activ
     if (Firebase.auth.currentUser!= null) {
         navController.popBackStack()
         navController.navigate(Screen.WelcomeScreen.route)
+        Log.d("inside register screen check user" , Firebase.auth.currentUser.toString())
     }
     Card(
         modifier = Modifier

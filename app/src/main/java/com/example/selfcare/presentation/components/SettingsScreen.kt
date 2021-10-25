@@ -26,6 +26,8 @@ import com.example.selfcare.presentation.components.sendNotification
 import com.example.selfcare.ui.theme.IBMPlexMono
 import com.example.selfcare.ui.theme.Pink700
 import com.example.selfcare.viewmodels.MainViewModel
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 
 @Composable
@@ -44,7 +46,7 @@ fun SettingsScreen(
 
     val context = LocalContext.current
     
-    LaunchedEffect(key1 = viewModel.darkModeState, viewModel.email.value, viewModel.displayName.value){
+    LaunchedEffect(key1 = viewModel.darkModeState){
         viewModel.getDarkMode()
         viewModel.getNotifMode()
         viewModel.getUsername()
@@ -135,7 +137,7 @@ fun SettingsScreen(
 
             //update profile
             var newUsername by remember { mutableStateOf("") }
-            var newEmail by remember { mutableStateOf("") }
+            var newPassword by remember { mutableStateOf("") }
             var validChanges by remember { mutableStateOf(false) }
             Row(
                 modifier = Modifier
@@ -183,18 +185,19 @@ fun SettingsScreen(
             {
                 OutlinedTextField(
                     singleLine = true,
+                    visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Email
+                        keyboardType = KeyboardType.Password
                     ),
-                    value = newEmail,
+                    value = newPassword,
                     enabled = clickUpdateProfile,
                     readOnly = !clickUpdateProfile,
-                    onValueChange = { newEmail = it },
-                    label = { Text("Update Email") }
+                    onValueChange = { newPassword = it },
+                    label = { Text("Update Password") }
                 )
             }
 
-            if (newUsername.trim()!="" || newEmail.trim()!==""){
+            if (newUsername.trim()!="" || newPassword.trim()!==""){
                 validChanges = true
             }
 
@@ -210,11 +213,10 @@ fun SettingsScreen(
                 Button(
                     enabled = validChanges,
                     onClick = {
-                        if(newEmail!=""){
-                            email = newEmail
-                            viewModel.setUserEmail(newEmail)
+                        if(newPassword.trim()!=""){
+                            viewModel.setUserPassword(newPassword)
                         }
-                        if(newUsername!=""){
+                        if(newUsername.trim()!=""){
                             username = newUsername
                             viewModel.setUsername(newUsername)
                         }
@@ -357,6 +359,9 @@ fun SettingsScreen(
                         viewModel.setNotifMode(notifMode)
                         navController.popBackStack()
                         viewModel.deleteUser()
+                        while(Firebase.auth.currentUser!= null){
+                            Log.d("waiting to delete user","")
+                        }
                         navController.navigate(Screen.RegisterScreen.route)
                     }
                 ) {

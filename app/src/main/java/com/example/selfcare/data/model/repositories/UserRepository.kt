@@ -56,7 +56,7 @@ class UserRepository {
         Log.d("insiderepo2", getUserDisplayName())
     }
 
-    fun setUserEmail(newEmail: String){
+   fun setUserEmail(newEmail: String){
         val user = Firebase.auth.currentUser
         user!!.updateEmail(newEmail)
             .addOnCompleteListener { task ->
@@ -64,6 +64,17 @@ class UserRepository {
                     Log.d(TAG, "User email address updated.")
                 }
             }
+    }
+
+    fun setUserPassword(newPassword: String){
+        val user = Firebase.auth.currentUser
+        user!!.updatePassword(newPassword)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d(TAG, "User password updated.")
+                }
+            }
+
     }
 
 
