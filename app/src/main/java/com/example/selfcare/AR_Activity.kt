@@ -324,6 +324,60 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
                     lightIntensity
                 )
 
+                // Spawns initial Coins
+                if (hasTrackingPlane()) {
+                    val allPlanes = session!!.getAllTrackables(Plane::class.java)
+
+                    if (coinAnchors.size < 9) {
+                        for (plane in coinPlanes.keys) {
+                            if (coinPlanes.get(plane)!! < 3) {
+
+                                val randomOffsetX = Math.random()
+                                val randomOffsetY = Math.random()
+                                val planeCenterPose = plane.centerPose
+                                val anchorPose = Pose(floatArrayOf(
+                                    (planeCenterPose.tx() + randomOffsetX).toFloat(),
+                                    (planeCenterPose.ty() + randomOffsetY).toFloat(),
+                                    planeCenterPose.tz()
+                                ), planeCenterPose.rotationQuaternion)
+
+                                val anchor = session!!.createAnchor(anchorPose)
+//                                val anchor = session!!.createAnchor(plane.centerPose)
+                                coinAnchors.add(anchor)
+                                coinPlanes[plane] = coinPlanes[plane]!! + 1
+                            }
+                        }
+                        Log.d(TAG, "onDrawFrame: ${coinAnchors.size} + ${coinAnchors}")
+                    }
+                }
+
+
+                for (anchor in coinAnchors) {
+
+                    val cameraX = camera.pose.tx()
+                    val cameraY = camera.pose.ty()
+                    val anchorX = anchor.pose.tx()
+                    val anchorY = anchor.pose.ty()
+                    val distX = abs(cameraX - anchorX)
+                    val distY = abs(cameraY - anchorY)
+
+
+                    if (distX < 0.5 && distY < 0.5) {
+
+                        Log.d(TAG, "REACHING COIN!!!")
+                        Log.d(TAG, "Camera pos - x: $cameraX, y: $cameraY")
+                        Log.d(TAG, "Anchor pos - x: $anchorX, y: $anchorY")
+
+                        anchor.detach()
+                        coinAnchors.remove(anchor)
+                    } else {
+                        anchor.pose.toMatrix(anchorMatrix, 0)
+                        // Update shader properties and draw
+                        coinObject.updateModelMatrix(anchorMatrix, Mode.COIN.scaleFactor)
+                        coinObject.draw(viewMatrix, projectionMatrix, lightIntensity)
+                    }
+                }
+
                 drawObject(
                     targetObject,
                     targetAttachment,
@@ -441,7 +495,12 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
         val allPlanes = session!!.getAllTrackables(Plane::class.java)
 
         for (plane in allPlanes) {
-            if (plane.trackingState == TrackingState.TRACKING) {
+            if (plane.trackingState == TrackingState.TRACKING && plane.type == Plane.Type.HORIZONTAL_UPWARD_FACING) {
+
+                if (coinPlanes.size < 3 && !coinPlanes.containsKey(plane)) {
+                    coinPlanes[plane] = 0
+                }
+
                 return true
             }
         }
