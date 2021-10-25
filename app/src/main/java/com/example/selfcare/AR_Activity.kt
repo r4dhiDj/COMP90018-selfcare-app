@@ -420,8 +420,8 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
                         for (plane in coinPlanes.keys) {
                             if (coinPlanes.get(plane)!! < 3) {
 
-                                val randomOffsetX = Math.random() + 1
-                                val randomOffsetY = Math.random() + 1
+                                val randomOffsetX = Math.random()
+                                val randomOffsetY = Math.random()
                                 val planeCenterPose = plane.centerPose
                                 val anchorPose = Pose(floatArrayOf(
                                     (planeCenterPose.tx() + randomOffsetX).toFloat(),
@@ -448,6 +448,7 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
                     val anchorY = anchor.pose.ty()
                     val distX = abs(cameraX - anchorX)
                     val distY = abs(cameraY - anchorY)
+
 
                     if (distX < 0.5 && distY < 0.5) {
 
@@ -582,7 +583,7 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
         val allPlanes = session!!.getAllTrackables(Plane::class.java)
 
         for (plane in allPlanes) {
-            if (plane.trackingState == TrackingState.TRACKING) {
+            if (plane.trackingState == TrackingState.TRACKING && plane.type == Plane.Type.HORIZONTAL_UPWARD_FACING) {
 
                 if (coinPlanes.size < 3 && !coinPlanes.containsKey(plane)) {
                     coinPlanes[plane] = 0
