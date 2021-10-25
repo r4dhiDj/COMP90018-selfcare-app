@@ -77,6 +77,8 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
     private val fromBottom: Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.from_bottom_anim)}
     private val toBottom: Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.to_bottom_anim)}
 
+    // Test Comment
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
