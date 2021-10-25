@@ -9,11 +9,10 @@ import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
 
 class UserRepository {
-    val user = Firebase.auth.currentUser
-
 
     fun getUserDisplayName(): String{
-        var name: MutableState<String> = mutableStateOf("")
+        val user = Firebase.auth.currentUser
+        val name: MutableState<String> = mutableStateOf("")
         user?.let{
             if (user.displayName!=null) {
                 name.value = user.displayName!!
@@ -23,7 +22,8 @@ class UserRepository {
     }
 
     fun getUserEmail(): String{
-        var email: MutableState<String> = mutableStateOf("")
+        val user = Firebase.auth.currentUser
+        val email: MutableState<String> = mutableStateOf("")
         user?.let{
             email.value = user.email!!
         }
@@ -31,7 +31,8 @@ class UserRepository {
     }
 
     fun getUserUID(): String{
-        var uid: MutableState<String> = mutableStateOf("")
+        val user = Firebase.auth.currentUser
+        val uid: MutableState<String> = mutableStateOf("")
         user?.let{
             uid.value = user.uid
             Log.d("inside get ", user.uid)
@@ -40,6 +41,7 @@ class UserRepository {
     }
 
     fun setUserDisplayName(newDisplayName: String){
+        val user = Firebase.auth.currentUser
         Log.d("inside repo", newDisplayName)
         val profileUpdates = userProfileChangeRequest {
             displayName = newDisplayName
@@ -55,6 +57,7 @@ class UserRepository {
     }
 
     fun setUserEmail(newEmail: String){
+        val user = Firebase.auth.currentUser
         user!!.updateEmail(newEmail)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -65,6 +68,7 @@ class UserRepository {
 
 
     fun deleteUser() {
+        val user = Firebase.auth.currentUser
         user!!.delete()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
