@@ -77,11 +77,15 @@ fun Navigation(context: Context,
         composable(route = Screen.ARActivity.route) {
             context.startActivity(Intent(context, AR_Activity::class.java))
         }
-        composable(route = Screen.BreatheScreen.route) {
-            val breatheVM = hiltViewModel<BreatheViewModel>()
-            val vibrator = context.getSystemService(VIBRATOR_SERVICE) as Vibrator
-            val mediaPlayer = MediaPlayer.create(context, R.raw.relaxing).apply{isLooping = true}
-            BreatheScreen(navController,breatheVM,vibrator,mediaPlayer)
+        composable(route = Screen.ChatScreen.route) {
+            ChatScreen(navController = navController)
+        }
+        composable(route = Screen.LoginScreen.route) {
+            LoginScreen(viewModel, navController = navController, activityContext)
+        }
+
+        composable(route = Screen.RegisterScreen.route) {
+            RegisterScreen(viewModel, navController = navController, activityContext)
         }
 
     }

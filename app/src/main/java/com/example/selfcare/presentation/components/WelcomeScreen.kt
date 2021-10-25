@@ -13,7 +13,82 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.selfcare.ui.theme.IBMPlexMono
 import com.example.selfcare.viewmodels.MainViewModel
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import android.util.Log
 
+@Composable
+fun WelcomeScreen(viewModel: MainViewModel,
+                  navController: NavController){
+    var username by remember { mutableStateOf("") }
+    var newUsername by remember { mutableStateOf("") }
+
+    LaunchedEffect(key1 = viewModel.displayName.value){
+        viewModel.getUsername()
+        username = viewModel.displayName.value
+        viewModel.getUserUid()
+    }
+    Card(
+        modifier = Modifier
+            .fillMaxSize(),
+        elevation = 8.dp
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            Row(){
+                if(username!=""){
+                    Text(
+                        text = "Hi, $username",
+                        style = MaterialTheme.typography.h1)
+                }
+                else {
+                    Text(
+                        text = "Hi ",
+                        style = MaterialTheme.typography.h1
+                    )
+                    TextField(
+                        value = newUsername,
+                        onValueChange = { newUsername = it },
+                        textStyle = TextStyle(color = MaterialTheme.colors.onBackground),
+                        label = {Text("Enter your name here")},
+                        colors = TextFieldDefaults.textFieldColors(
+                            backgroundColor = Color.Transparent,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent
+                        )
+                    )
+
+                }
+            }
+            Row( ) {
+                Button(
+                    modifier = Modifier.padding(end = 10.dp),
+                    onClick = {
+                        if (username==""){
+                            username = newUsername
+                            Log.d("inside welcome screen", newUsername)
+                            viewModel.setUsername(username)
+                        }
+                        navController.navigate(Screen.MenuScreen.route)
+                    }
+                )
+                {
+                    Text(color = Color.White, text = "Start")
+                }
+
+            }
+        }
+    }
+
+}
+
+
+
+
+/*
 @Composable
 fun WelcomeScreen(viewModel: MainViewModel,
                   navController: NavController){
@@ -23,7 +98,6 @@ fun WelcomeScreen(viewModel: MainViewModel,
         viewModel.getUsername()
         username = viewModel.username.value
     }
-
     Card(
         modifier = Modifier
             .fillMaxSize(),
@@ -59,7 +133,7 @@ fun WelcomeScreen(viewModel: MainViewModel,
 
                 }
             }
-            Row() {
+            Row( ) {
                 Button(
                     modifier = Modifier.padding(end = 10.dp),
                     onClick = {
@@ -79,4 +153,4 @@ fun WelcomeScreen(viewModel: MainViewModel,
     }
 
 }
-
+*/

@@ -1,9 +1,12 @@
 package com.example.selfcare.presentation.components.rendering
 
-import android.app.Application
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -13,6 +16,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.selfcare.R
@@ -21,8 +26,7 @@ import com.example.selfcare.presentation.components.sendNotification
 import com.example.selfcare.ui.theme.IBMPlexMono
 import com.example.selfcare.ui.theme.Pink700
 import com.example.selfcare.viewmodels.MainViewModel
-import dagger.hilt.android.internal.Contexts.getApplication
-import kotlinx.coroutines.launch
+
 
 @Composable
 fun SettingsScreen(
@@ -34,25 +38,34 @@ fun SettingsScreen(
     var notifMode by remember { mutableStateOf(true) }
     //TODO: move to where notification should be called
     var callNotif by remember { mutableStateOf(false) }
-    var clickNewUsername by remember { mutableStateOf(false) }
+    var clickUpdateProfile by remember { mutableStateOf(false) }
+    var email by remember { mutableStateOf("")}
+    val scrollState = rememberScrollState()
 
-    var context = LocalContext.current
-    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
     
-    LaunchedEffect(key1 = viewModel.darkModeState, viewModel.notifModeState, viewModel.username.value){
+    LaunchedEffect(key1 = viewModel.darkModeState, viewModel.email.value, viewModel.displayName.value){
         viewModel.getDarkMode()
         viewModel.getNotifMode()
         viewModel.getUsername()
+        viewModel.getUserEmail()
+        scrollState.animateScrollTo(10000)
         darkMode = viewModel.darkModeState.value
         notifMode = viewModel.notifModeState.value
-        username = viewModel.username.value
+        username = viewModel.displayName.value
+        email = viewModel.email.value
+        Log.d("inside settings email", email)
+        Log.d("inside settings username", username)
     }
     Card(
         modifier = Modifier
             .fillMaxSize(),
         elevation = 8.dp
     ) {
-        Column {
+        Column (
+            modifier = Modifier
+                .verticalScroll(scrollState)
+                ){
             // Top bar
             Row(
                 modifier = Modifier
@@ -93,11 +106,7 @@ fun SettingsScreen(
 
 
 
-            //Change username
-
-            var maxChar = 20
-            var newUsername by remember { mutableStateOf("") }
-
+            //user details
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -110,7 +119,24 @@ fun SettingsScreen(
                     style = MaterialTheme.typography.h3
                 )
             }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp, bottom = 12.dp, start = 20.dp, end = 20.dp),
+                Arrangement.SpaceBetween,
+                Alignment.CenterVertically,
+            ){
+                Text(
+                    text = "Email: $email",
+                    style = MaterialTheme.typography.h3
+                )
+            }
 
+
+            //update profile
+            var newUsername by remember { mutableStateOf("") }
+            var newEmail by remember { mutableStateOf("") }
+            var validChanges by remember { mutableStateOf(false) }
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -119,11 +145,11 @@ fun SettingsScreen(
             ){
                 Button(
                     onClick = {
-                        clickNewUsername = true
+                        clickUpdateProfile = true
                     }
                 )
                 {
-                    Text(color = Color.White, text = "Change Username")
+                    Text(color = Color.White, text = "Update Profile")
                 }
             }
 
@@ -136,14 +162,44 @@ fun SettingsScreen(
             )
             {
                 OutlinedTextField(
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Password
+                    ),
                     value = newUsername,
-                    enabled = clickNewUsername,
-                    readOnly = !clickNewUsername,
+                    enabled = clickUpdateProfile,
+                    readOnly = !clickUpdateProfile,
                     onValueChange = { newUsername = it },
-                    label = { Text("New Username") }
+                    label = { Text("Update Username") }
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp, bottom = 12.dp, start = 20.dp, end = 20.dp),
+                Arrangement.SpaceBetween,
+                Alignment.CenterVertically
+            )
+            {
+                OutlinedTextField(
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Email
+                    ),
+                    value = newEmail,
+                    enabled = clickUpdateProfile,
+                    readOnly = !clickUpdateProfile,
+                    onValueChange = { newEmail = it },
+                    label = { Text("Update Email") }
                 )
             }
 
+            if (newUsername.trim()!="" || newEmail.trim()!==""){
+                validChanges = true
+            }
+
+
+            //Save profile changes
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -152,13 +208,20 @@ fun SettingsScreen(
             )
             {
                 Button(
+                    enabled = validChanges,
                     onClick = {
-                        username = newUsername
-                        viewModel.setUsername(newUsername)
-                        clickNewUsername = false
+                        if(newEmail!=""){
+                            email = newEmail
+                            viewModel.setUserEmail(newEmail)
+                        }
+                        if(newUsername!=""){
+                            username = newUsername
+                            viewModel.setUsername(newUsername)
+                        }
+                        clickUpdateProfile = false
                     }
                 ){
-                    Text(color = Color.White, text = "Save New Username")
+                    Text(color = Color.White, text = "Save Updates")
                 }
             }
 
@@ -216,6 +279,27 @@ fun SettingsScreen(
                 )
             }
 
+            //sign out
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp, bottom = 12.dp, start = 20.dp, end = 20.dp),
+                Arrangement.SpaceBetween,
+                Alignment.CenterVertically
+            ) {
+                Text(
+                    "Sign Out",
+                    style = MaterialTheme.typography.h3
+                )
+                Button(
+                    onClick = {
+                        viewModel.signOut()
+                        navController.navigate(Screen.RegisterScreen.route)
+                    }
+                ) {
+                    Text(color = Color.White, text = "Sign Out")
+                }
+            }
 
 
             //reset button
@@ -247,6 +331,36 @@ fun SettingsScreen(
                     }
                 ) {
                     Text(color = Color.White, text = "Reset")
+                }
+            }
+            //delete account
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp, bottom = 12.dp, start = 20.dp, end = 20.dp),
+                Arrangement.SpaceBetween,
+                Alignment.CenterVertically
+            ) {
+                Text(
+                    "Delete Account",
+                    style = MaterialTheme.typography.h3
+                )
+                Button(
+                    colors = ButtonDefaults.textButtonColors(
+                        backgroundColor = MaterialTheme.colors.error),
+                    onClick = {
+                        username = ""
+                        darkMode = false
+                        notifMode = true
+                        viewModel.setDarkMode(darkMode)
+                        viewModel.setUsername(username)
+                        viewModel.setNotifMode(notifMode)
+                        navController.popBackStack()
+                        viewModel.deleteUser()
+                        navController.navigate(Screen.RegisterScreen.route)
+                    }
+                ) {
+                    Text(color = Color.White, text = "Delete")
                 }
             }
 

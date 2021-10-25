@@ -226,7 +226,7 @@ fun FeatureItem(
             .fillMaxSize()
             .clickable {
                 when (feature.title) {
-                    "chat" -> Log.v("test", "chat pressed")
+                    "chat" -> feature.navController.navigate(Screen.ChatScreen.route)
                     "go live" -> feature.navController.navigate(Screen.ARActivity.route)
                     "reminders" -> feature.navController.navigate(Screen.ReminderScreen.route)
                     "breathe" -> feature.navController.navigate(Screen.BreatheScreen.route)
