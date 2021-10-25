@@ -15,12 +15,16 @@ import com.example.selfcare.viewmodels.ReminderViewModel
 import com.example.selfcare.AR_Activity
 import com.example.selfcare.presentation.components.rendering.SettingsScreen
 import com.example.selfcare.viewmodels.MainViewModel
+import com.example.selfcare.R
 import com.example.selfcare.presentation.components.screens.LoginScreen
 import com.example.selfcare.presentation.components.screens.RegisterScreen
 
 @ExperimentalFoundationApi
 @Composable
-fun Navigation(viewModel: MainViewModel, activityContext: ComponentActivity) {
+fun Navigation(activityContext: ComponentActivity,
+               viewModel: MainViewModel,
+               reminderViewModel: ReminderViewModel
+) {
     val navController = rememberNavController()
     val context = LocalContext.current
 
@@ -67,6 +71,12 @@ fun Navigation(viewModel: MainViewModel, activityContext: ComponentActivity) {
 
         composable(route = Screen.RegisterScreen.route) {
             RegisterScreen(viewModel, navController = navController, activityContext)
+        }
+        composable(route = Screen.BreatheScreen.route) {
+            val breatheVM = hiltViewModel<BreatheViewModel>()
+            val vibrator = context.getSystemService(VIBRATOR_SERVICE) as Vibrator
+            val mediaPlayer = MediaPlayer.create(context, R.raw.relaxing).apply{isLooping = true}
+            BreatheScreen(navController,breatheVM,vibrator,mediaPlayer)
         }
 
     }

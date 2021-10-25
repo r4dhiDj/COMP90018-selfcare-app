@@ -7,8 +7,6 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import com.example.selfcare.BaseApplication
 import com.example.selfcare.data.local.SettingsDataStoreImpl.Companion.SETTINGS_DATA_STORE_NAME
-import com.example.selfcare.data.model.repositories.ReminderRepository
-import com.example.selfcare.data.model.repositories.ReminderRepositoryImpl
 import com.example.selfcare.data.model.repositories.UserRepository
 import dagger.Module
 import dagger.Provides
@@ -30,13 +28,6 @@ object AppModule {
     fun provideApplication(@ApplicationContext app: Context): BaseApplication {
         return app as BaseApplication
     }
-
-    @Provides
-    @Singleton
-    fun provideReminderRepository(): ReminderRepository {
-        return ReminderRepositoryImpl()
-    }
-
 
     @Provides
     @Singleton

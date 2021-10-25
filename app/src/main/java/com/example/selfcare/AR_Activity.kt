@@ -61,6 +61,8 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
     private lateinit var uid: String
 
+    // Test Comment
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
