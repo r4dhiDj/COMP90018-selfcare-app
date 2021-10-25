@@ -1,16 +1,20 @@
 package com.example.selfcare
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
+import android.opengl.Matrix
 import android.util.Log
 import android.view.GestureDetector
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.widget.Toast
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.*
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.google.ar.core.*
 import com.google.ar.core.exceptions.*
 import java.io.IOException
@@ -19,17 +23,17 @@ import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 import com.example.selfcare.presentation.components.helpers.*
 import com.example.selfcare.presentation.components.rendering.*
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlin.math.abs
 
-//import kotlinx.android.synthetic.main.activity_main.*
 
 class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
     private val TAG: String = AR_Activity::class.java.simpleName
 
     private var installRequested = false
 
-    private var mode: Mode = Mode.VIKING
+    private var mode: Mode = Mode.STEVE
 
     private var session: Session? = null
 
@@ -43,23 +47,35 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
     private val planeRenderer: PlaneRenderer = PlaneRenderer()
     private val pointCloudRenderer: PointCloudRenderer = PointCloudRenderer()
 
-    // TODO: Declare ObjectRenderers and PlaneAttachments here
-    private val vikingObject = ObjectRenderer()
-    private val cannonObject = ObjectRenderer()
-    private val targetObject = ObjectRenderer()
+    private val steveObject = ObjectRenderer()
+    private val spidermanObject = ObjectRenderer()
+    private val coinObject = ObjectRenderer()
+    private val amogusObject = ObjectRenderer()
 
-    private var vikingAttachment: PlaneAttachment? = null
-    private var cannonAttachment: PlaneAttachment? = null
-    private var targetAttachment: PlaneAttachment? = null
+    private var steveAttachment: PlaneAttachment? = null
+    private var spidermanAttachment: PlaneAttachment? = null
+    private var coinAttachment: PlaneAttachment? = null
+    private var amogusAttachment: PlaneAttachment? = null
 
     // Temporary matrix allocated here to reduce number of allocations and taps for each frame.
-    private val maxAllocationSize = 16
+    private val maxAllocationSize = 20
     private val anchorMatrix = FloatArray(maxAllocationSize)
     private val queuedSingleTaps = ArrayBlockingQueue<MotionEvent>(maxAllocationSize)
 
+
+    // Virtual Objects
+    private var coinAnchors = mutableListOf<Anchor>()
+    private var coinPlanes = hashMapOf<Plane, Int>()
+
     private lateinit var surfaceView: GLSurfaceView
 
-    private lateinit var uid: String
+    private var addClicked = false
+
+    //FAB animations
+    private val rotateOpen: Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim)}
+    private val rotateClose: Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim)}
+    private val fromBottom: Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.from_bottom_anim)}
+    private val toBottom: Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.to_bottom_anim)}
 
     // Test Comment
 
@@ -67,16 +83,10 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
 
-        val user = Firebase.auth.currentUser
-        user?.let{
-            uid = user.uid
-            Log.d("USER UID ", user.uid)
-        }
-
-
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ar_activity)
+
 
         surfaceView = findViewById(R.id.surfaceView)
 
@@ -90,15 +100,93 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
     }
 
-    fun onRadioButtonClicked(view: View) {
+    fun onAddButtonClicked(view: View) {
+        if (view.id == R.id.addButton) {
+            setVisibility(addClicked);
+            setAnimation(addClicked)
+            addClicked = !addClicked
+        }
+    }
+
+    fun setAnimation(clicked: Boolean) {
+        val addButton = findViewById<FloatingActionButton>(R.id.addButton)
+        val mascotButton = findViewById<FloatingActionButton>(R.id.mascotButton)
+        val coinButton = findViewById<FloatingActionButton>(R.id.coinrunButton)
+        if(!clicked) {
+            mascotButton.startAnimation(fromBottom)
+            coinButton.startAnimation(fromBottom)
+            addButton.startAnimation(rotateOpen)
+        }
+        else {
+            mascotButton.startAnimation(toBottom)
+            coinButton.startAnimation(toBottom)
+            addButton.startAnimation(rotateClose)
+        }
+    }
+
+    fun settingsPressed(view: View) {
+
+        val bottomSheetDialog = BottomSheetDialog(
+            this, R.style.BottomSheetDialogTheme
+        )
+        val bottomSheetView = LayoutInflater.from(applicationContext).inflate(
+            R.layout.settings_ar_dialog,
+            findViewById(R.id.bottomSheet) as LinearLayout?
+        )
+
+
+        bottomSheetView.findViewById<View>(R.id.steveButton).setOnClickListener {
+            mode = Mode.STEVE
+
+        }
+        bottomSheetView.findViewById<View>(R.id.spidermanButton).setOnClickListener {
+            mode = Mode.SPIDERMAN
+        }
+        bottomSheetView.findViewById<View>(R.id.amogusButton).setOnClickListener {
+            mode = Mode.AMOGUS
+        }
+
+        bottomSheetDialog.setContentView(bottomSheetView)
+        bottomSheetDialog.show()
+
+
+
+    }
+
+    fun setVisibility(clicked: Boolean) {
+        var mascotButton = findViewById<FloatingActionButton>(R.id.mascotButton)
+        var coinButton = findViewById<FloatingActionButton>(R.id.coinrunButton)
+        if(!clicked) {
+            mascotButton.visibility = View.VISIBLE
+            coinButton.visibility = View.VISIBLE
+        }
+        else {
+            mascotButton.visibility = View.INVISIBLE
+            coinButton.visibility = View.INVISIBLE
+        }
+    }
+
+    fun setMode(view: View) {
         when (view.id) {
-            R.id.radioCannon -> mode = Mode.CANNON
-            R.id.radioTarget -> mode = Mode.TARGET
-            else -> mode = Mode.VIKING
+            R.id.mascotButton -> mode = Mode.SPIDERMAN
+            R.id.coinrunButton -> mode = Mode.COIN
+
         }
     }
 
 
+
+//    fun onRadioButtonClicked(view: View) {
+//        when (view.id) {
+//            R.id.radioSpiderman -> mode = Mode.SPIDERMAN
+//            R.id.radioCoin -> mode = Mode.COIN
+//            R.id.radioAmogus -> mode = Mode.AMOGUS
+//            else -> mode = Mode.STEVE
+//        }
+//    }
+
+
+    @SuppressLint("ClickableViewAccessibility")
     private fun setupSurfaceView() {
         // Set up renderer.
         surfaceView.preserveEGLContextOnPause = true
@@ -251,19 +339,20 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
             planeRenderer.createOnGlThread(this, getString(R.string.model_grid_png))
             pointCloudRenderer.createOnGlThread(this)
 
-            // TODO - set up the objects
             // 1
-            vikingObject.createOnGlThread(this, getString(R.string.model_viking_obj), getString(
-                R.string.model_viking_png))
-            cannonObject.createOnGlThread(this, getString(R.string.model_cannon_obj), getString(
-                R.string.model_cannon_png))
-            targetObject.createOnGlThread(this, getString(R.string.model_target_obj), getString(
-                R.string.model_target_png))
+            steveObject.createOnGlThread(this, getString(R.string.model_steve_obj), getString(
+                R.string.model_steve_png))
+            spidermanObject.createOnGlThread(this, getString(R.string.model_spiderman_obj), getString(
+                R.string.model_spiderman_png))
+            coinObject.createOnGlThread(this, getString(R.string.model_coin_obj), getString(
+                R.string.model_coin_png))
+            amogusObject.createOnGlThread(this, getString(R.string.model_amogus_obj), getString(R.string.model_amogus_png))
 
             // 2
-            targetObject.setMaterialProperties(0.0f, 3.5f, 1.0f, 6.0f)
-            vikingObject.setMaterialProperties(0.0f, 3.5f, 1.0f, 6.0f)
-            cannonObject.setMaterialProperties(0.0f, 3.5f, 1.0f, 6.0f)
+            coinObject.setMaterialProperties(0.0f, 3.5f, 1.0f, 6.0f)
+            steveObject.setMaterialProperties(0.0f, 3.5f, 1.0f, 6.0f)
+            spidermanObject.setMaterialProperties(0.0f, 3.5f, 1.0f, 6.0f)
+            amogusObject.setMaterialProperties(0.0f, 3.5f, 1.0f, 6.0f)
 
         } catch (e: IOException) {
             Log.e(TAG, getString(R.string.failed_to_read_asset), e)
@@ -307,29 +396,82 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
                 checkPlaneDetected()
                 visualizePlanes(camera, projectionMatrix)
 
-                // TODO: Call drawObject() for Viking, Cannon and Target here
                 drawObject(
-                    vikingObject,
-                    vikingAttachment,
-                    Mode.VIKING.scaleFactor,
+                    steveObject,
+                    steveAttachment,
+                    Mode.STEVE.scaleFactor,
                     projectionMatrix,
                     viewMatrix,
                     lightIntensity
                 )
 
                 drawObject(
-                    cannonObject,
-                    cannonAttachment,
-                    Mode.CANNON.scaleFactor,
+                    spidermanObject,
+                    spidermanAttachment,
+                    Mode.SPIDERMAN.scaleFactor,
                     projectionMatrix,
                     viewMatrix,
                     lightIntensity
                 )
 
+                // Spawns initial Coins
+                if (hasTrackingPlane()) {
+                    val allPlanes = session!!.getAllTrackables(Plane::class.java)
+
+                    if (coinAnchors.size < 9) {
+                        for (plane in coinPlanes.keys) {
+                            if (coinPlanes.get(plane)!! < 3) {
+
+                                val randomOffsetX = Math.random()
+                                val randomOffsetY = Math.random()
+                                val planeCenterPose = plane.centerPose
+                                val anchorPose = Pose(floatArrayOf(
+                                    (planeCenterPose.tx() + randomOffsetX).toFloat(),
+                                    (planeCenterPose.ty() + randomOffsetY).toFloat(),
+                                    planeCenterPose.tz()
+                                ), planeCenterPose.rotationQuaternion)
+
+                                val anchor = session!!.createAnchor(anchorPose)
+//                                val anchor = session!!.createAnchor(plane.centerPose)
+                                coinAnchors.add(anchor)
+                                coinPlanes[plane] = coinPlanes[plane]!! + 1
+                            }
+                        }
+                        Log.d(TAG, "onDrawFrame: ${coinAnchors.size} + ${coinAnchors}")
+                    }
+                }
+
+
+                for (anchor in coinAnchors) {
+
+                    val cameraX = camera.pose.tx()
+                    val cameraY = camera.pose.ty()
+                    val anchorX = anchor.pose.tx()
+                    val anchorY = anchor.pose.ty()
+                    val distX = abs(cameraX - anchorX)
+                    val distY = abs(cameraY - anchorY)
+
+
+                    if (distX < 0.5 && distY < 0.5) {
+
+                        Log.d(TAG, "REACHING COIN!!!")
+                        Log.d(TAG, "Camera pos - x: $cameraX, y: $cameraY")
+                        Log.d(TAG, "Anchor pos - x: $anchorX, y: $anchorY")
+
+                        anchor.detach()
+                        coinAnchors.remove(anchor)
+                    } else {
+                        anchor.pose.toMatrix(anchorMatrix, 0)
+                        // Update shader properties and draw
+                        coinObject.updateModelMatrix(anchorMatrix, Mode.COIN.scaleFactor)
+                        coinObject.draw(viewMatrix, projectionMatrix, lightIntensity)
+                    }
+                }
+
                 drawObject(
-                    targetObject,
-                    targetAttachment,
-                    Mode.TARGET.scaleFactor,
+                    amogusObject,
+                    amogusAttachment,
+                    Mode.AMOGUS.scaleFactor,
                     projectionMatrix,
                     viewMatrix,
                     lightIntensity
@@ -443,7 +585,12 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
         val allPlanes = session!!.getAllTrackables(Plane::class.java)
 
         for (plane in allPlanes) {
-            if (plane.trackingState == TrackingState.TRACKING) {
+            if (plane.trackingState == TrackingState.TRACKING && plane.type == Plane.Type.HORIZONTAL_UPWARD_FACING) {
+
+                if (coinPlanes.size < 3 && !coinPlanes.containsKey(plane)) {
+                    coinPlanes[plane] = 0
+                }
+
                 return true
             }
         }
@@ -457,7 +604,9 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
     private fun handleTap(frame: Frame, camera: Camera) {
         val tap = queuedSingleTaps.poll()
 
+
         if (tap != null && camera.trackingState == TrackingState.TRACKING) {
+            Log.d(TAG, "handleTap: $tap")
             // Check if any plane was hit, and if it was hit inside the plane polygon
             for (hit in frame.hitTest(tap)) {
                 val trackable = hit.trackable
@@ -470,18 +619,18 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
                             == Point.OrientationMode.ESTIMATED_SURFACE_NORMAL)
                 ) {
                     when (mode) {
-                        Mode.VIKING -> vikingAttachment = addSessionAnchorFromAttachment(vikingAttachment, hit)
-                        Mode.CANNON -> cannonAttachment = addSessionAnchorFromAttachment(cannonAttachment, hit)
-                        Mode.TARGET -> targetAttachment = addSessionAnchorFromAttachment(targetAttachment, hit)
+                        Mode.STEVE -> steveAttachment = addSessionAnchorFromAttachment(steveAttachment, hit)
+                        Mode.SPIDERMAN -> spidermanAttachment = addSessionAnchorFromAttachment(spidermanAttachment, hit)
+//                        Mode.COIN -> coinAttachment = addSessionAnchorCoin(hit)
+                        Mode.AMOGUS -> amogusAttachment = addSessionAnchorFromAttachment(amogusAttachment, hit)
                     }
-                    // TODO: Create an anchor if a plane or an oriented point was hit
                     break
                 }
             }
         }
     }
 
-    // TODO: Add addSessionAnchorFromAttachment() function here
+    // Create an anchor if a plane or an oriented point was hit
     private fun addSessionAnchorFromAttachment(
         previousAttachment: PlaneAttachment?,
         hit: HitResult
@@ -492,6 +641,27 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
         // 2
         val plane = hit.trackable as Plane
         val anchor = session!!.createAnchor(hit.hitPose)
+
+        // 3
+        return PlaneAttachment(plane, anchor)
+    }
+
+
+    private fun addSessionAnchorCoin(
+        hit: HitResult
+    ): PlaneAttachment? {
+        // 1
+        if (coinAnchors.size > 15) {
+            coinAnchors[0].detach()
+            coinAnchors.removeAt(0)
+        }
+
+        // 2
+        val plane = hit.trackable as Plane
+        val anchor = session!!.createAnchor(hit.hitPose)
+
+        coinAnchors.add(anchor)
+        Log.d(TAG, "addSessionAnchorCoin: $coinAnchors")
 
         // 3
         return PlaneAttachment(plane, anchor)

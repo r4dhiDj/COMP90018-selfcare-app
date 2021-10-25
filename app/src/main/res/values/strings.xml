@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">SelfCare</string>
-    <string name="viking">Viking</string>
-    <string name="cannon">Cannon</string>
-    <string name="target">Target</string>
+    <string name="Steve">Steve</string>
+    <string name="spiderman">Spider-Man</string>
+    <string name="coin">Coin</string>
+    <string name="amogus">Amogus</string>
     <string name="camera_permission_toast">Camera permission is needed to run this application</string>
     <string name="searching_for_surfaces">Searching for surfaces...</string>
     <string name="ar_device_support">This device does not support AR</string>
@@ -15,16 +16,40 @@
     <string name="failed_to_create_session">Failed to create AR session</string>
     <string name="camera_permission_needed">Camera permission is needed to run this application</string>
     <string name="model_grid_png">models/trigrid.png</string>
-    <string name="model_viking_obj">models/viking.obj</string>
-    <string name="model_viking_png">models/viking.png</string>
-    <string name="model_cannon_obj">models/cannon.obj</string>
-    <string name="model_target_obj">models/target.obj</string>
-    <string name="model_cannon_png">models/cannon.png</string>
-    <string name="model_target_png">models/target.png</string>
+    <string name="model_steve_obj">models/steve.obj</string>
+    <string name="model_steve_png">models/steve.png</string>
+    <string name="model_spiderman_obj">models/spiderman.obj</string>
+    <string name="model_coin_obj">models/coin.obj</string>
+    <string name="model_spiderman_png">models/spiderman.png</string>
+    <string name="model_coin_png">models/coin.png</string>
+    <string name="model_amogus_obj">models/amogus.obj</string>
+    <string name="model_amogus_png">models/amogus.png</string>
     <string name="failed_to_read_asset">Failed to read an asset file</string>
     <string name="exception_on_opengl">Exception on the OpenGL thread</string>
-    <string name="user1_name">George</string>
-    <string name="user2_name">Marta</string>
+    <string name="delete_all_reminders">Remove all tasks?</string>
+    <string name="delete_all_reminders_confirmation">Are you sure you want to remove all reminders? There\'s no going back! </string>
+
+    <string-array name="mascots">
+        <item>Steve</item>
+        <item>Spider-Man</item>
+        <item>Amogus</item>
+    </string-array>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="user1_name">George</string>
     <string name="user2_name">Lillian</string>
