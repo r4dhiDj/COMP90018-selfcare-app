@@ -88,6 +88,24 @@
                 android:background="@drawable/button_background"
                 android:textColor="@color/white" />
 
+            <Button
+                android:id="@+id/antmanButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Antman"
+                android:layout_margin="10dp"
+                android:background="@drawable/button_background"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/doggoButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Doggo"
+                android:layout_margin="10dp"
+                android:background="@drawable/button_background"
+                android:textColor="@color/white" />
+
 
 
             <!--                        <com.google.android.material.textfield.TextInputLayout-->

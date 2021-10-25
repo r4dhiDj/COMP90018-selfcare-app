@@ -24,6 +24,10 @@
     <string name="model_coin_png">models/coin.png</string>
     <string name="model_amogus_obj">models/amogus.obj</string>
     <string name="model_amogus_png">models/amogus.png</string>
+    <string name="model_antman_obj">models/antman.obj</string>
+    <string name="model_antman_png">models/antman.png</string>
+    <string name="model_doggo_obj">models/doggo.obj</string>
+    <string name="model_doggo_png">models/doggo.png</string>
     <string name="failed_to_read_asset">Failed to read an asset file</string>
     <string name="exception_on_opengl">Exception on the OpenGL thread</string>
     <string name="delete_all_reminders">Remove all tasks?</string>

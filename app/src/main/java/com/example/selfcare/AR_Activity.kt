@@ -51,12 +51,15 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
     private val spidermanObject = ObjectRenderer()
     private val coinObject = ObjectRenderer()
     private val amogusObject = ObjectRenderer()
+    private val antmanObject = ObjectRenderer()
+    private val doggoObject = ObjectRenderer()
 
     private var steveAttachment: PlaneAttachment? = null
     private var spidermanAttachment: PlaneAttachment? = null
     private var coinAttachment: PlaneAttachment? = null
     private var amogusAttachment: PlaneAttachment? = null
-
+    private var antmanAttachment: PlaneAttachment? = null
+    private var doggoAttachment: PlaneAttachment? = null
     // Temporary matrix allocated here to reduce number of allocations and taps for each frame.
     private val maxAllocationSize = 20
     private val anchorMatrix = FloatArray(maxAllocationSize)
@@ -145,6 +148,13 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
         bottomSheetView.findViewById<View>(R.id.amogusButton).setOnClickListener {
             mode = Mode.AMOGUS
         }
+        bottomSheetView.findViewById<View>(R.id.antmanButton).setOnClickListener {
+            mode = Mode.ANTMAN
+        }
+        bottomSheetView.findViewById<View>(R.id.doggoButton).setOnClickListener {
+            mode = Mode.DOGGO
+        }
+
 
         bottomSheetDialog.setContentView(bottomSheetView)
         bottomSheetDialog.show()
@@ -347,12 +357,15 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
             coinObject.createOnGlThread(this, getString(R.string.model_coin_obj), getString(
                 R.string.model_coin_png))
             amogusObject.createOnGlThread(this, getString(R.string.model_amogus_obj), getString(R.string.model_amogus_png))
-
+            antmanObject.createOnGlThread(this, getString(R.string.model_antman_obj), getString(R.string.model_antman_png))
+            doggoObject.createOnGlThread(this, getString(R.string.model_doggo_obj), getString(R.string.model_doggo_png))
             // 2
             coinObject.setMaterialProperties(0.0f, 3.5f, 1.0f, 6.0f)
             steveObject.setMaterialProperties(0.0f, 3.5f, 1.0f, 6.0f)
             spidermanObject.setMaterialProperties(0.0f, 3.5f, 1.0f, 6.0f)
             amogusObject.setMaterialProperties(0.0f, 3.5f, 1.0f, 6.0f)
+            antmanObject.setMaterialProperties(0.0f, 3.5f, 1.0f, 6.0f)
+            doggoObject.setMaterialProperties(0.0f, 3.5f, 1.0f, 6.0f)
 
         } catch (e: IOException) {
             Log.e(TAG, getString(R.string.failed_to_read_asset), e)
@@ -423,12 +436,12 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
                             if (coinPlanes.get(plane)!! < 3) {
 
                                 val randomOffsetX = Math.random()
-                                val randomOffsetY = Math.random()
+                                val randomOffsetZ = Math.random()
                                 val planeCenterPose = plane.centerPose
                                 val anchorPose = Pose(floatArrayOf(
                                     (planeCenterPose.tx() + randomOffsetX).toFloat(),
-                                    (planeCenterPose.ty() + randomOffsetY).toFloat(),
-                                    planeCenterPose.tz()
+                                    planeCenterPose.ty(),
+                                    (planeCenterPose.tz() + randomOffsetZ).toFloat()
                                 ), planeCenterPose.rotationQuaternion)
 
                                 val anchor = session!!.createAnchor(anchorPose)
@@ -472,6 +485,22 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
                     amogusObject,
                     amogusAttachment,
                     Mode.AMOGUS.scaleFactor,
+                    projectionMatrix,
+                    viewMatrix,
+                    lightIntensity
+                )
+                drawObject(
+                    antmanObject,
+                    antmanAttachment,
+                    Mode.ANTMAN.scaleFactor,
+                    projectionMatrix,
+                    viewMatrix,
+                    lightIntensity
+                )
+                drawObject(
+                    doggoObject,
+                    doggoAttachment,
+                    Mode.DOGGO.scaleFactor,
                     projectionMatrix,
                     viewMatrix,
                     lightIntensity
@@ -623,6 +652,8 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
                         Mode.SPIDERMAN -> spidermanAttachment = addSessionAnchorFromAttachment(spidermanAttachment, hit)
 //                        Mode.COIN -> coinAttachment = addSessionAnchorCoin(hit)
                         Mode.AMOGUS -> amogusAttachment = addSessionAnchorFromAttachment(amogusAttachment, hit)
+                        Mode.ANTMAN -> antmanAttachment = addSessionAnchorFromAttachment(antmanAttachment, hit)
+                        Mode.DOGGO -> doggoAttachment = addSessionAnchorFromAttachment(doggoAttachment, hit)
                     }
                     break
                 }
