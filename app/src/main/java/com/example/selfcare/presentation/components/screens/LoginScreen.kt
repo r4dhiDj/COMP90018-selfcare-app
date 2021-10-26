@@ -17,6 +17,7 @@ import androidx.navigation.NavController
 import com.example.selfcare.presentation.components.Screen
 import com.example.selfcare.viewmodels.MainViewModel
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 
@@ -112,6 +113,13 @@ fun LoginScreen(viewModel: MainViewModel, navController: NavController, activity
                                     while(Firebase.auth.currentUser== null){
                                         Log.d("waiting to login","")
                                     }
+//                                    val database = Firebase.database("https://kotlin-self-care-default-rtdb.firebaseio.com/").reference
+//                                    database.child("users").child(Firebase.auth.currentUser!!.uid).get().addOnSuccessListener {
+//                                        Log.i("firebase", "Got value ${it.value}")
+//                                    }.addOnFailureListener{
+//                                        Log.e("firebase", "Error getting data", it)
+//                                    }
+
                                     navController.navigate(Screen.WelcomeScreen.route)
                                 } else {
                                     Log.d("Login", "Failed: ${task.exception}")

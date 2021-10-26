@@ -14,9 +14,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.selfcare.data.model.User
 import com.example.selfcare.presentation.components.Screen
 import com.example.selfcare.viewmodels.MainViewModel
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 
@@ -112,6 +114,9 @@ fun RegisterScreen(viewModel: MainViewModel, navController: NavController, activ
                                     while(Firebase.auth.currentUser== null){
                                         Log.d("waiting to register","")
                                     }
+                                    val user = User(email.trim(), 0)
+                                    val database = Firebase.database("https://kotlin-self-care-default-rtdb.firebaseio.com/").reference
+                                    database.child("users").child(Firebase.auth.currentUser!!.uid).setValue(user)
                                     navController.navigate(Screen.WelcomeScreen.route)
                                 } else {
                                     Log.d("Auth", "Failed: ${task.exception}")

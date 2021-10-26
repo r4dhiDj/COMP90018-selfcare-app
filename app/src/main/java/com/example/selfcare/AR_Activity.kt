@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
-import android.opengl.Matrix
 import android.util.Log
 import android.view.GestureDetector
 import android.view.LayoutInflater
@@ -16,7 +15,6 @@ import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.google.ar.core.*
 import com.google.ar.core.exceptions.*
 import java.io.IOException
@@ -88,6 +86,7 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
     private lateinit var uid: String
     private lateinit var database: FirebaseDatabase
+    private lateinit var user: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -101,9 +100,7 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
         database = Firebase.database
 
-        val myRef = database.getReference(uid.value)
-        myRef.setValue("user info heree")
-
+       this.user = database.getReference("users/${uid.value}")
 
 
 
@@ -120,6 +117,24 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
         setupTapDetector()
         setupSurfaceView()
+
+    }
+
+    fun collectCoin() {
+        user.child("coins").get().addOnSuccessListener {
+            Log.i("firebase", "Got value ${it.value}")
+            var coins = it.value.toString().toInt()
+            user.child("coins").setValue(coins + 1)
+            user.child("coins").get().addOnSuccessListener {
+                Log.i("firebase", "after value ${it.value}")
+            }.addOnFailureListener{
+                Log.e("firebase", "Error getting data", it)
+            }
+        }.addOnFailureListener{
+            Log.e("firebase", "Error getting data", it)
+        }
+
+
 
     }
 
@@ -197,16 +212,6 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
         }
     }
 
-
-
-//    fun onRadioButtonClicked(view: View) {
-//        when (view.id) {
-//            R.id.radioSpiderman -> mode = Mode.SPIDERMAN
-//            R.id.radioCoin -> mode = Mode.COIN
-//            R.id.radioAmogus -> mode = Mode.AMOGUS
-//            else -> mode = Mode.STEVE
-//        }
-//    }
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -483,6 +488,7 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
                         anchor.detach()
                         coinAnchors.remove(anchor)
+                        collectCoin()
                     } else {
                         anchor.pose.toMatrix(anchorMatrix, 0)
                         // Update shader properties and draw
