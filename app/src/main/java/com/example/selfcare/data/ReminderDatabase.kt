@@ -8,9 +8,10 @@ import com.example.selfcare.data.model.Reminder
  * Database for the reminders
  */
 
-@Database(entities = [Reminder::class], version = 1, exportSchema = false)
+@Database(entities = [Reminder::class], version = 2, exportSchema = false)
 abstract class ReminderDatabase: RoomDatabase() {
 
     abstract fun reminderDao(): ReminderDao
 
 }
+

@@ -21,6 +21,7 @@ fun CreateReminderScreen (
 
     val title: String by reminderViewModel.title
     val time: String by reminderViewModel.time
+    val text: String by reminderViewModel.text
     val context = LocalContext.current
 
     Scaffold(
@@ -50,6 +51,10 @@ fun CreateReminderScreen (
                 time = time,
                 onTimeChange = {
                     reminderViewModel.time.value = it
+                },
+                text = text,
+                onTextChange = {
+                    reminderViewModel.text.value = it
                 },
                 reminderViewModel = reminderViewModel
             )

@@ -13,14 +13,7 @@ data class Reminder(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val title: String,
-    val time: String
+    val time: String,
+    val text: String
 
 )
-
-
-
-//val defaultReminders = listOf(
-//    Reminder("Go to bed ", "11:00"),
-//    Reminder("Water Plants", "5:00"),
-//    Reminder("Feed Cat", "7:00")
-//)

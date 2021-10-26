@@ -25,6 +25,8 @@ fun ReminderContent (
     onTitleChange: (String) -> Unit,
     time: String,
     onTimeChange: (String) -> Unit,
+    text: String,
+    onTextChange: (String) -> Unit,
     reminderViewModel: ReminderViewModel
 ) {
 
@@ -52,6 +54,18 @@ fun ReminderContent (
             reminderViewModel = reminderViewModel,
             time = time,
             onTimeChange = { onTimeChange(it) }
+        )
+        Divider(
+            modifier = Modifier
+                .height(8.dp),
+            color = MaterialTheme.colors.background
+        )
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = text,
+            onValueChange = { onTextChange(it) },
+            label = { Text("Add some short text...") },
+            textStyle = MaterialTheme.typography.body1
         )
 
 

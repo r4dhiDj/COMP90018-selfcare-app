@@ -52,25 +52,10 @@ fun ReminderCard (
                 Alignment.CenterVertically
             ) {
                 Text(
-                    text = reminder.time, // frequency + time
+                    text = reminder.time
                 )
-//                TextButton(onClick = { /*TODO*/ },
-//                    modifier = Modifier
-//                        .wrapContentWidth(Alignment.End),
-//                    colors = ButtonDefaults.textButtonColors(
-//                        contentColor = Color(0xffff0000)
-//
-//                    )) {
-//                    Text("Delete")
-//                }
             }
         }
     }
 }
 
-@ExperimentalMaterialApi
-@Preview
-@Composable
-fun ReminderPreview() {
-    ReminderCard(reminder = Reminder(0, "Feed Cat", "11:00"), navigateToReminder = {})
-}

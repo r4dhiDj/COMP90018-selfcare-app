@@ -36,6 +36,7 @@ class ReminderViewModel @Inject constructor (
     val id: MutableState<Int> = mutableStateOf(0)
     val title: MutableState<String> = mutableStateOf("")
     val time: MutableState<String> = mutableStateOf("")
+    val text: MutableState<String> = mutableStateOf("")
 
     val action: MutableState<Action> = mutableStateOf(Action.NO_ACTION)
 
@@ -81,7 +82,8 @@ class ReminderViewModel @Inject constructor (
         viewModelScope.launch(Dispatchers.IO) {
             val reminder = Reminder(
                 title = title.value,
-                time = time.value
+                time = time.value,
+                text = text.value
             )
             reminderRepository.addReminder(reminder = reminder)
         }
@@ -95,7 +97,8 @@ class ReminderViewModel @Inject constructor (
             val reminder = Reminder(
                 id = id.value,
                 title = title.value,
-                time = time.value
+                time = time.value,
+                text = text.value
             )
             reminderRepository.updateReminder(reminder = reminder)
         }
@@ -109,7 +112,8 @@ class ReminderViewModel @Inject constructor (
             val reminder = Reminder(
                 id = id.value,
                 title = title.value,
-                time = time.value
+                time = time.value,
+                text = text.value
             )
 
             reminderRepository.deleteReminder(reminder = reminder)
@@ -181,11 +185,13 @@ class ReminderViewModel @Inject constructor (
             id.value = reminder.id
             title.value = reminder.title
             time.value = reminder.time
+            text.value = reminder.text
         } else {
             getCurrentTime()
             id.value = 0
             title.value = ""
             time.value = String.format("%02d:%02d", hour, minute)
+            text.value = ""
         }
     }
 
@@ -200,7 +206,7 @@ class ReminderViewModel @Inject constructor (
     }
 
     fun validateFields(): Boolean {
-        return title.value.isNotEmpty() && time.value.isNotEmpty()
+        return title.value.isNotEmpty() && time.value.isNotEmpty() && text.value.isNotEmpty()
     }
 
 
