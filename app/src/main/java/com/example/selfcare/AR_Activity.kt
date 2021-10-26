@@ -14,6 +14,8 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContentProviderCompat.requireContext
 import com.google.ar.core.*
 import com.google.ar.core.exceptions.*
@@ -25,6 +27,11 @@ import com.example.selfcare.presentation.components.helpers.*
 import com.example.selfcare.presentation.components.rendering.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import kotlin.math.abs
 
 
@@ -82,9 +89,25 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
     // Test Comment
 
+    private lateinit var uid: String
+    private lateinit var database: FirebaseDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
+
+        val user = Firebase.auth.currentUser
+        var uid: MutableState<String> = mutableStateOf("")
+        user?.let{
+            uid.value = user.uid
+            Log.d("USER UID ", user.uid)
+        }
+
+        database = Firebase.database
+
+        val myRef = database.getReference(uid.value)
+        myRef.setValue("user info heree")
+
+
 
 
         super.onCreate(savedInstanceState)

@@ -107,7 +107,11 @@ fun LoginScreen(viewModel: MainViewModel, navController: NavController, activity
                             .addOnCompleteListener(activityContext) { task ->
                                 if (task.isSuccessful) {
                                     viewModel.setUserEmail(email.trim())
+                                    Log.d("inside on complete", email)
                                     navController.popBackStack() //so back button doesn't return to register page
+                                    while(Firebase.auth.currentUser== null){
+                                        Log.d("waiting to login","")
+                                    }
                                     navController.navigate(Screen.WelcomeScreen.route)
                                 } else {
                                     Log.d("Login", "Failed: ${task.exception}")

@@ -134,4 +134,5 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
 
     implementation 'androidx.preference:preference-ktx:1.1.1'
+    implementation 'com.google.firebase:firebase-database-ktx'
 }

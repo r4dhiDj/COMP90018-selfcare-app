@@ -23,7 +23,7 @@ fun WelcomeScreen(viewModel: MainViewModel,
     var username by remember { mutableStateOf("") }
     var newUsername by remember { mutableStateOf("") }
 
-    LaunchedEffect(key1 = viewModel.displayName.value){
+    LaunchedEffect(key1 = viewModel.displayName.value, viewModel.email.value){
         viewModel.getUsername()
         username = viewModel.displayName.value
         viewModel.getUserUid()

@@ -28,6 +28,7 @@ fun RegisterScreen(viewModel: MainViewModel, navController: NavController, activ
     if (Firebase.auth.currentUser!= null) {
         navController.popBackStack()
         navController.navigate(Screen.WelcomeScreen.route)
+        Log.d("inside register screen check user" , Firebase.auth.currentUser.toString())
     }
     Card(
         modifier = Modifier
@@ -108,6 +109,9 @@ fun RegisterScreen(viewModel: MainViewModel, navController: NavController, activ
                                 if (task.isSuccessful) {
                                     viewModel.setUserEmail(email.trim())
                                     navController.popBackStack() //so back button doesn't return to register page
+                                    while(Firebase.auth.currentUser== null){
+                                        Log.d("waiting to register","")
+                                    }
                                     navController.navigate(Screen.WelcomeScreen.route)
                                 } else {
                                     Log.d("Auth", "Failed: ${task.exception}")
