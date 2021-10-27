@@ -1,7 +1,6 @@
 package com.example.selfcare.presentation.components
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.pm.PackageManager
 import android.util.Log
@@ -9,27 +8,17 @@ import android.view.ViewGroup
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.ImageProxy
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.remember
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.semantics.Role.Companion.Button
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
-import androidx.ui.core.ContextAmbient
-import androidx.ui.core.LifecycleOwnerAmbient
-import com.example.selfcare.R
-import java.util.concurrent.Executors
 
 
 @Composable

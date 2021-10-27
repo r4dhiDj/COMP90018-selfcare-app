@@ -1,4 +1,4 @@
-package com.example.selfcare.presentation.components.rendering
+package com.example.selfcare.presentation.components
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -21,8 +21,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.selfcare.R
-import com.example.selfcare.presentation.components.Screen
-import com.example.selfcare.presentation.components.sendNotification
 import com.example.selfcare.ui.theme.IBMPlexMono
 import com.example.selfcare.ui.theme.Pink700
 import com.example.selfcare.viewmodels.MainViewModel

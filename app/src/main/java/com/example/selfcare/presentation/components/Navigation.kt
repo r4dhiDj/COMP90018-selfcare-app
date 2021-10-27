@@ -1,6 +1,5 @@
 package com.example.selfcare.presentation.components
 
-import android.content.Context
 import android.content.Context.VIBRATOR_SERVICE
 import android.content.Intent
 import android.media.MediaPlayer
@@ -9,31 +8,20 @@ import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.internal.composableLambda
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
-import com.example.selfcare.presentation.reminders.CreateReminderScreen
-import com.example.selfcare.presentation.reminders.ReminderScreen
 import com.example.selfcare.viewmodels.ReminderViewModel
 import com.example.selfcare.AR_Activity
 import com.example.selfcare.presentation.reminders.ReminderNav
 import com.example.selfcare.presentation.reminders.destinations.listComposable
 import com.example.selfcare.presentation.reminders.destinations.reminderComposable
-import com.example.selfcare.presentation.components.rendering.SettingsScreen
 import com.example.selfcare.viewmodels.MainViewModel
 import com.example.selfcare.R
-import com.example.selfcare.presentation.components.screens.LoginScreen
-import com.example.selfcare.presentation.components.screens.RegisterScreen
+import com.example.selfcare.presentation.components.screens.*
 import com.example.selfcare.viewmodels.BreatheViewModel
 
 @ExperimentalMaterialApi
@@ -66,7 +54,7 @@ fun Navigation(activityContext: ComponentActivity,
         composable(
             route = Screen.StoreScreen.route
         ) {
-            StoreScreen(navController = navController)
+            StoreScreen(viewModel = viewModel, navController = navController)
         }
         composable(
             route = Screen.SettingsScreen.route

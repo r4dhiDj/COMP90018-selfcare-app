@@ -1,10 +1,13 @@
 package com.example.selfcare.presentation.components
 
 import android.util.Log
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -21,35 +24,61 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.selfcare.R
 import com.example.selfcare.ui.theme.*
+import com.example.selfcare.viewmodels.MainViewModel
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
+import com.google.firebase.ktx.Firebase
 
+@ExperimentalFoundationApi
 @Composable
-fun StoreScreen (navController : NavController) {
+fun StoreScreen (viewModel: MainViewModel, navController : NavController) {
+
+    val database = Firebase.database("https://kotlin-self-care-default-rtdb.firebaseio.com/").reference
+    val user = Firebase.auth.currentUser
+
+    val userRef = database.child("users").child(user!!.uid).ref
+    val coinsRef = userRef.child("coins").ref
+    val userItemsRef = userRef.child("items").ref
+
+    val coinsListener = object : ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            // Get Post object and use the values to update the UI
+            viewModel.setCoins(dataSnapshot.getValue<Int>()!!)
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {
+            // Getting Post failed, log a message
+            Log.w("STORE", "loadCoins:onCancelled", databaseError.toException())
+        }
+    }
+
+    coinsRef.addValueEventListener(coinsListener)
+
+    fun buyItem(bought: Buyable) {
+
+        userItemsRef.child(bought.name).get().addOnFailureListener {
+            coinsRef.setValue(viewModel.coins.value - bought.cost)
+            userItemsRef.child(bought.name).setValue(true)
+        }
+    }
 
     Box(
         modifier = Modifier.fillMaxSize(),
     ) {
 
         // Store items
-        LazyColumn(
-            modifier = Modifier
-                .offset(x = 0.dp, y = 80.dp)
-                .fillMaxWidth()
-                .fillMaxHeight(0.9f)
-                .padding(18.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            items(30) {
-                StoreItem(
-                    item = Buyable(
-                        cost = it,
-                        imageId = R.drawable.ic_face,
-                        description = "Description for item $it",
-                        name = "Item $it"
-                    )
-                )
-            }
-        }
+        StoreItemsList(items =
+            listOf(
+                Buyable(name = "Spiderman", cost = 20),
+                Buyable(name = "Steve", cost = 15),
+                Buyable(name = "Amogus", cost = 10),
+            ),
+            onClick = ::buyItem
+        )
 
         // Top bar
         Row(
@@ -57,79 +86,96 @@ fun StoreScreen (navController : NavController) {
                 .fillMaxWidth()
                 .background(Pink700)
                 .padding(15.dp),
-            horizontalArrangement = Arrangement.Start,
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            IconButton(
-                content = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_chevron_left),
-                        contentDescription = "store",
-                        tint = Color.White,
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .clip(RoundedCornerShape(20.dp))
-                    )
-                },
-                onClick = { navController.navigate(Screen.MenuScreen.route) }
-            )
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(
+                    content = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_chevron_left),
+                            contentDescription = "store",
+                            tint = Color.White,
+                            modifier = Modifier
+                                .padding(10.dp)
+                                .clip(RoundedCornerShape(20.dp))
+                        )
+                    },
+                    onClick = { navController.navigate(Screen.MenuScreen.route) }
+                )
 
-            Icon(
-                painter = painterResource(id = R.drawable.ic_store),
-                contentDescription = "store",
-                tint = Color.White,
-                modifier = Modifier.padding(10.dp)
-            )
-            Text(
-                text = "Store",
-                fontFamily = IBMPlexMono,
-                fontWeight = FontWeight.Light,
-                color = Color.White
-            )
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_store),
+                    contentDescription = "store",
+                    tint = Color.White,
+                    modifier = Modifier.padding(10.dp)
+                )
+                Text(
+                    text = "Store",
+                    fontFamily = IBMPlexMono,
+                    fontWeight = FontWeight.Light,
+                    color = Color.White
+                )
+            }
+
+            Row (
+                modifier = Modifier
+                    .clip(RoundedCornerShape(20.dp))
+                    .padding(10.dp, 5.dp),
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_coin),
+                    contentDescription = "User coins",
+                    tint = Orange400,
+                )
+                Spacer(modifier = Modifier
+                    .width(15.dp))
+                Text(
+                    text = viewModel.coins.value.toString(),
+                    fontFamily = IBMPlexMono,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+
+            }
         }
     }
+}
 
-    //Box (
-    //    modifier = Modifier
-    //        .fillMaxSize()
-    //        .background(
-    //            brush = Brush.verticalGradient(
-    //                colors = listOf
-    //                    (
-    //                    Color.Transparent,
-    //                    Color(0x66FFFFFF)
-    //                ),
-    //                startY = 500f,
-    //            ),
-    //        ),
-    //)
+@ExperimentalFoundationApi
+@Composable
+fun StoreItemsList(items: List<Buyable>, onClick: (bought: Buyable) -> Unit) {
 
-    // Home button
-    //IconButton(
-    //    modifier = Modifier
-    //        .size(60.dp)
-    //        .offset(x = 25.dp, y = 670.dp)
-    //        .clip(CircleShape)
-    //        .background(Orange400),
-    //    onClick = {
-    //        Log.v(
-    //            "test", "Home button pressed in Store"
-    //        )
-    //    },
-    //    content = {
-    //        Icon(
-    //            painter = painterResource(id = R.drawable.ic_home),
-    //            contentDescription = "home",
-    //            tint = Orange700,
-    //            modifier = Modifier.fillMaxSize(0.6f)
-    //        )
-    //    }
-    //)
+    LazyVerticalGrid(
+        cells = GridCells.Fixed(2),
+        contentPadding  = PaddingValues(
+            start = 15.dp,
+            end = 15.dp,
+            top = 100.dp,
+            bottom = 45.dp
+        ),
+        modifier = Modifier.fillMaxWidth(),
+        content = {
+            items(items.size) {
+                StoreItem(items[it], onClick = onClick)
+            }
+        }
+    )
+
 }
 
 @Composable
-fun StoreItem(item: Buyable) {
+fun StoreItem(item: Buyable, onClick: (bought: Buyable) -> Unit) {
+
+    val database = Firebase.database("https://kotlin-self-care-default-rtdb.firebaseio.com/").reference
+    val user = Firebase.auth.currentUser
+
+    val userRef = database.child("users").child(user!!.uid).ref
+    val itemRef = userRef.child("items").child(item.name).ref
 
     val colours = listOf(
         listOf(Pink200, Pink500, Pink700),
@@ -144,18 +190,21 @@ fun StoreItem(item: Buyable) {
     val darkColour = chosenColour[1]
     val darkestColour = chosenColour[2]
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(20.dp))
-            .background(darkColour)
-            .padding(12.dp)
-        ,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+        Column (
 
-        Row (verticalAlignment = Alignment.CenterVertically){
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(15.dp)
+                .clip(RoundedCornerShape(20.dp))
+                .background(darkColour)
+                .padding(12.dp)
+                .clickable {
+                    onClick(item)
+                }
+            ,
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Icon(
                 painter = painterResource(item.imageId),
                 contentDescription = "icon for ${item.name}",
@@ -163,53 +212,44 @@ fun StoreItem(item: Buyable) {
                 modifier = Modifier.size(70.dp)
             )
 
-            Spacer(modifier = Modifier
-                .fillMaxHeight()
-                .width(14.dp))
-
-            Column(modifier = Modifier.fillMaxWidth(0.5f)) {
-                Text(
-                    text = item.name,
-                    fontFamily = IBMPlexMono,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
-                    color = Color.White
-                )
-
-                Text(
-                    text = item.description,
-                    fontFamily = Inter,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 14.sp,
-                    color = Color.White
-                )
-
-            }
-        }
-
-        Row (
-            modifier = Modifier
-                .clip(RoundedCornerShape(20.dp))
-                .background(lightColour)
-                .padding(10.dp),
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_coin),
-                contentDescription = "coins ${item.name}",
-                tint = Orange400,
-            )
-            Spacer(modifier = Modifier.fillMaxHeight().width(15.dp))
             Text(
-                text = item.cost.toString(),
+                text = item.name,
                 fontFamily = IBMPlexMono,
                 fontWeight = FontWeight.Bold,
-                color = darkestColour
+                fontSize = 20.sp,
+                color = Color.White
             )
-            Spacer(modifier = Modifier.fillMaxHeight().width(15.dp))
-        }
+
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(14.dp))
+
+            Row (
+                modifier = Modifier
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(lightColour)
+                    .padding(10.dp, 5.dp),
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_coin),
+                    contentDescription = "coins ${item.name}",
+                    tint = Orange400,
+                )
+                Spacer(modifier = Modifier
+                    .fillMaxHeight()
+                    .width(15.dp))
+                Text(
+                    text = item.cost.toString(),
+                    fontFamily = IBMPlexMono,
+                    fontWeight = FontWeight.Bold,
+                    color = darkestColour
+                )
+
+                Spacer(modifier = Modifier
+                    .fillMaxHeight()
+                    .width(15.dp))
+            }
+
     }
-    Spacer(modifier = Modifier
-        .fillMaxWidth()
-        .height(16.dp))
 }
 
