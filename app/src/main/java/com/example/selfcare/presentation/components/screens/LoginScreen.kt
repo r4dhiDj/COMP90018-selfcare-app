@@ -38,7 +38,7 @@ fun LoginScreen(viewModel: MainViewModel, navController: NavController, activity
     val auth = Firebase.auth
     var email by remember {mutableStateOf("")}
     var password by remember {mutableStateOf("")}
-    var passwordVisibility by remember {mutableStateOf(true)}
+    var passwordVisibility by remember {mutableStateOf(false)}
     if (Firebase.auth.currentUser!= null) {
         navController.popBackStack()
         navController.navigate(Screen.WelcomeScreen.route)
