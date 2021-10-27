@@ -7,7 +7,6 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import com.example.selfcare.data.model.Reminder
 import com.example.selfcare.util.Action
@@ -126,7 +125,7 @@ fun UpdateAction(
     onUpdateClicked: (Action) -> Unit
 ) {
     IconButton(onClick = {
-        onUpdateClicked(Action.UPDATE) }) {
+        onUpdateClicked(Action.UPDATED) }) {
         Icon(imageVector = Icons.Filled.Check,
             contentDescription = "Update Icon",
         )

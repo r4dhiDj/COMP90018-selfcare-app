@@ -1,14 +1,12 @@
 package com.example.selfcare.viewmodels
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.ui.graphics.vectormath.min
-import androidx.ui.viewmodel.viewModel
 import com.example.selfcare.data.model.Reminder
 import com.example.selfcare.data.model.repositories.ReminderRepository
 import com.example.selfcare.util.Action
@@ -143,7 +141,7 @@ class ReminderViewModel @Inject constructor (
             Action.ADD -> {
                 addReminder()
             }
-            Action.UPDATE -> {
+            Action.UPDATED -> {
                 updateReminder()
             }
             Action.DELETE -> {
@@ -207,6 +205,34 @@ class ReminderViewModel @Inject constructor (
 
     fun validateFields(): Boolean {
         return title.value.isNotEmpty() && time.value.isNotEmpty() && text.value.isNotEmpty()
+    }
+
+
+    /**
+     *  Sets an alarm
+     */
+    fun  setAlarm(
+        context: Context,
+        callback: (Long) -> (Unit)
+    ) {
+
+        val alarmTime = time.value
+        val split = alarmTime.split(":")
+        val alarmHour = Integer.parseInt(split[0])
+        val alarmMinute = Integer.parseInt(split[1])
+
+        Calendar.getInstance().apply {
+            Log.d("SET ALARM:", "setAlarm: $alarmHour + $alarmMinute")
+            this.set(Calendar.HOUR_OF_DAY, alarmHour)
+            this.set(Calendar.MINUTE, alarmMinute)
+            callback(this.timeInMillis)
+        }
+        Toast.makeText(
+            context,
+            "Reminder Set: ${title.value}",
+            Toast.LENGTH_SHORT
+        ).show()
+
     }
 
 

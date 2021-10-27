@@ -10,13 +10,15 @@ import com.example.selfcare.util.Action
 import com.example.selfcare.viewmodels.ReminderViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
+import com.example.selfcare.service.AlarmService
 
 
 @Composable
 fun CreateReminderScreen (
     selectedReminder: Reminder?,
     navigateToReminderScreen: (Action) -> Unit,
-    reminderViewModel: ReminderViewModel
+    reminderViewModel: ReminderViewModel,
+    alarmService: AlarmService
 ) {
 
     val title: String by reminderViewModel.title
@@ -31,6 +33,19 @@ fun CreateReminderScreen (
                 navigateToReminderScreen = { action ->
                     if (action == Action.NO_ACTION) {
                         navigateToReminderScreen(action)
+                    } else if (action == Action.ADD || action == Action.UPDATED) {
+                        if (reminderViewModel.validateFields()) {
+                            reminderViewModel.setAlarm(
+                                context = context
+                            ) {timeInMillis -> alarmService.setExactAlarm(
+                                timeInMillis,
+                                reminderViewModel.title.value,
+                                reminderViewModel.text.value
+                            )}
+                            navigateToReminderScreen(action)
+                        } else {
+                            displayToast(context)
+                        }
                     } else {
                         if (reminderViewModel.validateFields()) {
                             navigateToReminderScreen(action)
@@ -56,7 +71,8 @@ fun CreateReminderScreen (
                 onTextChange = {
                     reminderViewModel.text.value = it
                 },
-                reminderViewModel = reminderViewModel
+                reminderViewModel = reminderViewModel,
+                alarmService = alarmService
             )
 
         }

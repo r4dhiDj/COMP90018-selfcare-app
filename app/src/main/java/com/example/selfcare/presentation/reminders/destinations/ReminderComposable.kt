@@ -12,12 +12,14 @@ import com.example.selfcare.constants.Constants.REMINDER_ARGUMENT_KEY
 import com.example.selfcare.presentation.components.Screen
 import com.example.selfcare.presentation.reminders.CreateReminderScreen
 import com.example.selfcare.presentation.reminders.ReminderScreen
+import com.example.selfcare.service.AlarmService
 import com.example.selfcare.util.Action
 import com.example.selfcare.viewmodels.ReminderViewModel
 
 fun NavGraphBuilder.reminderComposable(
     navigateToReminderScreen: (Action) -> Unit,
-    reminderViewModel: ReminderViewModel
+    reminderViewModel: ReminderViewModel,
+    alarmService: AlarmService
 ){
     composable(
         route = Screen.CreateReminderScreen.route,
@@ -44,7 +46,8 @@ fun NavGraphBuilder.reminderComposable(
         CreateReminderScreen(
             selectedReminder = selectedReminder,
             navigateToReminderScreen = navigateToReminderScreen,
-            reminderViewModel = reminderViewModel
+            reminderViewModel = reminderViewModel,
+            alarmService = alarmService
         )
 
     }

@@ -18,7 +18,7 @@ import com.example.selfcare.R
 val CHANNEL_ID = "10101010"
 var notificationId = 1
 
-@Composable
+//@Composable
 fun sendNotification(context: Context, notifTitle: String, notifText: String){
 
     val intent = Intent(context, MainActivity::class.java).apply {
@@ -44,7 +44,7 @@ fun sendNotification(context: Context, notifTitle: String, notifText: String){
 
 }
 
-@Composable
+//@Composable
 fun createNotificationChannel(context: Context) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         val name = "self_care_channel"

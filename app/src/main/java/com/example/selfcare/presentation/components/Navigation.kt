@@ -34,6 +34,7 @@ import com.example.selfcare.viewmodels.MainViewModel
 import com.example.selfcare.R
 import com.example.selfcare.presentation.components.screens.LoginScreen
 import com.example.selfcare.presentation.components.screens.RegisterScreen
+import com.example.selfcare.service.AlarmService
 import com.example.selfcare.viewmodels.BreatheViewModel
 
 @ExperimentalMaterialApi
@@ -41,7 +42,8 @@ import com.example.selfcare.viewmodels.BreatheViewModel
 @Composable
 fun Navigation(activityContext: ComponentActivity,
                viewModel: MainViewModel,
-               reminderViewModel: ReminderViewModel
+               reminderViewModel: ReminderViewModel,
+               alarmService: AlarmService
 ) {
     val navController = rememberNavController()
     val reminderNav = remember(navController) {
@@ -61,7 +63,8 @@ fun Navigation(activityContext: ComponentActivity,
         )
         reminderComposable(
             navigateToReminderScreen = reminderNav.list,
-            reminderViewModel = reminderViewModel
+            reminderViewModel = reminderViewModel,
+            alarmService = alarmService
         )
         composable(
             route = Screen.StoreScreen.route
