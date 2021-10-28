@@ -366,33 +366,10 @@ fun SettingsScreen(
                     Text(color = Color.White, text = "Delete")
                 }
             }
-
-
-            //Rows below are just to test navigation, to be move later.
-            Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 12.dp, bottom = 12.dp, start = 20.dp, end = 20.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Button(onClick = { callNotif = true }) {
-                    Text("Test Notification")
-                }
-            }
+            Spacer(modifier = Modifier.padding(20.dp))
 
         }
 
-        if (callNotif) {
-            sendNotification(
-                context = context,
-                notifTitle = "Hellothere",
-                notifText = "selfcareeirfjoeifoerijeorij"
-            )
-            Text("Hello")
-            callNotif = false
-
-        }
     }
 }
 
