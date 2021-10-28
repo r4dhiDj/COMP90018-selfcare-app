@@ -315,7 +315,11 @@ fun SettingsScreen(
                         Button(
                             onClick = {
                                 viewModel.signOut()
-                                navController.navigate(Screen.RegisterScreen.route)
+                                navController.navigate(Screen.LoginScreen.route) {
+                                    popUpTo(Screen.WelcomeScreen.route) {
+                                        inclusive = true
+                                    }
+                                }
                             }
                         ) {
                             Text(color = Color.White, text = "Sign Out")
@@ -344,12 +348,15 @@ fun SettingsScreen(
                                 darkMode = false
                                 viewModel.setDarkMode(darkMode)
                                 viewModel.setUsername(username)
-                                navController.popBackStack()
                                 viewModel.deleteUser()
                                 while (Firebase.auth.currentUser != null) {
                                     Log.d("waiting to delete user", "")
                                 }
-                                navController.navigate(Screen.RegisterScreen.route)
+                                navController.navigate(Screen.RegisterScreen.route) {
+                                    popUpTo(Screen.WelcomeScreen.route) {
+                                        inclusive = true
+                                    }
+                                }
                             }
                         ) {
                             Text(color = Color.White, text = "Delete")
