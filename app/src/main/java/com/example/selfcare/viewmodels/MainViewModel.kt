@@ -55,12 +55,12 @@ class MainViewModel @Inject constructor(
 //        }
 //    }
 
-    fun setNotifMode(isNotifMode: Boolean){
-        viewModelScope.launch(IO){
-            settingsDataStoreImpl.storeNotifMode(isNotifMode)
-//            notifModeState.value = isNotifMode
-        }
-    }
+//    fun setNotifMode(isNotifMode: Boolean){
+//        viewModelScope.launch(IO){
+//            settingsDataStoreImpl.storeNotifMode(isNotifMode)
+////            notifModeState.value = isNotifMode
+//        }
+//    }
 
     /**fun getUsername(){
         viewModelScope.launch(IO){

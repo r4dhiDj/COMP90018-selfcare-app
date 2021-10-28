@@ -38,7 +38,6 @@ fun SettingsScreen(
 
     var username by remember { mutableStateOf("") }
     var darkMode by remember { mutableStateOf(false) }
-    var notifMode by remember { mutableStateOf(true) }
     var email by remember { mutableStateOf("")}
     val scrollState = rememberScrollState()
     var passwordVisibility by remember {mutableStateOf(false)}
@@ -300,33 +299,6 @@ fun SettingsScreen(
                         )
                     }
 
-                    //notification settings
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 12.dp, bottom = 12.dp, start = 20.dp, end = 20.dp),
-                        Arrangement.SpaceBetween,
-                        Alignment.CenterVertically
-                    ) {
-                        Text(
-                            "Notification",
-                            style = MaterialTheme.typography.h3
-                        )
-                        Switch(
-//                            modifier = Modifier.background(Blue700),
-                            checked = notifMode,
-                            onCheckedChange = {
-                                notifMode = it
-                                viewModel.setNotifMode(it)
-                            },
-                            colors = SwitchDefaults.colors(
-                                checkedThumbColor = MaterialTheme.colors.primary,
-                                checkedTrackColor = MaterialTheme.colors.primary,
-                                uncheckedThumbColor = MaterialTheme.colors.onSurface,
-                                uncheckedTrackColor = MaterialTheme.colors.onSurface
-                            )
-                        )
-                    }
 
                     //sign out
                     Row(
@@ -370,10 +342,8 @@ fun SettingsScreen(
                             onClick = {
                                 username = ""
                                 darkMode = false
-                                notifMode = true
                                 viewModel.setDarkMode(darkMode)
                                 viewModel.setUsername(username)
-                                viewModel.setNotifMode(notifMode)
                                 navController.popBackStack()
                                 viewModel.deleteUser()
                                 while (Firebase.auth.currentUser != null) {

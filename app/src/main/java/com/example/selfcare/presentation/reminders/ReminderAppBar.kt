@@ -7,8 +7,12 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.sp
 import com.example.selfcare.data.model.Reminder
+import com.example.selfcare.ui.theme.IBMPlexMono
 import com.example.selfcare.util.Action
 
 @Composable
@@ -88,7 +92,10 @@ fun ExistingTaskAppBar(
                 text = selectedReminder.title,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.h1
+                fontFamily = IBMPlexMono,
+                fontWeight = FontWeight.Light,
+                color = Color.White,
+                fontSize = 18.sp
             )
         },
         actions = {
