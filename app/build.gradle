@@ -119,4 +119,9 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:28.4.2')
     implementation 'com.google.firebase:firebase-database-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
+
+
+    implementation 'com.paralleldots:paralleldots:1.0.2'
+    implementation("org.json:json:20141113")
+
 }
