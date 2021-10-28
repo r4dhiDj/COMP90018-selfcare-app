@@ -2,7 +2,7 @@ package com.example.selfcare.util
 
 enum class Action {
     ADD,
-    UPDATE,
+    UPDATED,
     DELETE,
     DELETE_ALL,
     UNDO,
@@ -14,8 +14,8 @@ fun  String?.toAction(): Action {
         this == "ADD" -> {
             Action.ADD
         }
-        this == "UPDATE" -> {
-            Action.UPDATE
+        this == "UPDATED" -> {
+            Action.UPDATED
         }
         this == "DELETE" -> {
             Action.DELETE

@@ -1,5 +1,10 @@
 package com.example.selfcare
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 
 import androidx.activity.compose.setContent
@@ -26,6 +31,7 @@ import androidx.lifecycle.ViewModel
 import com.example.selfcare.viewmodels.ReminderViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.selfcare.data.local.SettingsDataStoreImpl
+import com.example.selfcare.service.AlarmService
 import com.example.selfcare.viewmodels.MainViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -38,6 +44,7 @@ class MainActivity : AppCompatActivity() {
 
     // Instantiate ViewModels
     private val reminderViewModel: ReminderViewModel by viewModels()
+    lateinit var alarmService: AlarmService
 
     @ExperimentalMaterialApi
     @ExperimentalFoundationApi
@@ -46,6 +53,7 @@ class MainActivity : AppCompatActivity() {
         //settingsDataStore = SettingsDataStore(this)
         //setInitialTheme()
         //observeData()
+        alarmService = AlarmService(this)
         setContent {
             val viewModel = hiltViewModel<MainViewModel>()
             AppMain(viewModel)
@@ -63,11 +71,17 @@ class MainActivity : AppCompatActivity() {
         SelfCareTheme(darkMode = darkMode) {
             Surface(color = MaterialTheme.colors.background) {
                 createNotificationChannel(this)
-                Navigation(this, viewModel=viewModel, reminderViewModel = reminderViewModel)
+                Navigation(
+                    this,
+                    viewModel = viewModel,
+                    reminderViewModel = reminderViewModel,
+                    alarmService
+                )
             }
         }
 
-    }    }
+    }
+}
 
 
 
