@@ -13,7 +13,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,10 +27,27 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.selfcare.ui.theme.*
 import com.example.selfcare.R
+import com.example.selfcare.viewmodels.MainViewModel
+import com.google.firebase.ktx.Firebase
+import java.sql.Timestamp
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.temporal.ChronoField
+import java.time.temporal.TemporalField
 
 @ExperimentalFoundationApi
 @Composable
-fun MenuScreen(navController: NavController) {
+fun MenuScreen(viewModel: MainViewModel, navController: NavController) {
+
+    var username by remember { mutableStateOf("") }
+
+    LaunchedEffect(key1 = viewModel.displayName.value, viewModel.email.value){
+        viewModel.getUsername()
+        username = viewModel.displayName.value
+    }
+
     Box(modifier = Modifier
         .background(
             brush = Brush.verticalGradient(
@@ -45,7 +62,7 @@ fun MenuScreen(navController: NavController) {
         .fillMaxSize()
     ) {
         Column {
-            GreetingSection()
+            GreetingSection(username)
             FeatureSection(
                 features = listOf(
                     Feature(
@@ -99,36 +116,25 @@ fun MenuScreen(navController: NavController) {
                 )
             )
         }
-
-        // Home button
-        IconButton(
-            modifier = Modifier
-                .size(60.dp)
-                .offset(x = 25.dp, y = 670.dp)
-                .clip(CircleShape)
-                .background(Orange400),
-            onClick = {
-                Log.v(
-                    "test", "Home button pressed in Menu"
-                )
-            },
-            content = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_home),
-                    contentDescription = "home",
-                    tint = Orange700,
-                    modifier = Modifier.fillMaxSize(0.6f)
-                )
-            }
-        )
     }
-
 }
 
 @Composable
 fun GreetingSection(
-    name: String = "Joe Mama"
+    name: String = ""
 ) {
+
+    val currentDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(System.currentTimeMillis()), ZoneId.systemDefault())
+
+    val noon = LocalDateTime.now().with(ChronoField.HOUR_OF_DAY, 12).with(ChronoField.MINUTE_OF_HOUR, 0).with(ChronoField.MILLI_OF_SECOND, 0)
+    val evening = LocalDateTime.now().with(ChronoField.HOUR_OF_DAY, 18).with(ChronoField.MINUTE_OF_HOUR, 0).with(ChronoField.MILLI_OF_SECOND, 0)
+    val midnight = LocalDateTime.now().with(ChronoField.HOUR_OF_DAY, 23).with(ChronoField.MINUTE_OF_HOUR, 59).with(ChronoField.MILLI_OF_SECOND, 0)
+
+    Log.d("MENU_SCREEN", "Current datetime: $currentDateTime")
+    Log.d("MENU_SCREEN", "Current noon: $noon")
+    Log.d("MENU_SCREEN", "Current evening: $evening")
+    Log.d("MENU_SCREEN", "Current midnight: $midnight")
+
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
@@ -136,20 +142,24 @@ fun GreetingSection(
             .fillMaxWidth()
             .padding(0.dp, 0.dp, 0.dp, 10.dp)
     ) {
-        Column(
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = "Good Morning $name",
-                style = MaterialTheme.typography.h1, color = Color.White,
 
-            )
-            Text(
-                text = "Let's Fucking Go",
-                style = MaterialTheme.typography.h2, color = Color.White
-
-            )
-        }
+        Text(
+            modifier = Modifier.padding(0.dp, 30.dp),
+            textAlign = TextAlign.Center,
+            text = when {
+                currentDateTime.isBefore(noon) -> {
+                    "Good morning, $name!"
+                }
+                currentDateTime.isBefore(evening) -> {
+                    "Good afternoon, $name!"
+                }
+                currentDateTime.isBefore(midnight) -> {
+                    "Good evening, $name!"
+                }
+                else -> "Hey there, $name!"
+            },
+            style = MaterialTheme.typography.h1, color = Color.White,
+        )
     }
 }
 

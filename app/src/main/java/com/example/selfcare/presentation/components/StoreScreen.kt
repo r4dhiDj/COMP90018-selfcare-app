@@ -59,8 +59,8 @@ fun StoreScreen (viewModel: MainViewModel, navController : NavController) {
     coinsRef.addValueEventListener(coinsListener)
 
     fun buyItem(bought: Buyable) {
-
-        userItemsRef.child(bought.name).get().addOnFailureListener {
+        userItemsRef.child(bought.name).get().addOnSuccessListener {
+            Log.d("STORE", "Buy Item: ${it.value}")
             coinsRef.setValue(viewModel.coins.value - bought.cost)
             userItemsRef.child(bought.name).setValue(true)
         }

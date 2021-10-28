@@ -44,7 +44,7 @@ fun Navigation(activityContext: ComponentActivity,
             WelcomeScreen(viewModel = viewModel, navController = navController )
         }
         composable(route = Screen.MenuScreen.route) {
-            MenuScreen(navController = navController)
+            MenuScreen(viewModel = viewModel, navController = navController)
         }
         listComposable(
             navigateToReminder = reminderNav.reminder,
