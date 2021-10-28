@@ -46,6 +46,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.selfcare.ui.theme.*
+import com.example.selfcare.viewmodels.MainViewModel
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 
 @Composable
@@ -53,6 +58,11 @@ fun ChatScreen(navController: NavController) {
     var user1Message by remember { mutableStateOf("") }
     var user2Message by remember { mutableStateOf("") }
     val chat = remember {mutableStateListOf(Message("Hi how can i help you?",true))}  // <-- mutableStateOf doesn't work
+    val database =
+        Firebase.database("https://kotlin-self-care-default-rtdb.firebaseio.com/").reference
+
+    val user = Firebase.auth.currentUser
+    val userRef = database.child("users").child(user!!.uid).ref
 
     Scaffold(
         topBar = {
@@ -117,7 +127,7 @@ fun ChatScreen(navController: NavController) {
                             .weight(1.0f)
                             .padding(16.dp),
                         onMessageAdd = {
-                            addTextToChat(user2Message, chat)
+                            addTextToChat(user2Message, chat, userRef)
                         }
                     )
                 }
@@ -137,7 +147,8 @@ fun ChatScreen(navController: NavController) {
 
 private fun addTextToChat(
     user2Message: String,
-    chat: SnapshotStateList<Message>
+    chat: SnapshotStateList<Message>,
+    userRef: DatabaseReference
 ) {
     GlobalScope.launch {
         // get calendar
@@ -243,4 +254,5 @@ private fun addTextToChat(
             }
         }
     }
+    userRef.child("messages").setValue(chat)
 }
