@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -27,6 +28,9 @@ import androidx.ui.res.imageResource
 import androidx.ui.res.vectorResource
 import com.example.selfcare.R
 import com.example.selfcare.presentation.components.Screen
+import com.example.selfcare.ui.theme.Grey1
+import com.example.selfcare.ui.theme.Purple500
+import com.example.selfcare.ui.theme.Purple700
 import com.example.selfcare.viewmodels.MainViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -77,24 +81,36 @@ fun LoginScreen(viewModel: MainViewModel, navController: NavController, activity
         ) {
             Text(
                 text = "Log In",
-                style = MaterialTheme.typography.h1
+                style = MaterialTheme.typography.h1,
+                color = Color.Black
             )
             Spacer(modifier = Modifier.padding(20.dp))
             Column(horizontalAlignment = Alignment.CenterHorizontally){
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = Purple500,
+                        unfocusedBorderColor = Grey1),
+                    textStyle = TextStyle(
+                        color = Color.Black),
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(0.8f),
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email
                     ),
-                    label = { Text("Enter your email") })
+                    label = { Text(text= "Enter your email",
+                    color = Color.Gray) })
 
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
                     singleLine = true,
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = Purple500,
+                        unfocusedBorderColor = Grey1),
+                    textStyle = TextStyle(
+                        color = Color.Black),
                     trailingIcon = {
                         IconButton(
                             content = {
@@ -107,7 +123,7 @@ fun LoginScreen(viewModel: MainViewModel, navController: NavController, activity
                         )
                     },
                     modifier = Modifier.fillMaxWidth(0.8f),
-                    label = { Text("Enter your password") },
+                    label = { Text(text = "Enter your password", color = Color.Gray) },
                     visualTransformation = if(passwordVisibility)
                         VisualTransformation.None else PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(
@@ -143,9 +159,10 @@ fun LoginScreen(viewModel: MainViewModel, navController: NavController, activity
                 ) {
                     Text(color = Color.White, text = "Login")
                 }
-                Spacer(modifier = Modifier.padding(10.dp))
+                Spacer(modifier = Modifier.padding(5.dp))
                 Text(
-                    text = "Sign Up instead",
+                    color = Color.Black,
+                    text = "Don't have an account?",
                     modifier = Modifier.clickable(onClick = {
                         navController.popBackStack()
                         navController.navigate(Screen.RegisterScreen.route)
