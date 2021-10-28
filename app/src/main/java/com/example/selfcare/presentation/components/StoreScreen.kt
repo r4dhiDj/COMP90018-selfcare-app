@@ -84,7 +84,7 @@ fun StoreScreen (viewModel: MainViewModel, navController : NavController) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Pink700)
+                .background(Teal700)
                 .padding(15.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
@@ -98,7 +98,7 @@ fun StoreScreen (viewModel: MainViewModel, navController : NavController) {
                     content = {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_chevron_left),
-                            contentDescription = "store",
+                            contentDescription = "back",
                             tint = Color.White,
                             modifier = Modifier
                                 .padding(10.dp)
@@ -118,7 +118,8 @@ fun StoreScreen (viewModel: MainViewModel, navController : NavController) {
                     text = "Store",
                     fontFamily = IBMPlexMono,
                     fontWeight = FontWeight.Light,
-                    color = Color.White
+                    color = Color.White,
+                    fontSize = 20.sp
                 )
             }
 
@@ -178,7 +179,7 @@ fun StoreItem(item: Buyable, onClick: (bought: Buyable) -> Unit) {
     val itemRef = userRef.child("items").child(item.name).ref
 
     val colours = listOf(
-        listOf(Pink200, Pink500, Pink700),
+        listOf(Teal200, Teal500, Teal700),
         listOf(Teal200, Teal500, Teal700),
         listOf(Blue200, Blue400, Blue700),
         listOf(Green200, Green500, Green700),

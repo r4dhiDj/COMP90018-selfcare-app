@@ -5,17 +5,24 @@ import android.os.Vibrator
 import android.webkit.WebView
 import android.widget.NumberPicker
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
+import com.example.selfcare.R
 import com.example.selfcare.ui.theme.*
 import com.example.selfcare.viewmodels.BreatheViewModel
 import kotlinx.coroutines.delay
@@ -28,25 +35,42 @@ fun BreatheScreen(navController: NavController,
     SelfCareTheme (true){
         Scaffold(
             topBar = {
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = "Breathing",
-                            style = MaterialTheme.typography.h1,
-                            color = Color.White
-                        )
-                    },
-                    navigationIcon = {
-                        IconButton(onClick = {
-                            breatheVM.resetToDefault()
-                            navController.navigate(Screen.MenuScreen.route)
-                            mediaPlayer.release()
-                        }) {
-                            Icon(Icons.Filled.ArrowBack, "backIcon", tint = Color.White)
-                        }
-                    },
-                    backgroundColor = Green700,
-                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Green700)
+                        .padding(15.dp),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+
+                    IconButton(
+                        content = {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_chevron_left),
+                                contentDescription = "back",
+                                tint = Color.White,
+                                modifier = Modifier
+                                    .padding(10.dp)
+                                    .clip(RoundedCornerShape(20.dp))
+                            )
+                        },
+                        onClick = { navController.navigate(Screen.MenuScreen.route) }
+                    )
+
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_air),
+                        contentDescription = "air",
+                        tint = Color.White,
+                        modifier = Modifier.padding(10.dp)
+                    )
+                    Text(
+                        text = "Breathe",
+                        fontFamily = IBMPlexMono,
+                        fontWeight = FontWeight.Light,
+                        color = Color.White
+                    )
+                }
             },
 
 //            floatingActionButton = {
