@@ -85,7 +85,7 @@ fun Navigation(activityContext: ComponentActivity,
             val breatheVM = hiltViewModel<BreatheViewModel>()
             val vibrator = context.getSystemService(VIBRATOR_SERVICE) as Vibrator
             val mediaPlayer = MediaPlayer.create(context, R.raw.relaxing).apply{isLooping = true}
-            BreatheScreen(navController,breatheVM,vibrator,mediaPlayer)
+            BreatheScreen(navController,breatheVM,vibrator,mediaPlayer,viewModel)
         }
 
     }

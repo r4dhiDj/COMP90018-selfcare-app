@@ -1,77 +1,60 @@
 package com.example.selfcare.presentation.components
 
 import android.media.MediaPlayer
+import android.os.Build
 import android.os.Vibrator
 import android.webkit.WebView
 import android.widget.NumberPicker
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
-import com.example.selfcare.R
 import com.example.selfcare.ui.theme.*
 import com.example.selfcare.viewmodels.BreatheViewModel
+import com.example.selfcare.viewmodels.MainViewModel
 import kotlinx.coroutines.delay
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun BreatheScreen(navController: NavController,
                   breatheVM: BreatheViewModel,
                   vibrator: Vibrator,
-                  mediaPlayer: MediaPlayer) {
-    SelfCareTheme (true){
-        Scaffold(
-            topBar = {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Green700)
-                        .padding(15.dp),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-                    IconButton(
-                        content = {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_chevron_left),
-                                contentDescription = "back",
-                                tint = Color.White,
-                                modifier = Modifier
-                                    .padding(10.dp)
-                                    .clip(RoundedCornerShape(20.dp))
-                            )
-                        },
-                        onClick = { navController.navigate(Screen.MenuScreen.route) }
-                    )
-
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_air),
-                        contentDescription = "air",
-                        tint = Color.White,
-                        modifier = Modifier.padding(10.dp)
-                    )
+                  mediaPlayer: MediaPlayer,
+                  mainViewModel: MainViewModel
+) {
+    var darkMode = mainViewModel.darkModeState.value
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
                     Text(
-                        text = "Breathe",
-                        fontFamily = IBMPlexMono,
-                        fontWeight = FontWeight.Light,
+                        text = "Breathing",
+                        style = MaterialTheme.typography.h1,
                         color = Color.White
                     )
-                }
-            },
+                },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        breatheVM.resetToDefault()
+                        navController.navigate(Screen.MenuScreen.route)
+                        mediaPlayer.release()
+                    }) {
+                        Icon(Icons.Filled.ArrowBack, "backIcon", tint = Color.White)
+                    }
+                },
+                backgroundColor = Green700
+            )
+        },
 
 //            floatingActionButton = {
 //                FloatingActionButton(onClick = {
@@ -81,29 +64,28 @@ fun BreatheScreen(navController: NavController,
 //                    Icon(Icons.Filled.Home, "Return to Menu")
 //                }
 //            },
-            floatingActionButtonPosition = FabPosition.End,
-            content = {
-                if (!breatheVM.isStarted) {
-                    settingScreen(breatheVM)
-                } else {
-                    exercisingScreen(breatheVM, vibrator, mediaPlayer)
-                }
-            },
-            backgroundColor = Green200
-        )
-        BackHandler(enabled = true) {
-            breatheVM.resetToDefault()
-            mediaPlayer.pause()
-            mediaPlayer.seekTo(0)
-            navController.navigate(Screen.MenuScreen.route)
-        }
+        floatingActionButtonPosition = FabPosition.End,
+        content = {
+            if (!breatheVM.isStarted) {
+                settingScreen(breatheVM, darkMode)
+            } else {
+                exercisingScreen(breatheVM, vibrator, mediaPlayer, darkMode)
+            }
+        },
+        backgroundColor = if (darkMode) Color(18,18,18) else Green200
+
+    )
+    BackHandler(enabled = true) {
+        breatheVM.resetToDefault()
+        mediaPlayer.pause()
+        mediaPlayer.seekTo(0)
+        navController.navigate(Screen.MenuScreen.route)
     }
-
-
 }
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @Composable
-fun settingScreen(breatheVM: BreatheViewModel) {
+fun settingScreen(breatheVM: BreatheViewModel, darkMode: Boolean) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -114,7 +96,7 @@ fun settingScreen(breatheVM: BreatheViewModel) {
             style = MaterialTheme.typography.h3
         )
         Spacer(modifier = Modifier.height(30.dp))
-        NumberWheelPicker(breatheVM)
+        NumberWheelPicker(breatheVM, darkMode)
         MusicCheckBox(breatheVM)
         Button(
             onClick = {
@@ -125,10 +107,15 @@ fun settingScreen(breatheVM: BreatheViewModel) {
 }
 
 @Composable
-fun exercisingScreen(breatheVM: BreatheViewModel, vibrator: Vibrator, mediaPlayer: MediaPlayer) {
+fun exercisingScreen(breatheVM: BreatheViewModel, vibrator: Vibrator, mediaPlayer: MediaPlayer, darkMode: Boolean) {
 
     if (breatheVM.isMusic) {
         mediaPlayer.start()
+    }
+    var ring_url = "file:///android_res/drawable/breathe_ring.gif"
+
+    if (darkMode) {
+        ring_url = "file:///android_res/drawable/breathe_ring_dark.gif"
     }
 
 
@@ -172,7 +159,7 @@ fun exercisingScreen(breatheVM: BreatheViewModel, vibrator: Vibrator, mediaPlaye
         AndroidView(
             factory = { context ->
                 WebView(context).apply {
-                    loadUrl("file:///android_res/drawable/breathe_ring.gif")
+                    loadUrl(ring_url)
                     setBackgroundColor(0x00000000)
                 }
             },
@@ -197,8 +184,9 @@ fun exercisingScreen(breatheVM: BreatheViewModel, vibrator: Vibrator, mediaPlaye
 
 }
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @Composable
-fun NumberWheelPicker(breatheVM: BreatheViewModel) {
+fun NumberWheelPicker(breatheVM: BreatheViewModel, darkMode: Boolean) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.padding(0.dp, 40.dp),
@@ -214,6 +202,8 @@ fun NumberWheelPicker(breatheVM: BreatheViewModel) {
                     setOnValueChangedListener { numberPicker, oldVal, newVal ->
                         breatheVM.setPicked(newVal)
                     }
+                    textColor = if (darkMode) Color.White.toArgb() else Color.Black.toArgb()
+                    selectionDividerHeight = 4
                 }
             },
             modifier = Modifier.width(40.dp),
