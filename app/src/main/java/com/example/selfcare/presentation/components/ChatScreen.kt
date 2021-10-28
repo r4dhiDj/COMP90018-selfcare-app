@@ -29,7 +29,6 @@ import android.speech.tts.TextToSpeech.OnInitListener
 import android.widget.Toast
 
 
-
 //import org.json.simple.JSONObject;
 
 import kotlinx.coroutines.launch
@@ -57,7 +56,14 @@ import com.google.firebase.ktx.Firebase
 fun ChatScreen(navController: NavController) {
     var user1Message by remember { mutableStateOf("") }
     var user2Message by remember { mutableStateOf("") }
-    val chat = remember {mutableStateListOf(Message("Hi how can i help you?",true))}  // <-- mutableStateOf doesn't work
+    val chat = remember {
+        mutableStateListOf(
+            Message(
+                "Hi how can i help you?",
+                true
+            )
+        )
+    }  // <-- mutableStateOf doesn't work
     val database =
         Firebase.database("https://kotlin-self-care-default-rtdb.firebaseio.com/").reference
 
@@ -134,8 +140,8 @@ fun ChatScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(20.dp))
                 ChatArea(
                     chat = chat,
-                    onMessageDelete = {
-                            message -> chat.remove(message)
+                    onMessageDelete = { message ->
+                        chat.remove(message)
                     }
                 )
             }
@@ -153,30 +159,81 @@ private fun addTextToChat(
     GlobalScope.launch {
         // get calendar
         val pd = App("aJRKzxob1axkRE33NOAYqRkmd801vO7EmEFw2mj4vgI")
-        when{
+        val timeStamp = Timestamp(System.currentTimeMillis())
+        val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm")
+        val dateTime = sdf.format(Date(timeStamp.time))
+
+        val day = dateTime.substring(0, 2)
+        val month = dateTime.substring(3, 5)
+        val year = dateTime.substring(6, 10)
+        val time = dateTime.substring(11, 16)
+
+        when {
             // calender
-            user2Message.contains("hello") ->{
-                chat.add(Message(user2Message,false))
-                chat.add(Message("Morning! how its going",true))
+            user2Message.contains("hello") -> {
+                chat.add(Message(user2Message, false))
+                chat.add(Message("Morning! how its going", true))
             }
             // history
-            user2Message.contains("what") ->{
-                chat.add(Message(user2Message,false))
-                chat.add(Message("MALAM! how its going",true))
+            user2Message.contains("what") -> {
+                chat.add(Message(user2Message, false))
+                chat.add(Message("MALAM! how its going", true))
             }
-            user2Message.contains("flip")|| user2Message.contains("coin")->{
+            user2Message.contains("flip") || user2Message.contains("coin") -> {
                 val r = (0..1).random()
-                val result = if(r==0) "heads" else "tails"
-                chat.add(Message(user2Message,false))
-                chat.add(Message("I flipped a coin and it landed on $result",true))
+                val result = if (r == 0) "heads" else "tails"
+                chat.add(Message(user2Message, false))
+                chat.add(Message("I flipped a coin and it landed on $result", true))
 
             }
-            user2Message.contains("time") || user2Message.contains("clock")-> {
-                val timeStamp = Timestamp(System.currentTimeMillis())
-                val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm")
-                val date = sdf.format(Date(timeStamp.time))
-                chat.add(Message(user2Message,false))
-                chat.add(Message(date.toString(),true))
+            user2Message.contains("time") || user2Message.contains("clock") -> {
+                chat.add(Message(user2Message, false))
+                chat.add(Message(dateTime.toString(), true))
+            }
+            user2Message.contains("history") -> {
+//                chat.add(Message("Please wait while I'm preparing the stats...", true))
+                userRef.child("emotions").child(month).child(day).get()
+                    .addOnSuccessListener {
+                        if (it == null) {
+                            chat.add(
+                                Message(
+                                    "Seems that you haven't written anything today.",
+                                    true
+                                )
+                            )
+                        } else {
+                            var totalCount = 0.0
+                            val counter = mutableMapOf<String, Int>()
+
+                            for (child in it.children) {
+                                totalCount += 1
+                                if (counter.containsKey(child.value)) {
+                                    var count = counter[child.value]?.plus(1)
+                                    if (count != null) {
+                                        counter[child.value as String] = count
+                                    }
+                                } else {
+                                    counter[child.value as String] = 1
+                                }
+                            }
+
+                            val sorted = counter.toList().sortedByDescending { (_, value) -> value }
+
+                            var msg = "Breakdown of your feelings today:\n"
+
+                            for ((sentiment, count) in sorted) {
+                                msg += String.format(
+                                    "%s: %.0f%% ",
+                                    sentiment,
+                                    count / totalCount * 100
+                                )
+                            }
+                            chat.add(Message(msg, true))
+                        }
+
+                    }.addOnFailureListener {
+                        chat.add(Message("Sorry I couldn't retrieve your data now.", true))
+                    }
             }
             else -> {
 //                val tts = TextToSpeech()
@@ -184,6 +241,7 @@ private fun addTextToChat(
 
 //                Log.d("emotion",pd.emotion(user2Message))
                 val json = JSONObject(pd.emotion(user2Message))
+                val sentiment: String
 
                 // get the emotion
                 var angry = json.getJSONObject("emotion").getString("Angry")
@@ -193,26 +251,36 @@ private fun addTextToChat(
                 var fear = json.getJSONObject("emotion").getString("Fear")
                 var bored = json.getJSONObject("emotion").getString("Bored")
 
-                if (angry>happy && angry>excited && angry>sad && angry>fear && angry>bored){
-                    chat.add(Message(user2Message,false))
-                    chat.add(Message("Well someone is angry",true))
-                }else if (happy>angry && happy>excited && happy>sad && happy>fear && happy>bored){
-                    chat.add(Message(user2Message,false))
-                    chat.add(Message("Well someone is happy",true))
-                }else if(excited>angry && excited>happy && excited>sad && excited>fear && excited>bored){
-                    chat.add(Message(user2Message,false))
-                    chat.add(Message("Well someone is excited",true))
-                }else if(sad>angry && sad>happy && sad>excited && sad>fear && sad>bored){
-                    chat.add(Message(user2Message,false))
-                    chat.add(Message("Well someone is sad",true))
-                }else if(fear>angry && fear>happy && fear>sad && fear>excited && fear>bored){
-                    chat.add(Message(user2Message,false))
-                    chat.add(Message("Well someone is fear",true))
-                }else{
-                    chat.add(Message(user2Message,false))
-                    chat.add(Message("Well someone is bored",true))
+                if (angry > happy && angry > excited && angry > sad && angry > fear && angry > bored) {
+                    chat.add(Message(user2Message, false))
+                    chat.add(Message("Well someone is angry", true))
+                    sentiment = "angry"
+                } else if (happy > angry && happy > excited && happy > sad && happy > fear && happy > bored) {
+                    chat.add(Message(user2Message, false))
+                    chat.add(Message("Well someone is happy", true))
+                    sentiment = "happy"
+                } else if (excited > angry && excited > happy && excited > sad && excited > fear && excited > bored) {
+                    chat.add(Message(user2Message, false))
+                    chat.add(Message("Well someone is excited", true))
+                    sentiment = "excited"
+                } else if (sad > angry && sad > happy && sad > excited && sad > fear && sad > bored) {
+                    chat.add(Message(user2Message, false))
+                    chat.add(Message("Well someone is sad", true))
+                    sentiment = "sad"
+                } else if (fear > angry && fear > happy && fear > sad && fear > excited && fear > bored) {
+                    chat.add(Message(user2Message, false))
+                    chat.add(Message("Well someone is fear", true))
+                    sentiment = "fear"
+                } else {
+                    chat.add(Message(user2Message, false))
+                    chat.add(Message("Well someone is bored", true))
+                    sentiment = "bored"
                 }
-                
+
+                userRef.child("emotions").child(month).child(day).child(time)
+                    .setValue(sentiment)
+
+
                 //alternative is combine the emotion by adding them suggestion was adding
                 // happy with excited, sad, fear and bored as one and angry as separated.
 //                var happy_mood = happy+excited
@@ -250,25 +318,7 @@ private fun addTextToChat(
 //                    chat.add(Message(user2Message,false))
 //                    chat.add(Message("Well someone is on neutral mood!",true))
 //                }
-
             }
         }
-    }
-    val timeStamp = Timestamp(System.currentTimeMillis())
-    val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm")
-    val dateTime = sdf.format(Date(timeStamp.time))
-    var date = dateTime.substring(0,10)
-    date = date.replace("/", "-")
-    val time = dateTime.substring(11,16)
-
-    val map = hashMapOf<String, String>()
-    // change the following line
-    map[time] = chat.toString()
-    userRef.child("messages").child(date).setValue(map)
-    // read example
-    userRef.child("email").get().addOnSuccessListener {
-        Log.d("chat_database", "${it.value}")
-    }.addOnFailureListener{
-        Log.d("chat_database", "read error")
     }
 }
