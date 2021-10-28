@@ -19,13 +19,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.selfcare.R
-import com.example.selfcare.ui.theme.Blue700
-import com.example.selfcare.ui.theme.IBMPlexMono
-import com.example.selfcare.ui.theme.Teal700
+import com.example.selfcare.ui.theme.*
 import com.example.selfcare.viewmodels.MainViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -40,12 +39,10 @@ fun SettingsScreen(
     var username by remember { mutableStateOf("") }
     var darkMode by remember { mutableStateOf(false) }
     var notifMode by remember { mutableStateOf(true) }
-    var clickUpdateProfile by remember { mutableStateOf(false) }
     var email by remember { mutableStateOf("")}
     val scrollState = rememberScrollState()
+    var passwordVisibility by remember {mutableStateOf(false)}
 
-    val context = LocalContext.current
-    
     LaunchedEffect(key1 = viewModel.darkModeState) {
         viewModel.getDarkMode()
         viewModel.getUsername()
@@ -148,7 +145,7 @@ fun SettingsScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(top = 20.dp, bottom = 12.dp, start = 20.dp, end = 20.dp),
-                            Arrangement.SpaceEvenly,
+                            Arrangement.SpaceBetween,
                             Alignment.CenterVertically,
                         ) {
                             Text(
@@ -177,7 +174,7 @@ fun SettingsScreen(
                         )
                     )
 
-                    //update profile and save profile
+                    //update username or password and save profile
                     var newUsername by remember { mutableStateOf("") }
                     var newPassword by remember { mutableStateOf("") }
                     var validChanges by remember { mutableStateOf(false) }
@@ -190,6 +187,7 @@ fun SettingsScreen(
                         Alignment.CenterVertically
                     ) {
                         OutlinedTextField(
+                            modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Password
@@ -206,20 +204,32 @@ fun SettingsScreen(
                             .padding(top = 12.dp, bottom = 12.dp, start = 20.dp, end = 20.dp),
                         Arrangement.SpaceBetween,
                         Alignment.CenterVertically
-                    ) {
-                        OutlinedTextField(
-                            singleLine = true,
-                            visualTransformation = PasswordVisualTransformation(),
-                            keyboardOptions = KeyboardOptions(
-                                keyboardType = KeyboardType.Password
-                            ),
-                            value = newPassword,
-                            onValueChange = { newPassword = it },
-                            label = { Text("Update Password") }
+                    ) {OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = newPassword,
+                        onValueChange = { newPassword = it },
+                        label = { Text("Update Password") },
+                        singleLine = true,
+                        trailingIcon = {
+                            IconButton(
+                                content = {
+                                    Icon(
+                                        painter = painterResource(id = if(passwordVisibility) R.drawable.eye_on else R.drawable.eye_off),
+                                        contentDescription = "eye",
+                                        tint = if(darkMode) Color.White else Color.Black)
+                                },
+                                onClick = { passwordVisibility = !passwordVisibility }
+                            )
+                        },
+                        visualTransformation = if(passwordVisibility)
+                            VisualTransformation.None else PasswordVisualTransformation(),
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Password
                         )
+                    )
                     }
 
-                    if (newUsername.trim() != "" || newPassword.trim() !== "") {
+                    if (newUsername.trim() != "" || newPassword.trim() != "") {
                         validChanges = true
                     }
 
@@ -227,10 +237,13 @@ fun SettingsScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 12.dp, bottom = 12.dp, start = 20.dp, end = 20.dp),
-                        horizontalArrangement = Arrangement.Start,
+                        horizontalArrangement = Arrangement.End,
                     ) {
                         Button(
                             enabled = validChanges,
+                            colors = ButtonDefaults.textButtonColors(
+                                backgroundColor = if(validChanges) Purple500 else Color.LightGray
+                            ),
                             onClick = {
                                 if (newPassword.trim() != "") {
                                     viewModel.setUserPassword(newPassword)
