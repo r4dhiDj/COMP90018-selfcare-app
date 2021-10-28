@@ -32,13 +32,8 @@ import android.widget.Toast
 
 //import org.json.simple.JSONObject;
 
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 // for text2speech
-import android.app.Activity
-import android.speech.tts.TextToSpeech
-import android.speech.tts.TextToSpeech.OnInitListener
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
