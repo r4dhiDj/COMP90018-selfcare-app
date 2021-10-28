@@ -175,10 +175,10 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
             findViewById(R.id.bottomSheet) as LinearLayout?
         )
 
+//        bottomSheetView.findViewById<View>(R.id.spidermanButton).visibility = View.VISIBLE
 
         bottomSheetView.findViewById<View>(R.id.steveButton).setOnClickListener {
             mode = Mode.STEVE
-
         }
         bottomSheetView.findViewById<View>(R.id.spidermanButton).setOnClickListener {
             mode = Mode.SPIDERMAN
@@ -216,7 +216,7 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
     fun setMode(view: View) {
         when (view.id) {
-            R.id.mascotButton -> mode = Mode.SPIDERMAN
+            R.id.mascotButton -> mode = Mode.STEVE
             R.id.coinrunButton -> mode = Mode.COIN
 
         }
