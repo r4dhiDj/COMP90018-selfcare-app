@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -24,6 +25,8 @@ import androidx.navigation.NavController
 import com.example.selfcare.R
 import com.example.selfcare.data.model.User
 import com.example.selfcare.presentation.components.Screen
+import com.example.selfcare.ui.theme.Grey1
+import com.example.selfcare.ui.theme.Purple500
 import com.example.selfcare.viewmodels.MainViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
@@ -74,23 +77,36 @@ fun RegisterScreen(viewModel: MainViewModel, navController: NavController, activ
         ) {
             Text(
                 text = "Sign Up",
+                color = Color.Black,
                 style = MaterialTheme.typography.h1
             )
             Spacer(modifier = Modifier.padding(20.dp))
             Column(horizontalAlignment = Alignment.CenterHorizontally){
                 OutlinedTextField(
                     value = email,
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = Purple500,
+                        unfocusedBorderColor = Grey1
+                    ),
+                    textStyle = TextStyle(
+                        color = Color.Black),
                     onValueChange = { email = it },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(0.8f),
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email
                     ),
-                    label = { Text("Enter your email") })
+                    label = { Text(text= "Enter your email",
+                    color = Color.Gray) })
 
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = Purple500,
+                        unfocusedBorderColor = Grey1),
+                    textStyle = TextStyle(
+                        color = Color.Black),
                     singleLine = true,
                     trailingIcon = {
                         IconButton(
@@ -104,7 +120,9 @@ fun RegisterScreen(viewModel: MainViewModel, navController: NavController, activ
                         )
                     },
                     modifier = Modifier.fillMaxWidth(0.8f),
-                    label = { Text("Enter your password") },
+                    label = { Text(
+                        text="Enter your password",
+                    color= Color.Gray) },
                     visualTransformation = if(passwordVisibility)
                         VisualTransformation.None else PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(
@@ -145,9 +163,10 @@ fun RegisterScreen(viewModel: MainViewModel, navController: NavController, activ
                 ) {
                     Text(color = Color.White, text = "Sign Up")
                 }
-                Spacer(modifier = Modifier.padding(10.dp))
+                Spacer(modifier = Modifier.padding(5.dp))
                 Text(
-                    text = "Log In instead",
+                    color = Color.Black,
+                    text = "Already have an account?",
                     modifier = Modifier.clickable(onClick = {
                         navController.popBackStack()
                         navController.navigate(Screen.LoginScreen.route)
