@@ -11,12 +11,19 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.selfcare.viewmodels.MainViewModel
 import android.util.Log
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @Composable
 fun WelcomeScreen(viewModel: MainViewModel,
                   navController: NavController){
     var username by remember { mutableStateOf("") }
     var newUsername by remember { mutableStateOf("") }
+
+    if (Firebase.auth.currentUser== null) {
+        navController.popBackStack()
+        navController.navigate(Screen.RegisterScreen.route)
+    }
 
     LaunchedEffect(key1 = viewModel.displayName.value, viewModel.email.value){
         viewModel.getUsername()

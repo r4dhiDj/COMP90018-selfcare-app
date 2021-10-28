@@ -13,6 +13,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import com.example.selfcare.data.model.Reminder
 import com.example.selfcare.ui.theme.IBMPlexMono
+import com.example.selfcare.ui.theme.Purple700
 import com.example.selfcare.util.Action
 
 @Composable
@@ -43,10 +44,15 @@ fun NewReminderBar(
         title = {
             Text(
                 text = "New Reminder",
-                style = MaterialTheme.typography.h1
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                fontFamily = IBMPlexMono,
+                fontWeight = FontWeight.Light,
+                color = Color.White,
+                fontSize = 18.sp
             )
         },
-        backgroundColor = MaterialTheme.colors.primary,
+        backgroundColor = Purple700,
         actions = {
             AddAction(onAddClicked = navigateToReminderScreen)
         }
@@ -60,7 +66,8 @@ fun BackAction(
     IconButton(onClick = {
         onBackClicked(Action.NO_ACTION) }) {
         Icon(imageVector = Icons.Filled.ArrowBack,
-            contentDescription = "Back Arrow"
+            contentDescription = "Back Arrow",
+            tint = Color.White
         )
     }
 }
@@ -72,7 +79,8 @@ fun AddAction(
     IconButton(onClick = {
         onAddClicked(Action.ADD) }) {
         Icon(imageVector = Icons.Filled.Check,
-            contentDescription = "New Reminder"
+            contentDescription = "New Reminder",
+            tint = Color.White
         )
     }
 }
@@ -113,6 +121,7 @@ fun CloseAction(
         onCloseClicked(Action.NO_ACTION) }) {
         Icon(imageVector = Icons.Filled.Close,
             contentDescription = "Close Icon",
+            tint = Color.White
         )
     }
 }
@@ -125,6 +134,7 @@ fun DeleteAction(
         onDeleteClicked(Action.DELETE) }) {
         Icon(imageVector = Icons.Filled.Delete,
             contentDescription = "Delete Icon",
+            tint = Color.White
         )
     }
 }
@@ -137,6 +147,7 @@ fun UpdateAction(
         onUpdateClicked(Action.UPDATED) }) {
         Icon(imageVector = Icons.Filled.Check,
             contentDescription = "Update Icon",
+            tint = Color.White
         )
     }
 }
