@@ -13,8 +13,13 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
+import androidx.activity.viewModels
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.Observer
+import com.example.selfcare.databinding.ArActivityBinding
 import com.google.ar.core.*
 import com.google.ar.core.exceptions.*
 import java.io.IOException
@@ -31,6 +36,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlin.math.abs
+import com.example.selfcare.viewmodels.CoinViewModel
+import kotlin.math.absoluteValue
 
 
 class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
@@ -79,6 +86,7 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
     private var addClicked = false
 
+
     //FAB animations
     private val rotateOpen: Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim)}
     private val rotateClose: Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim)}
@@ -90,6 +98,10 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
     private lateinit var uid: String
     private lateinit var database: FirebaseDatabase
     private lateinit var user: DatabaseReference
+
+    private val coinViewModel: CoinViewModel by viewModels()
+
+    private lateinit var binding: ArActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -108,10 +120,12 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.ar_activity)
 
+        binding = ArActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         surfaceView = findViewById(R.id.surfaceView)
+
 
         trackingStateHelper = TrackingStateHelper(this)
         displayRotationHelper = DisplayRotationHelper(this)
@@ -123,11 +137,15 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
     }
 
+    @SuppressLint("ResourceType")
     fun collectCoin() {
         user.child("coins").get().addOnSuccessListener {
             Log.i("firebase", "Got value ${it.value}")
             var coins = it.value.toString().toInt()
             user.child("coins").setValue(coins + 1)
+            coinViewModel.coinIncrement()
+            binding.coinCount.setText(coinViewModel.coinCount.toString())
+
             user.child("coins").get().addOnSuccessListener {
                 Log.i("firebase", "after value ${it.value}")
             }.addOnFailureListener{
@@ -174,8 +192,25 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
             R.layout.settings_ar_dialog,
             findViewById(R.id.bottomSheet) as LinearLayout?
         )
+        // Unlock Amogus Button
+        user.child("items").child("Amogus").get().addOnSuccessListener {
+            Log.i("firebase", "Got value ${it.value}")
+            if (it.value == true) {
+                bottomSheetView.findViewById<View>(R.id.amogusButton).visibility = View.VISIBLE
+            }
+        }.addOnFailureListener{
+            Log.e("firebase", "Error getting data", it)
+        }
 
-//        bottomSheetView.findViewById<View>(R.id.spidermanButton).visibility = View.VISIBLE
+        // Unlock Spider-man button
+        user.child("items").child("Spiderman").get().addOnSuccessListener {
+            Log.i("firebase", "Got value ${it.value}")
+            if (it.value == true) {
+                bottomSheetView.findViewById<View>(R.id.spidermanButton).visibility = View.VISIBLE
+            }
+        }.addOnFailureListener{
+            Log.e("firebase", "Error getting data", it)
+        }
 
         bottomSheetView.findViewById<View>(R.id.steveButton).setOnClickListener {
             mode = Mode.STEVE
@@ -487,13 +522,16 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
                     val cameraX = camera.pose.tx()
                     val cameraY = camera.pose.ty()
+                    val cameraZ = camera.pose.tz()
                     val anchorX = anchor.pose.tx()
                     val anchorY = anchor.pose.ty()
+                    val anchorZ = anchor.pose.tz()
                     val distX = abs(cameraX - anchorX)
                     val distY = abs(cameraY - anchorY)
+                    val distZ = abs(cameraZ - anchorZ)
 
 
-                    if (distX < 0.5 && distY < 0.5) {
+                    if (distX < 0.5 && distZ < 0.5) {
 
                         Log.d(TAG, "REACHING COIN!!!")
                         Log.d(TAG, "Camera pos - x: $cameraX, y: $cameraY")
