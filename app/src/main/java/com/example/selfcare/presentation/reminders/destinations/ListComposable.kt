@@ -9,7 +9,6 @@ import androidx.navigation.compose.navArgument
 import com.example.selfcare.constants.Constants.LIST_ARGUMENT_KEY
 import com.example.selfcare.presentation.components.Screen
 import com.example.selfcare.presentation.reminders.ReminderScreen
-import com.example.selfcare.util.Action
 import com.example.selfcare.util.toAction
 import com.example.selfcare.viewmodels.ReminderViewModel
 

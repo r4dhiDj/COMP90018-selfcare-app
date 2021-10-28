@@ -29,7 +29,6 @@ import com.example.selfcare.R
 import com.example.selfcare.presentation.components.Screen
 import com.example.selfcare.viewmodels.MainViewModel
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 

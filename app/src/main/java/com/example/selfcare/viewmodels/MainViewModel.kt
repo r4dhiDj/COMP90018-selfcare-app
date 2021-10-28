@@ -34,7 +34,8 @@ class MainViewModel @Inject constructor(
     var email: MutableState<String> =  mutableStateOf("")
     var uid: MutableState<String> =  mutableStateOf("")
     var password: MutableState<String> =  mutableStateOf("")
-
+    var coins: MutableState<Int> = mutableStateOf(0)
+    var boughtItems: MutableState<Map<String, Boolean>> = mutableStateOf(mapOf())
 
     fun getDarkMode(){
         viewModelScope.launch(IO){
@@ -111,6 +112,13 @@ class MainViewModel @Inject constructor(
            password.value = newPassword
        }
    }
+
+    fun setCoins(value: Int) {
+        viewModelScope.launch(IO) {
+            coins.value = value
+        }
+    }
+
     fun getUserUid(){
         viewModelScope.launch(IO){
             Log.d("inside view model, uid", uid.value)

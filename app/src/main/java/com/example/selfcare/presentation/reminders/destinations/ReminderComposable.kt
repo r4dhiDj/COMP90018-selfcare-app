@@ -7,7 +7,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
-import com.example.selfcare.constants.Constants
 import com.example.selfcare.constants.Constants.REMINDER_ARGUMENT_KEY
 import com.example.selfcare.presentation.components.Screen
 import com.example.selfcare.presentation.reminders.CreateReminderScreen

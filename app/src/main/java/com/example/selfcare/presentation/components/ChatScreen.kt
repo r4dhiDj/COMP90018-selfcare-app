@@ -5,9 +5,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
 import com.example.selfcare.R
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.selfcare.presentation.components.Message
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
