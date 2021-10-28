@@ -206,7 +206,7 @@ fun DeleteAllAction (
         Icon(
             painter = painterResource(id = R.drawable.ic_vertical_menu),
             contentDescription = "Delete All",
-            tint = MaterialTheme.colors.primaryVariant
+            tint = Color.White
         )
         DropdownMenu(
             expanded = expanded,
