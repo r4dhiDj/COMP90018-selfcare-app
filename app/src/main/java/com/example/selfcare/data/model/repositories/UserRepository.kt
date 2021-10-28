@@ -6,6 +6,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 class UserRepository {
@@ -79,7 +80,11 @@ class UserRepository {
 
 
     fun deleteUser() {
+        val database = Firebase.database("https://kotlin-self-care-default-rtdb.firebaseio.com/").reference
         val user = Firebase.auth.currentUser
+        val userRef = database.child("users").child(user!!.uid).ref
+        userRef.removeValue()
+
         user!!.delete()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
