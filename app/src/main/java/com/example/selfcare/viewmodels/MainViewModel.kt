@@ -29,7 +29,6 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
     var firstTime: MutableState<Boolean> =  mutableStateOf(false)
     var darkModeState: MutableState<Boolean> = mutableStateOf(false)
-    var notifModeState: MutableState<Boolean> = mutableStateOf(true)
     var displayName: MutableState<String> =  mutableStateOf("MATE")
     var email: MutableState<String> =  mutableStateOf("")
     var uid: MutableState<String> =  mutableStateOf("")
@@ -50,16 +49,16 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun getNotifMode(){
-        viewModelScope.launch(IO){
-            notifModeState.value = settingsDataStoreImpl.isNotifMode.first()
-        }
-    }
+//    fun getNotifMode(){
+//        viewModelScope.launch(IO){
+//            notifModeState.value = settingsDataStoreImpl.isNotifMode.first()
+//        }
+//    }
 
     fun setNotifMode(isNotifMode: Boolean){
         viewModelScope.launch(IO){
             settingsDataStoreImpl.storeNotifMode(isNotifMode)
-            notifModeState.value = isNotifMode
+//            notifModeState.value = isNotifMode
         }
     }
 

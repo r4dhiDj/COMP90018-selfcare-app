@@ -36,8 +36,6 @@ fun SettingsScreen(
     var username by remember { mutableStateOf("") }
     var darkMode by remember { mutableStateOf(false) }
     var notifMode by remember { mutableStateOf(true) }
-    //TODO: move to where notification should be called
-    var callNotif by remember { mutableStateOf(false) }
     var clickUpdateProfile by remember { mutableStateOf(false) }
     var email by remember { mutableStateOf("")}
     val scrollState = rememberScrollState()
@@ -46,12 +44,10 @@ fun SettingsScreen(
     
     LaunchedEffect(key1 = viewModel.darkModeState){
         viewModel.getDarkMode()
-        viewModel.getNotifMode()
         viewModel.getUsername()
         viewModel.getUserEmail()
         scrollState.animateScrollTo(10000)
         darkMode = viewModel.darkModeState.value
-        notifMode = viewModel.notifModeState.value
         username = viewModel.displayName.value
         email = viewModel.email.value
         Log.d("inside settings email", email)
@@ -252,32 +248,7 @@ fun SettingsScreen(
                     )
                 )
             }
-
-            //notification settings
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 12.dp, bottom = 12.dp, start = 20.dp, end = 20.dp),
-                Arrangement.SpaceBetween,
-                Alignment.CenterVertically
-            ) {
-                Text(
-                    "Notification",
-                    style = MaterialTheme.typography.h3
-                )
-                Switch(
-                    checked = notifMode,
-                    onCheckedChange = {
-                        notifMode = it
-                        viewModel.setNotifMode(it)},
-                    colors = SwitchDefaults.colors(
-                        checkedThumbColor = MaterialTheme.colors.primary,
-                        checkedTrackColor = MaterialTheme.colors.primary,
-                        uncheckedThumbColor = MaterialTheme.colors.onSurface,
-                        uncheckedTrackColor = MaterialTheme.colors.onSurface
-                    )
-                )
-            }
+            
 
             //sign out
             Row(
