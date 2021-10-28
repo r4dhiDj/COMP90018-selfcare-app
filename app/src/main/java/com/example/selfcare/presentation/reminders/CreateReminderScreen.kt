@@ -71,8 +71,7 @@ fun CreateReminderScreen (
                 onTextChange = {
                     reminderViewModel.text.value = it
                 },
-                reminderViewModel = reminderViewModel,
-                alarmService = alarmService
+                reminderViewModel = reminderViewModel
             )
 
         }

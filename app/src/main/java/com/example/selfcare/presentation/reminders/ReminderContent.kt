@@ -13,21 +13,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.selfcare.MainActivity
-import com.example.selfcare.presentation.components.Screen
-import com.example.selfcare.service.AlarmReceiver
-import com.example.selfcare.service.AlarmService
 import com.example.selfcare.viewmodels.ReminderViewModel
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import java.util.*
 
 @Composable
 fun ReminderContent (
@@ -37,8 +30,7 @@ fun ReminderContent (
     onTimeChange: (String) -> Unit,
     text: String,
     onTextChange: (String) -> Unit,
-    reminderViewModel: ReminderViewModel,
-    alarmService: AlarmService
+    reminderViewModel: ReminderViewModel
 ) {
 
     val activity = LocalContext.current as MainActivity
@@ -64,8 +56,7 @@ fun ReminderContent (
             activity = activity,
             reminderViewModel = reminderViewModel,
             time = time,
-            onTimeChange = { onTimeChange(it) },
-            alarmService = alarmService
+            onTimeChange = { onTimeChange(it) }
         )
         Divider(
             modifier = Modifier
@@ -84,26 +75,6 @@ fun ReminderContent (
                 .height(8.dp),
             color = MaterialTheme.colors.background
         )
-//        Row(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(top = 12.dp, bottom = 12.dp, start = 20.dp, end = 20.dp),
-//            Arrangement.SpaceBetween,
-//            Alignment.CenterVertically
-//        ) {
-////            Button(
-////                onClick = {             }
-////            ) {
-////                Text(color = Color.White, text = "Activate")
-////            }
-//            Button(
-//                onClick = {
-//                    /* TODO: Implement Deactivate */
-//                }
-//            ) {
-//                Text(color = Color.White, text = "De-activate")
-//            }
-//        }
     }
 }
 
@@ -115,7 +86,6 @@ fun TimePicker(
     reminderViewModel: ReminderViewModel,
     time: String,
     onTimeChange: (String) -> Unit,
-    alarmService: AlarmService
 ) {
     Row(
         modifier = Modifier

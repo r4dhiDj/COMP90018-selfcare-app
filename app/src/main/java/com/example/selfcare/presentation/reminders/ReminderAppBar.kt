@@ -38,7 +38,8 @@ fun NewReminderBar(
         },
         title = {
             Text(
-                text = "New Reminder"
+                text = "New Reminder",
+                style = MaterialTheme.typography.h1
             )
         },
         backgroundColor = MaterialTheme.colors.primary,
@@ -86,7 +87,8 @@ fun ExistingTaskAppBar(
             Text(
                 text = selectedReminder.title,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.h1
             )
         },
         actions = {

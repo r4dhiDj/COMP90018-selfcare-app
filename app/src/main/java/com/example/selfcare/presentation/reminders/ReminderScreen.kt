@@ -109,7 +109,10 @@ fun ReminderTopBar(
 ) {
     TopAppBar(
         title = {
-            Text(text = "Reminders")
+            Text(
+                text = "Reminders",
+                style = MaterialTheme.typography.h1
+            )
         },
         actions = {
             ListBarActions (
