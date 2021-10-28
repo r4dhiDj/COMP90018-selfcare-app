@@ -4,6 +4,7 @@ import android.media.MediaPlayer
 import android.os.Vibrator
 import android.webkit.WebView
 import android.widget.NumberPicker
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -66,6 +67,12 @@ fun BreatheScreen(navController: NavController,
             },
             backgroundColor = Green200
         )
+        BackHandler(enabled = true) {
+            breatheVM.resetToDefault()
+            mediaPlayer.pause()
+            mediaPlayer.seekTo(0)
+            navController.navigate(Screen.MenuScreen.route)
+        }
     }
 
 
