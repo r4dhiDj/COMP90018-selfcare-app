@@ -225,6 +225,7 @@ class ReminderViewModel @Inject constructor (
             Log.d("SET ALARM:", "setAlarm: $alarmHour + $alarmMinute")
             this.set(Calendar.HOUR_OF_DAY, alarmHour)
             this.set(Calendar.MINUTE, alarmMinute)
+            this.set(Calendar.SECOND, 0)
             callback(this.timeInMillis)
         }
         Toast.makeText(
