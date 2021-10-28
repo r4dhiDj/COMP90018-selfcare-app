@@ -260,10 +260,15 @@ private fun addTextToChat(
     var date = dateTime.substring(0,10)
     date = date.replace("/", "-")
     val time = dateTime.substring(11,16)
-    Log.d("chatdate", date)
 
     val map = hashMapOf<String, String>()
     // change the following line
     map[time] = chat.toString()
     userRef.child("messages").child(date).setValue(map)
+    // read example
+    userRef.child("email").get().addOnSuccessListener {
+        Log.d("chat_database", "${it.value}")
+    }.addOnFailureListener{
+        Log.d("chat_database", "read error")
+    }
 }
