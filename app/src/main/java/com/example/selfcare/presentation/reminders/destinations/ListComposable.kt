@@ -2,6 +2,7 @@ package com.example.selfcare.presentation.reminders.destinations
 
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.LaunchedEffect
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
@@ -15,7 +16,8 @@ import com.example.selfcare.viewmodels.ReminderViewModel
 @ExperimentalMaterialApi
 fun NavGraphBuilder.listComposable(
     navigateToReminder: (reminderId: Int) -> Unit,
-    reminderViewModel: ReminderViewModel
+    reminderViewModel: ReminderViewModel,
+    navController: NavController
 ){
     composable(
         route = Screen.ReminderScreen.route,
@@ -32,7 +34,8 @@ fun NavGraphBuilder.listComposable(
 
         ReminderScreen(
             navigateToReminder = navigateToReminder,
-            reminderViewModel = reminderViewModel
+            reminderViewModel = reminderViewModel,
+            navController = navController
         )
     }
 }

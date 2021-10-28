@@ -48,7 +48,8 @@ fun Navigation(activityContext: ComponentActivity,
         }
         listComposable(
             navigateToReminder = reminderNav.reminder,
-            reminderViewModel = reminderViewModel
+            reminderViewModel = reminderViewModel,
+            navController = navController
         )
         reminderComposable(
             navigateToReminderScreen = reminderNav.list,

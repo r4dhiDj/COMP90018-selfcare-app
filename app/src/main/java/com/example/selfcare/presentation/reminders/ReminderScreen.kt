@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,7 +17,9 @@ import com.example.selfcare.viewmodels.ReminderViewModel
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.selfcare.R
+import com.example.selfcare.presentation.components.Screen
 import com.example.selfcare.ui.theme.Typography
 import com.example.selfcare.util.Action
 import com.example.selfcare.util.RequestState
@@ -32,7 +35,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun ReminderScreen (
     navigateToReminder: (reminderId: Int) -> Unit,
-    reminderViewModel: ReminderViewModel
+    reminderViewModel: ReminderViewModel,
+    navController: NavController
 ) {
 
     LaunchedEffect(key1 = true){
@@ -59,7 +63,8 @@ fun ReminderScreen (
         scaffoldState = scaffoldState,
         topBar = {
             ListAppBar(
-                reminderViewModel = reminderViewModel
+                reminderViewModel = reminderViewModel,
+                navController = navController
             )
         },
         content = {
@@ -94,18 +99,21 @@ fun ReminderFab(
 
 @Composable
 fun ListAppBar(
-    reminderViewModel: ReminderViewModel
+    reminderViewModel: ReminderViewModel,
+    navController: NavController
 ) {
     ReminderTopBar (
         onDeleteAllConfirmed = {
             reminderViewModel.action.value = Action.DELETE_ALL
-        }
+        },
+        navController = navController
     )
 }
 
 @Composable
 fun ReminderTopBar(
-    onDeleteAllConfirmed: () -> Unit
+    onDeleteAllConfirmed: () -> Unit,
+    navController: NavController
 ) {
     TopAppBar(
         title = {
@@ -118,6 +126,13 @@ fun ReminderTopBar(
             ListBarActions (
                 onDeleteAllConfirmed = onDeleteAllConfirmed
             )
+        },
+        navigationIcon = {
+            IconButton(onClick = {
+                navController.navigate(Screen.MenuScreen.route)
+            }) {
+                Icon(Icons.Filled.ArrowBack, "backIcon", tint = Color.White)
+            }
         },
         backgroundColor = MaterialTheme.colors.primary
     )
