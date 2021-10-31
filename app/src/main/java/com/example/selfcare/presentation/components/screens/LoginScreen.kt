@@ -94,6 +94,17 @@ fun LoginScreen(viewModel: MainViewModel, navController: NavController, activity
                         unfocusedBorderColor = Grey1),
                     textStyle = TextStyle(
                         color = Color.Black),
+                    leadingIcon = {
+                        IconButton(
+                            content = {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_baseline_email_24),
+                                    contentDescription = "email",
+                                    tint = Color.Gray)
+                            },
+                            onClick = {Log.d("leading icon", "clicked leading icon") }
+                        )
+                    },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(0.8f),
                     keyboardOptions = KeyboardOptions(
@@ -111,13 +122,24 @@ fun LoginScreen(viewModel: MainViewModel, navController: NavController, activity
                         unfocusedBorderColor = Grey1),
                     textStyle = TextStyle(
                         color = Color.Black),
+                    leadingIcon = {
+                        IconButton(
+                            content = {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.lock),
+                                    contentDescription = "lock",
+                                    tint = Color.Gray)
+                            },
+                            onClick = {Log.d("leading icon", "clicked leading icon") }
+                        )
+                    },
                     trailingIcon = {
                         IconButton(
                             content = {
                                 Icon(
-                                    painter = painterResource(id = if(passwordVisibility) R.drawable.eye_on else R.drawable.eye_off),
+                                    painter = painterResource(id = if(passwordVisibility) R.drawable.eye_off else R.drawable.eye_on),
                                     contentDescription = "eye",
-                                    tint = if(passwordVisibility) Color.Black else Color.Gray)
+                                    tint = Color.Gray)
                             },
                             onClick = { passwordVisibility = !passwordVisibility }
                         )

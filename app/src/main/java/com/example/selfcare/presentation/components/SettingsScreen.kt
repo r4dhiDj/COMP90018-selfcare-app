@@ -188,9 +188,17 @@ fun SettingsScreen(
                         OutlinedTextField(
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
-                            keyboardOptions = KeyboardOptions(
-                                keyboardType = KeyboardType.Password
-                            ),
+                            leadingIcon = {
+                                IconButton(
+                                    content = {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.user),
+                                            contentDescription = "user",
+                                            tint = Color.Gray)
+                                    },
+                                    onClick = {Log.d("leading icon", "clicked leading icon") }
+                                )
+                            },
                             value = newUsername,
                             onValueChange = { newUsername = it },
                             label = { Text("Update Username") }
@@ -209,13 +217,24 @@ fun SettingsScreen(
                         onValueChange = { newPassword = it },
                         label = { Text("Update Password") },
                         singleLine = true,
+                        leadingIcon = {
+                            IconButton(
+                                content = {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.lock),
+                                        contentDescription = "lock",
+                                        tint = Color.Gray)
+                                },
+                                onClick = {Log.d("leading icon", "clicked leading icon") }
+                            )
+                        },
                         trailingIcon = {
                             IconButton(
                                 content = {
                                     Icon(
-                                        painter = painterResource(id = if(passwordVisibility) R.drawable.eye_on else R.drawable.eye_off),
+                                        painter = painterResource(id = if(passwordVisibility) R.drawable.eye_off else R.drawable.eye_on),
                                         contentDescription = "eye",
-                                        tint = if(darkMode) Color.White else Color.Black)
+                                        tint = if(darkMode) Color.White else Color.Gray)
                                 },
                                 onClick = { passwordVisibility = !passwordVisibility }
                             )

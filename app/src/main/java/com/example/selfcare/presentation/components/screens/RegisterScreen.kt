@@ -91,6 +91,17 @@ fun RegisterScreen(viewModel: MainViewModel, navController: NavController, activ
                     textStyle = TextStyle(
                         color = Color.Black),
                     onValueChange = { email = it },
+                    leadingIcon = {
+                        IconButton(
+                            content = {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_baseline_email_24),
+                                    contentDescription = "mail",
+                                    tint = Color.Gray)
+                            },
+                            onClick = {Log.d("leading icon", "clicked leading icon") }
+                        )
+                    },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(0.8f),
                     keyboardOptions = KeyboardOptions(
@@ -112,11 +123,22 @@ fun RegisterScreen(viewModel: MainViewModel, navController: NavController, activ
                         IconButton(
                             content = {
                                 Icon(
-                                    painter = painterResource(id = if(passwordVisibility) R.drawable.eye_on else R.drawable.eye_off),
+                                    painter = painterResource(id = if(passwordVisibility) R.drawable.eye_off else R.drawable.eye_on),
                                     contentDescription = "eye",
-                                    tint = if(passwordVisibility) Color.Black else Color.Gray)
+                                    tint = Color.Gray)
                             },
                             onClick = { passwordVisibility = !passwordVisibility }
+                        )
+                    },
+                    leadingIcon = {
+                        IconButton(
+                            content = {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.lock),
+                                    contentDescription = "lock",
+                                    tint = Color.Gray)
+                            },
+                            onClick = {Log.d("leading icon", "clicked leading icon") }
                         )
                     },
                     modifier = Modifier.fillMaxWidth(0.8f),
