@@ -16,7 +16,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import com.example.selfcare.ui.theme.*
@@ -38,9 +40,12 @@ fun BreatheScreen(navController: NavController,
             TopAppBar(
                 title = {
                     Text(
-                        text = "Breathing",
+                        text = "Breathe",
                         style = MaterialTheme.typography.h1,
-                        color = Color.White
+                        color = Color.White,
+                        fontFamily = IBMPlexMono,
+                        fontWeight = FontWeight.Light,
+                        fontSize = 18.sp
                     )
                 },
                 navigationIcon = {

@@ -18,7 +18,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.Observer
 import com.example.selfcare.databinding.ArActivityBinding
 import com.google.ar.core.*
 import com.google.ar.core.exceptions.*
@@ -37,7 +36,6 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlin.math.abs
 import com.example.selfcare.viewmodels.CoinViewModel
-import kotlin.math.absoluteValue
 
 
 class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
@@ -214,18 +212,23 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
         bottomSheetView.findViewById<View>(R.id.steveButton).setOnClickListener {
             mode = Mode.STEVE
+            bottomSheetDialog.dismiss()
         }
         bottomSheetView.findViewById<View>(R.id.spidermanButton).setOnClickListener {
             mode = Mode.SPIDERMAN
+            bottomSheetDialog.dismiss()
         }
         bottomSheetView.findViewById<View>(R.id.amogusButton).setOnClickListener {
             mode = Mode.AMOGUS
+            bottomSheetDialog.dismiss()
         }
         bottomSheetView.findViewById<View>(R.id.antmanButton).setOnClickListener {
             mode = Mode.ANTMAN
+            bottomSheetDialog.dismiss()
         }
         bottomSheetView.findViewById<View>(R.id.doggoButton).setOnClickListener {
             mode = Mode.DOGGO
+            bottomSheetDialog.dismiss()
         }
 
 
@@ -717,7 +720,6 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
                     when (mode) {
                         Mode.STEVE -> steveAttachment = addSessionAnchorFromAttachment(steveAttachment, hit)
                         Mode.SPIDERMAN -> spidermanAttachment = addSessionAnchorFromAttachment(spidermanAttachment, hit)
-//                        Mode.COIN -> coinAttachment = addSessionAnchorCoin(hit)
                         Mode.AMOGUS -> amogusAttachment = addSessionAnchorFromAttachment(amogusAttachment, hit)
                         Mode.ANTMAN -> antmanAttachment = addSessionAnchorFromAttachment(antmanAttachment, hit)
                         Mode.DOGGO -> doggoAttachment = addSessionAnchorFromAttachment(doggoAttachment, hit)
