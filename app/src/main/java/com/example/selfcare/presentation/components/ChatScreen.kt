@@ -194,33 +194,27 @@ private fun addTextToChat(
 //                chat.add(Message("Please wait while I'm preparing the stats...", true))
                 userRef.child("emotions").child(month).child(day).get()
                     .addOnSuccessListener {
-                        if (it == null) {
-                            chat.add(
-                                Message(
-                                    "Seems that you haven't written anything today.",
-                                    true
-                                )
-                            )
-                        } else {
-                            var totalCount = 0.0
-                            val counter = mutableMapOf<String, Int>()
+                        var totalCount = 0.0
+                        val counter = mutableMapOf<String, Int>()
 
-                            for (child in it.children) {
-                                totalCount += 1
-                                if (counter.containsKey(child.value)) {
-                                    var count = counter[child.value]?.plus(1)
-                                    if (count != null) {
-                                        counter[child.value as String] = count
-                                    }
-                                } else {
-                                    counter[child.value as String] = 1
+                        for (child in it.children) {
+                            totalCount += 1
+                            if (counter.containsKey(child.value)) {
+                                var count = counter[child.value]?.plus(1)
+                                if (count != null) {
+                                    counter[child.value as String] = count
                                 }
+                            } else {
+                                counter[child.value as String] = 1
                             }
+                        }
 
-                            val sorted = counter.toList().sortedByDescending { (_, value) -> value }
+                        val sorted = counter.toList().sortedByDescending { (_, value) -> value }
 
+                        if ( sorted.isEmpty() ) {
+                            chat.add(Message("Seems that you haven't written anything today.", true))
+                        } else {
                             var msg = "Breakdown of your feelings today:\n"
-
                             for ((sentiment, count) in sorted) {
                                 msg += String.format(
                                     "%s: %.0f%% ",
