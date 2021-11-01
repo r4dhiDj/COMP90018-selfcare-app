@@ -3,8 +3,10 @@ package com.example.selfcare.presentation.components
 import android.content.Context.VIBRATOR_SERVICE
 import android.content.Intent
 import android.media.MediaPlayer
+import android.os.Build
 import android.os.Vibrator
 import androidx.activity.ComponentActivity
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
@@ -26,6 +28,7 @@ import com.example.selfcare.presentation.components.screens.RegisterScreen
 import com.example.selfcare.service.AlarmService
 import com.example.selfcare.viewmodels.BreatheViewModel
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable

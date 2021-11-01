@@ -130,6 +130,7 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
         installRequested = false
 
+
         setupTapDetector()
         setupSurfaceView()
 
@@ -181,6 +182,12 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
         }
     }
 
+//    override fun onBackPressed() {
+//        Log.d(TAG, "onBackPressed: left the activity")
+//        super.onBackPressed();
+//    }
+
+
     fun settingsPressed(view: View) {
 
         val bottomSheetDialog = BottomSheetDialog(
@@ -205,6 +212,26 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
             Log.i("firebase", "Got value ${it.value}")
             if (it.value == true) {
                 bottomSheetView.findViewById<View>(R.id.spidermanButton).visibility = View.VISIBLE
+            }
+        }.addOnFailureListener{
+            Log.e("firebase", "Error getting data", it)
+        }
+
+        // Unlock Doggo button
+        user.child("items").child("Doggo").get().addOnSuccessListener {
+            Log.i("firebase", "Got value ${it.value}")
+            if (it.value == true) {
+                bottomSheetView.findViewById<View>(R.id.doggoButton).visibility = View.VISIBLE
+            }
+        }.addOnFailureListener{
+            Log.e("firebase", "Error getting data", it)
+        }
+
+        // Unlock Antman button
+        user.child("items").child("Antman").get().addOnSuccessListener {
+            Log.i("firebase", "Got value ${it.value}")
+            if (it.value == true) {
+                bottomSheetView.findViewById<View>(R.id.antmanButton).visibility = View.VISIBLE
             }
         }.addOnFailureListener{
             Log.e("firebase", "Error getting data", it)
@@ -746,25 +773,5 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
         return PlaneAttachment(plane, anchor)
     }
 
-
-    private fun addSessionAnchorCoin(
-        hit: HitResult
-    ): PlaneAttachment? {
-        // 1
-        if (coinAnchors.size > 15) {
-            coinAnchors[0].detach()
-            coinAnchors.removeAt(0)
-        }
-
-        // 2
-        val plane = hit.trackable as Plane
-        val anchor = session!!.createAnchor(hit.hitPose)
-
-        coinAnchors.add(anchor)
-        Log.d(TAG, "addSessionAnchorCoin: $coinAnchors")
-
-        // 3
-        return PlaneAttachment(plane, anchor)
-    }
 
 }

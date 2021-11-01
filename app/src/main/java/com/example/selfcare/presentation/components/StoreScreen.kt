@@ -73,6 +73,8 @@ fun StoreScreen (viewModel: MainViewModel, navController : NavController) {
         // Store items
         StoreItemsList(items =
             listOf(
+                Buyable(name = "Doggo",  cost = 30),
+                Buyable(name = "Antman",  cost = 25),
                 Buyable(name = "Spiderman", cost = 20),
                 Buyable(name = "Steve", cost = 15),
                 Buyable(name = "Amogus", cost = 10),

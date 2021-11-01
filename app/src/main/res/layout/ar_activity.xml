@@ -18,8 +18,8 @@
 
     <ImageButton
         android:id="@+id/settings_button"
-        android:layout_width="43dp"
-        android:layout_height="47dp"
+        android:layout_width="61dp"
+        android:layout_height="54dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="25dp"
