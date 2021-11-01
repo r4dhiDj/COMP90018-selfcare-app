@@ -42,7 +42,7 @@ fun Navigation(activityContext: ComponentActivity,
         ReminderNav(navController = navController)
     }
     val context = LocalContext.current
-    NavHost(navController = navController, startDestination = Screen.RegisterScreen.route) {
+    NavHost(navController = navController, startDestination = Screen.LoginScreen.route) {
         composable(route = Screen.WelcomeScreen.route){
             WelcomeScreen(viewModel = viewModel, navController = navController )
         }
@@ -67,7 +67,7 @@ fun Navigation(activityContext: ComponentActivity,
         composable(
             route = Screen.SettingsScreen.route
         ){
-            SettingsScreen(viewModel, navController = navController)
+            SettingsScreen(viewModel, navController = navController, activityContext = activityContext)
 
             //SettingsScreenVM(navController = navController, context, SettingsViewModel() )
         }

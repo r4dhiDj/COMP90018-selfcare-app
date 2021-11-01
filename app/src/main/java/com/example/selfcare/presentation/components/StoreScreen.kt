@@ -3,6 +3,7 @@ package com.example.selfcare.presentation.components
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -126,7 +127,10 @@ fun StoreScreen (viewModel: MainViewModel, navController : NavController) {
                                 .clip(RoundedCornerShape(20.dp))
                         )
                     },
-                    onClick = { navController.navigate(Screen.MenuScreen.route) }
+                    onClick = {
+                        navController.popBackStack()
+                        navController.navigate(Screen.MenuScreen.route)
+                    }
                 )
 
                 Icon(
@@ -165,6 +169,11 @@ fun StoreScreen (viewModel: MainViewModel, navController : NavController) {
 
             }
         }
+    }
+
+    BackHandler(enabled = true) {
+        navController.popBackStack()
+        navController.navigate(Screen.MenuScreen.route)
     }
 }
 

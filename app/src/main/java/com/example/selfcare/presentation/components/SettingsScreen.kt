@@ -1,10 +1,14 @@
 package com.example.selfcare.presentation.components
 
 import android.util.Log
+import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
@@ -14,9 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -33,7 +39,8 @@ import com.google.firebase.ktx.Firebase
 @Composable
 fun SettingsScreen(
     viewModel: MainViewModel,
-    navController: NavController
+    navController: NavController,
+    activityContext: ComponentActivity
     ) {
 
     var username by remember { mutableStateOf("") }
@@ -41,6 +48,8 @@ fun SettingsScreen(
     var email by remember { mutableStateOf("")}
     val scrollState = rememberScrollState()
     var passwordVisibility by remember {mutableStateOf(false)}
+
+    val focusManager = LocalFocusManager.current
 
     LaunchedEffect(key1 = viewModel.darkModeState) {
         viewModel.getDarkMode()
@@ -75,7 +84,10 @@ fun SettingsScreen(
                                 .clip(RoundedCornerShape(20.dp))
                         )
                     },
-                    onClick = { navController.navigate(Screen.MenuScreen.route) }
+                    onClick = {
+                        navController.popBackStack()
+                        navController.navigate(Screen.MenuScreen.route)
+                    }
                 )
 
                 Icon(
@@ -199,6 +211,13 @@ fun SettingsScreen(
                                     onClick = {Log.d("leading icon", "clicked leading icon") }
                                 )
                             },
+                            keyboardOptions = KeyboardOptions.Default.copy(
+                                keyboardType = KeyboardType.Text,
+                                imeAction = ImeAction.Default,
+                            ),
+                            keyboardActions = KeyboardActions(onDone = {
+                                focusManager.clearFocus()
+                            }),
                             value = newUsername,
                             onValueChange = { newUsername = it },
                             label = { Text("Update Username") }
@@ -211,7 +230,9 @@ fun SettingsScreen(
                             .padding(top = 12.dp, bottom = 12.dp, start = 20.dp, end = 20.dp),
                         Arrangement.SpaceBetween,
                         Alignment.CenterVertically
-                    ) {OutlinedTextField(
+                    ) {
+
+                        OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = newPassword,
                         onValueChange = { newPassword = it },
@@ -241,10 +262,15 @@ fun SettingsScreen(
                         },
                         visualTransformation = if(passwordVisibility)
                             VisualTransformation.None else PasswordVisualTransformation(),
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Password
-                        )
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            keyboardType = KeyboardType.Password,
+                            imeAction = ImeAction.Default,
+                        ),
+                        keyboardActions = KeyboardActions(onDone = {
+                            focusManager.clearFocus()
+                        }),
                     )
+
                     }
 
                     if (newUsername.trim() != "" || newPassword.trim() != "") {
@@ -264,11 +290,28 @@ fun SettingsScreen(
                             ),
                             onClick = {
                                 if (newPassword.trim() != "") {
-                                    viewModel.setUserPassword(newPassword)
+
+                                    if (newPassword.length < 6) {
+                                        Toast.makeText(
+                                            activityContext, "Password must be at least 6 characters.",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    } else {
+                                        viewModel.setUserPassword(newPassword)
+                                        Toast.makeText(
+                                            activityContext, "Profile updated!",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+
                                 }
                                 if (newUsername.trim() != "") {
                                     username = newUsername
                                     viewModel.setUsername(newUsername)
+                                    Toast.makeText(
+                                        activityContext, "Profile updated!",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                             }
                         ) {
@@ -334,10 +377,11 @@ fun SettingsScreen(
                         Button(
                             onClick = {
                                 viewModel.signOut()
+                                navController.popBackStack()
                                 navController.navigate(Screen.LoginScreen.route) {
-                                    popUpTo(Screen.WelcomeScreen.route) {
-                                        inclusive = true
-                                    }
+//                                    popUpTo(Screen.WelcomeScreen.route) {
+//                                        inclusive = true
+//                                    }
                                 }
                             }
                         ) {
@@ -371,10 +415,11 @@ fun SettingsScreen(
                                 while (Firebase.auth.currentUser != null) {
                                     Log.d("waiting to delete user", "")
                                 }
+                                navController.popBackStack()
                                 navController.navigate(Screen.RegisterScreen.route) {
-                                    popUpTo(Screen.WelcomeScreen.route) {
-                                        inclusive = true
-                                    }
+//                                    popUpTo(Screen.WelcomeScreen.route) {
+//                                        inclusive = true
+//                                    }
                                 }
                             }
                         ) {

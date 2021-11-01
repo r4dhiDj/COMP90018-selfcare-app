@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.selfcare.viewmodels.MainViewModel
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -74,6 +75,7 @@ fun WelcomeScreen(viewModel: MainViewModel,
                             Log.d("inside welcome screen", newUsername)
                             viewModel.setUsername(username)
                         }
+                        navController.popBackStack()
                         navController.navigate(Screen.MenuScreen.route)
                     }
                 )
@@ -84,7 +86,6 @@ fun WelcomeScreen(viewModel: MainViewModel,
             }
         }
     }
-
 }
 
 

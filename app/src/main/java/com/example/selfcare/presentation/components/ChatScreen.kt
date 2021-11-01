@@ -27,6 +27,7 @@ import android.app.Activity
 import android.speech.tts.TextToSpeech
 import android.speech.tts.TextToSpeech.OnInitListener
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 
 
 //import org.json.simple.JSONObject;
@@ -92,7 +93,10 @@ fun ChatScreen(navController: NavController) {
                                 .clip(RoundedCornerShape(20.dp))
                         )
                     },
-                    onClick = { navController.navigate(Screen.MenuScreen.route) }
+                    onClick = {
+                        navController.popBackStack()
+                        navController.navigate(Screen.MenuScreen.route)
+                    }
                 )
 
                 Icon(
@@ -148,6 +152,10 @@ fun ChatScreen(navController: NavController) {
         }
     )
 
+    BackHandler(enabled = true) {
+        navController.popBackStack()
+        navController.navigate(Screen.MenuScreen.route)
+    }
 
 }
 

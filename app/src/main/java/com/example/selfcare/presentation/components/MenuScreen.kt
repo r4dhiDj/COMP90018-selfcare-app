@@ -1,6 +1,7 @@
 package com.example.selfcare.presentation.components
 
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -117,6 +118,12 @@ fun MenuScreen(viewModel: MainViewModel, navController: NavController) {
             )
         }
     }
+
+    BackHandler(enabled = true) {
+        navController.popBackStack()
+        navController.navigate(Screen.WelcomeScreen.route)
+    }
+
 }
 
 @Composable
@@ -236,12 +243,30 @@ fun FeatureItem(
             .fillMaxSize()
             .clickable {
                 when (feature.title) {
-                    "chat" -> feature.navController.navigate(Screen.ChatScreen.route)
-                    "go live" -> feature.navController.navigate(Screen.ARActivity.route)
-                    "reminders" -> feature.navController.navigate(Screen.ReminderScreen.route)
-                    "breathe" -> feature.navController.navigate(Screen.BreatheScreen.route)
-                    "store" -> feature.navController.navigate(Screen.StoreScreen.route)
-                    "settings" -> feature.navController.navigate(Screen.SettingsScreen.route)
+                    "chat" -> {
+                        feature.navController.popBackStack()
+                        feature.navController.navigate(Screen.ChatScreen.route)
+                    }
+                    "go live" -> {
+                        feature.navController.popBackStack()
+                        feature.navController.navigate(Screen.ARActivity.route)
+                    }
+                    "reminders" -> {
+                        feature.navController.popBackStack()
+                        feature.navController.navigate(Screen.ReminderScreen.route)
+                    }
+                    "breathe" -> {
+                        feature.navController.popBackStack()
+                        feature.navController.navigate(Screen.BreatheScreen.route)
+                    }
+                    "store" -> {
+                        feature.navController.popBackStack()
+                        feature.navController.navigate(Screen.StoreScreen.route)
+                    }
+                    "settings" -> {
+                        feature.navController.popBackStack()
+                        feature.navController.navigate(Screen.SettingsScreen.route)
+                    }
                 }
             },
              verticalArrangement = Arrangement.Center,

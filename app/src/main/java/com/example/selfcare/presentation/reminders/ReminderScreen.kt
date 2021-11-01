@@ -1,5 +1,6 @@
 package com.example.selfcare.presentation.reminders
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,10 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.selfcare.R
 import com.example.selfcare.presentation.components.Screen
-import com.example.selfcare.ui.theme.Blue700
-import com.example.selfcare.ui.theme.IBMPlexMono
-import com.example.selfcare.ui.theme.Purple700
-import com.example.selfcare.ui.theme.Typography
+import com.example.selfcare.ui.theme.*
 import com.example.selfcare.util.Action
 import com.example.selfcare.util.RequestState
 import kotlinx.coroutines.launch
@@ -85,6 +83,11 @@ fun ReminderScreen (
         }
     )
 
+    BackHandler(enabled = true) {
+        navController.popBackStack()
+        navController.navigate(Screen.MenuScreen.route)
+        navController.popBackStack()
+    }
 
 }
 
@@ -140,7 +143,7 @@ fun ReminderTopBar(
                 Spacer(
                     modifier = Modifier
                         .fillMaxHeight()
-                        .width(25.dp)
+                        .width(15.dp)
                 )
                 Text(
                     text = "Reminders",
@@ -163,7 +166,10 @@ fun ReminderTopBar(
                             .clip(RoundedCornerShape(20.dp))
                     )
                 },
-                onClick = { navController.navigate(Screen.MenuScreen.route) }
+                onClick = {
+                    navController.popBackStack()
+                    navController.navigate(Screen.MenuScreen.route)
+                }
             )
         },
 
@@ -172,7 +178,9 @@ fun ReminderTopBar(
                 onDeleteAllConfirmed = onDeleteAllConfirmed
             )
         },
-        backgroundColor = Purple700
+        backgroundColor = Purple700,
+        elevation = 0.dp,
+        modifier = Modifier.background(Purple700).padding(0.dp, 15.dp)
     )
 }
 

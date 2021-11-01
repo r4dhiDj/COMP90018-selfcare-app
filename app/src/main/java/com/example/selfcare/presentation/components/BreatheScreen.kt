@@ -7,6 +7,7 @@ import android.webkit.WebView
 import android.widget.NumberPicker
 import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -16,11 +17,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
+import com.example.selfcare.R
 import com.example.selfcare.ui.theme.*
 import com.example.selfcare.viewmodels.BreatheViewModel
 import com.example.selfcare.viewmodels.MainViewModel
@@ -39,25 +42,39 @@ fun BreatheScreen(navController: NavController,
         topBar = {
             TopAppBar(
                 title = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_air),
+                        contentDescription = "air",
+                        tint = Color.White,
+                    )
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .width(15.dp)
+                    )
                     Text(
                         text = "Breathe",
-                        style = MaterialTheme.typography.h1,
-                        color = Color.White,
                         fontFamily = IBMPlexMono,
                         fontWeight = FontWeight.Light,
+                        color = Color.White,
                         fontSize = 18.sp
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = {
                         breatheVM.resetToDefault()
+                        navController.popBackStack()
                         navController.navigate(Screen.MenuScreen.route)
                         mediaPlayer.release()
                     }) {
-                        Icon(Icons.Filled.ArrowBack, "backIcon", tint = Color.White)
+                        Icon(painter = painterResource(id = R.drawable.ic_chevron_left), "backIcon", tint = Color.White)
                     }
                 },
-                backgroundColor = Green700
+                backgroundColor = Green700,
+                elevation = 0.dp,
+                modifier = Modifier
+                    .background(Green700)
+                    .padding(0.dp, 15.dp)
             )
         },
 
@@ -86,6 +103,7 @@ fun BreatheScreen(navController: NavController,
         mediaPlayer.seekTo(0)
         navController.popBackStack()
         navController.navigate(Screen.MenuScreen.route)
+        navController.popBackStack()
     }
 }
 
@@ -97,8 +115,11 @@ fun settingScreen(breatheVM: BreatheViewModel, darkMode: Boolean) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+
+        Text(text = "Breathe and relax", style = MaterialTheme.typography.h1)
+        Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = "Relax with this guided breathing exercise",
+            text = "with this guided breathing exercise",
             style = MaterialTheme.typography.h3
         )
         Spacer(modifier = Modifier.height(30.dp))
@@ -107,8 +128,10 @@ fun settingScreen(breatheVM: BreatheViewModel, darkMode: Boolean) {
         Button(
             onClick = {
                 breatheVM.startBreathing()
-            })
-        { Text("Start", style = MaterialTheme.typography.button) }
+            }
+        ) {
+            Text("Start", style = MaterialTheme.typography.button)
+        }
     }
 }
 
@@ -225,7 +248,12 @@ fun MusicCheckBox(breatheVM: BreatheViewModel) {
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.padding(0.dp, 40.dp)
     ) {
-        Text(text = "Music", style = MaterialTheme.typography.h3)
+        Icon(
+            painter = painterResource(id = R.drawable.ic_music),
+            contentDescription = "music",
+        )
+        Spacer(modifier = Modifier.width(10.dp))
+        Text(text = "With music", style = MaterialTheme.typography.h3)
         Spacer(modifier = Modifier.width(10.dp))
         Checkbox(
             checked = breatheVM.isMusic,

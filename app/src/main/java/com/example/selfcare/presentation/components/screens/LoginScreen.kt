@@ -7,16 +7,20 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -42,11 +46,42 @@ fun LoginScreen(viewModel: MainViewModel, navController: NavController, activity
     var email by remember {mutableStateOf("")}
     var password by remember {mutableStateOf("")}
     var passwordVisibility by remember {mutableStateOf(false)}
+
     if (Firebase.auth.currentUser!= null) {
         navController.popBackStack()
         navController.navigate(Screen.WelcomeScreen.route)
     }
 
+    val focusManager = LocalFocusManager.current
+
+    fun login() {
+
+        if (email.isNotEmpty() && password.isNotEmpty()) {
+            auth.signInWithEmailAndPassword(
+                email.trim(),
+                password.trim()
+            )
+                .addOnCompleteListener(activityContext) { task ->
+                    if (task.isSuccessful) {
+                        viewModel.setUserEmail(email.trim())
+                        Log.d("inside on complete", email)
+                        navController.popBackStack() //so back button doesn't return to register page
+                        while(Firebase.auth.currentUser== null){
+                            Log.d("waiting to login","")
+                        }
+                        navController.navigate(Screen.WelcomeScreen.route)
+                    } else {
+                        Log.d("Login", "Failed: ${task.exception}")
+                        Toast.makeText(
+                            activityContext, "Invalid email or password.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+        }
+
+
+    }
 
     Box(
         modifier = Modifier
@@ -107,9 +142,13 @@ fun LoginScreen(viewModel: MainViewModel, navController: NavController, activity
                     },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(0.8f),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Email
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        keyboardType = KeyboardType.Email,
+                        imeAction = ImeAction.Next
                     ),
+                    keyboardActions = KeyboardActions(onNext = {
+                        focusManager.moveFocus(FocusDirection.Down)
+                    }),
                     label = { Text(text= "Enter your email",
                     color = Color.Gray) })
 
@@ -148,35 +187,20 @@ fun LoginScreen(viewModel: MainViewModel, navController: NavController, activity
                     label = { Text(text = "Enter your password", color = Color.Gray) },
                     visualTransformation = if(passwordVisibility)
                         VisualTransformation.None else PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Password
-                    )
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        keyboardType = KeyboardType.Password,
+                        imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(onDone = {
+                        focusManager.clearFocus()
+                        login()
+                    }),
                 )
                 Spacer(modifier = Modifier.padding(20.dp))
                 Button(
                     enabled = !(email.trim() == "" || password.trim() ==""),
                     onClick = {
-                        auth.signInWithEmailAndPassword(
-                            email.trim(),
-                            password.trim()
-                        )
-                            .addOnCompleteListener(activityContext) { task ->
-                                if (task.isSuccessful) {
-                                    viewModel.setUserEmail(email.trim())
-                                    Log.d("inside on complete", email)
-                                    navController.popBackStack() //so back button doesn't return to register page
-                                    while(Firebase.auth.currentUser== null){
-                                        Log.d("waiting to login","")
-                                    }
-                                    navController.navigate(Screen.WelcomeScreen.route)
-                                } else {
-                                    Log.d("Login", "Failed: ${task.exception}")
-                                    Toast.makeText(
-                                        activityContext, "Invalid email or password.",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            }
+                        login()
                     }
                 ) {
                     Text(color = Color.White, text = "Login")
