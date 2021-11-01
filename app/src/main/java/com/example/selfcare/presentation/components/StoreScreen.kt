@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -93,11 +94,11 @@ fun StoreScreen (viewModel: MainViewModel, navController : NavController) {
         // Store items
         StoreItemsList(items =
             listOf(
-                Buyable(name = "Doggo",  cost = 30),
-                Buyable(name = "Antman",  cost = 25),
-                Buyable(name = "Spiderman", cost = 20),
-                Buyable(name = "Steve", cost = 15),
-                Buyable(name = "Amogus", cost = 10),
+                Buyable(name = "Doggo",  cost = 30, imageId = R.drawable.doggo_icon),
+                Buyable(name = "Antman",  cost = 25, imageId = R.drawable.antman_icon),
+                Buyable(name = "Spiderman", cost = 20, imageId = R.drawable.spiderman_icon),
+                Buyable(name = "Steve", cost = 15, imageId = R.drawable.steve_icon),
+                Buyable(name = "Amogus", cost = 10, imageId = R.drawable.amogus_icon),
             ),
             onClick = ::buyItem
         )
@@ -236,10 +237,9 @@ fun StoreItem(item: Buyable, onClick: (bought: Buyable) -> Unit) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(
+            Image(
                 painter = painterResource(item.imageId),
                 contentDescription = "icon for ${item.name}",
-                tint = lightColour,
                 modifier = Modifier.size(70.dp)
             )
 

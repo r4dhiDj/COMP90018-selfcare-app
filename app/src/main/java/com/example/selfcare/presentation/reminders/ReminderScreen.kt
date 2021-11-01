@@ -86,7 +86,6 @@ fun ReminderScreen (
     BackHandler(enabled = true) {
         navController.popBackStack()
         navController.navigate(Screen.MenuScreen.route)
-        navController.popBackStack()
     }
 
 }

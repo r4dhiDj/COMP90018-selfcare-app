@@ -103,7 +103,6 @@ fun BreatheScreen(navController: NavController,
         mediaPlayer.seekTo(0)
         navController.popBackStack()
         navController.navigate(Screen.MenuScreen.route)
-        navController.popBackStack()
     }
 }
 

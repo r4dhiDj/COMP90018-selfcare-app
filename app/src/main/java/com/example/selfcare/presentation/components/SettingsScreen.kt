@@ -431,6 +431,11 @@ fun SettingsScreen(
             }
         }
     )
+
+    BackHandler(enabled = true) {
+        navController.popBackStack()
+        navController.navigate(Screen.MenuScreen.route)
+    }
 }
 
 
