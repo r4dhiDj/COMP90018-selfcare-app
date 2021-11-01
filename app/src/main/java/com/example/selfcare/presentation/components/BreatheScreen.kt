@@ -60,21 +60,21 @@ fun BreatheScreen(navController: NavController,
                         fontSize = 18.sp
                     )
                 },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        breatheVM.resetToDefault()
-                        navController.popBackStack()
-                        navController.navigate(Screen.MenuScreen.route)
-                        mediaPlayer.release()
-                    }) {
-                        Icon(painter = painterResource(id = R.drawable.ic_chevron_left), "backIcon", tint = Color.White)
-                    }
-                },
+//                navigationIcon = {
+//                    IconButton(onClick = {
+//                        breatheVM.resetToDefault()
+//                        navController.popBackStack()
+//                        navController.navigate(Screen.MenuScreen.route)
+//                        mediaPlayer.release()
+//                    }) {
+//                        Icon(painter = painterResource(id = R.drawable.ic_chevron_left), "backIcon", tint = Color.White)
+//                    }
+//                },
                 backgroundColor = Green700,
                 elevation = 0.dp,
                 modifier = Modifier
                     .background(Green700)
-                    .padding(0.dp, 15.dp)
+                    .padding(0.dp, 8.dp)
             )
         },
 

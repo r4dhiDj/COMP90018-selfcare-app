@@ -82,22 +82,22 @@ fun ChatScreen(navController: NavController) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
-                IconButton(
-                    content = {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_chevron_left),
-                            contentDescription = "back",
-                            tint = Color.White,
-                            modifier = Modifier
-                                .padding(10.dp)
-                                .clip(RoundedCornerShape(20.dp))
-                        )
-                    },
-                    onClick = {
-                        navController.popBackStack()
-                        navController.navigate(Screen.MenuScreen.route)
-                    }
-                )
+//                IconButton(
+//                    content = {
+//                        Icon(
+//                            painter = painterResource(id = R.drawable.ic_chevron_left),
+//                            contentDescription = "back",
+//                            tint = Color.White,
+//                            modifier = Modifier
+//                                .padding(10.dp)
+//                                .clip(RoundedCornerShape(20.dp))
+//                        )
+//                    },
+//                    onClick = {
+//                        navController.popBackStack()
+//                        navController.navigate(Screen.MenuScreen.route)
+//                    }
+//                )
 
                 Icon(
                     painter = painterResource(id = R.drawable.ic_chat),
@@ -109,7 +109,8 @@ fun ChatScreen(navController: NavController) {
                     text = "Chat",
                     fontFamily = IBMPlexMono,
                     fontWeight = FontWeight.Light,
-                    color = Color.White
+                    color = Color.White,
+                    fontSize = 18.sp
                 )
             }
         },

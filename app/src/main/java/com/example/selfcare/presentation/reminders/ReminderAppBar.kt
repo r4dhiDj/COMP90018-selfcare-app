@@ -38,9 +38,9 @@ fun NewReminderBar(
     navigateToReminderScreen: (Action) -> Unit
 ) {
     TopAppBar (
-        navigationIcon = {
-            BackAction(onBackClicked = navigateToReminderScreen)
-        },
+//        navigationIcon = {
+//            BackAction(onBackClicked = navigateToReminderScreen)
+//        },
         title = {
             Text(
                 text = "New Reminder",

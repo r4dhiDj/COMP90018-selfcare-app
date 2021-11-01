@@ -80,7 +80,7 @@ fun WelcomeScreen(viewModel: MainViewModel,
                     }
                 )
                 {
-                    Text(color = Color.White, text = "Start")
+                    Text(color = Color.White, text = "Recharge Yourself")
                 }
 
             }

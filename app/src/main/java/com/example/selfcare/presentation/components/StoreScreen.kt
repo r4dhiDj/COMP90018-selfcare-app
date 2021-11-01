@@ -68,15 +68,16 @@ fun StoreScreen (viewModel: MainViewModel, navController : NavController) {
     fun buyItem(bought: Buyable) {
         userItemsRef.child(bought.name).get().addOnSuccessListener {
             Log.d("STORE", "Buy Item: ${it.value} Model:${bought.name}")
-            if (it.value as Boolean) {
+            if (it.value == true) {
                 Toast.makeText(
                     context,
                     "You already have ${bought.name}",
                     Toast.LENGTH_SHORT
                 ).show()
-            } else {
+            } else if (it.value == null) {
                 coinsRef.setValue(viewModel.coins.value - bought.cost)
                 userItemsRef.child(bought.name).setValue(true)
+
                 Toast.makeText(
                     context,
                     "You bought: ${bought.name}",
@@ -117,22 +118,22 @@ fun StoreScreen (viewModel: MainViewModel, navController : NavController) {
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(
-                    content = {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_chevron_left),
-                            contentDescription = "back",
-                            tint = Color.White,
-                            modifier = Modifier
-                                .padding(10.dp)
-                                .clip(RoundedCornerShape(20.dp))
-                        )
-                    },
-                    onClick = {
-                        navController.popBackStack()
-                        navController.navigate(Screen.MenuScreen.route)
-                    }
-                )
+//                IconButton(
+//                    content = {
+//                        Icon(
+//                            painter = painterResource(id = R.drawable.ic_chevron_left),
+//                            contentDescription = "back",
+//                            tint = Color.White,
+//                            modifier = Modifier
+//                                .padding(10.dp)
+//                                .clip(RoundedCornerShape(20.dp))
+//                        )
+//                    },
+//                    onClick = {
+//                        navController.popBackStack()
+//                        navController.navigate(Screen.MenuScreen.route)
+//                    }
+//                )
 
                 Icon(
                     painter = painterResource(id = R.drawable.ic_store),
@@ -145,7 +146,7 @@ fun StoreScreen (viewModel: MainViewModel, navController : NavController) {
                     fontFamily = IBMPlexMono,
                     fontWeight = FontWeight.Light,
                     color = Color.White,
-                    fontSize = 20.sp
+                    fontSize = 18.sp
                 )
             }
 

@@ -147,7 +147,7 @@ fun GreetingSection(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(0.dp, 0.dp, 0.dp, 10.dp)
+            .padding(10.dp, 0.dp)
     ) {
 
         Text(

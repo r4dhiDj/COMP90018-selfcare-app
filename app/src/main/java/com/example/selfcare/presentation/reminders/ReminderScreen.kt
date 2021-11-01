@@ -95,9 +95,11 @@ fun ReminderFab(
     onFabClicked: (reminderId: Int) -> Unit
 ) {
     FloatingActionButton(
+        backgroundColor = Purple700,
         onClick = {
             onFabClicked(-1)
-        }) {
+        },
+        ) {
         Icon(
             imageVector = Icons.Filled.Add,
             contentDescription = "Add Button",
@@ -130,7 +132,7 @@ fun ReminderTopBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Purple700)
-                    .padding(15.dp),
+                    .padding(8.dp),
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -153,25 +155,6 @@ fun ReminderTopBar(
                 )
             }
         },
-        navigationIcon = {
-            IconButton(
-                content = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_chevron_left),
-                        contentDescription = "back",
-                        tint = Color.White,
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .clip(RoundedCornerShape(20.dp))
-                    )
-                },
-                onClick = {
-                    navController.popBackStack()
-                    navController.navigate(Screen.MenuScreen.route)
-                }
-            )
-        },
-
         actions = {
             ListBarActions (
                 onDeleteAllConfirmed = onDeleteAllConfirmed
