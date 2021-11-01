@@ -1,6 +1,8 @@
 package com.example.selfcare.presentation.components
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,11 +14,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -44,6 +47,8 @@ fun StoreScreen (viewModel: MainViewModel, navController : NavController) {
     val coinsRef = userRef.child("coins").ref
     val userItemsRef = userRef.child("items").ref
 
+    val context = LocalContext.current
+
     val coinsListener = object : ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             // Get Post object and use the values to update the UI
@@ -60,10 +65,24 @@ fun StoreScreen (viewModel: MainViewModel, navController : NavController) {
 
     fun buyItem(bought: Buyable) {
         userItemsRef.child(bought.name).get().addOnSuccessListener {
-            Log.d("STORE", "Buy Item: ${it.value}")
-            coinsRef.setValue(viewModel.coins.value - bought.cost)
-            userItemsRef.child(bought.name).setValue(true)
+            Log.d("STORE", "Buy Item: ${it.value} Model:${bought.name}")
+            if (it.value as Boolean) {
+                Toast.makeText(
+                    context,
+                    "You already have ${bought.name}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                coinsRef.setValue(viewModel.coins.value - bought.cost)
+                userItemsRef.child(bought.name).setValue(true)
+                Toast.makeText(
+                    context,
+                    "You bought: ${bought.name}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
+
     }
 
     Box(
