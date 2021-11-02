@@ -1,4 +1,4 @@
-package com.example.selfcare.presentation.components
+package com.example.selfcare.presentation.components.screens
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color

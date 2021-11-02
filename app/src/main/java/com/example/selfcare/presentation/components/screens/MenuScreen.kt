@@ -8,10 +8,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -28,15 +26,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.selfcare.ui.theme.*
 import com.example.selfcare.R
+import com.example.selfcare.presentation.components.screens.Feature
 import com.example.selfcare.viewmodels.MainViewModel
-import com.google.firebase.ktx.Firebase
-import java.sql.Timestamp
 import java.time.Instant
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.temporal.ChronoField
-import java.time.temporal.TemporalField
 
 @ExperimentalFoundationApi
 @Composable

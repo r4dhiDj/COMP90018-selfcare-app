@@ -1,4 +1,4 @@
-package com.example.selfcare.presentation.components
+package com.example.selfcare.presentation.components.chat
 
 data class Message(
     var text: String,

@@ -1,4 +1,4 @@
-package com.example.selfcare.presentation.components
+package com.example.selfcare.presentation.components.store
 
 import androidx.annotation.DrawableRes
 import com.example.selfcare.R
