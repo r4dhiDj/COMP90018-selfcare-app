@@ -30,5 +30,15 @@ Functionalities of selfcare include:
 - **Reminders**: Calendar
 
 # Screenshots
+**Sign-Up & Log-In Screen**</br>
+**Menu Screen**</br>
+<img src="https://github.com/r4dhiDj/COMP90018-selfcare-app/blob/main/screenshots/Menu%20screen.png" width=20% height=20%></br>
+**Chat**</br>
+**Go-Live**</br>
+<img src="https://github.com/r4dhiDj/COMP90018-selfcare-app/blob/main/screenshots/Go-live.png" width=20% height=20%></br>
+**Reminders**</br>
+**Breathe**</br>
+**Store**</br>
+**Settings**</br>
 
 
