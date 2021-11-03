@@ -4,6 +4,9 @@ selfcare is an app built using Kotlin and Jetpack Compose designed for users to 
 
 To run this app, you need to use **Android Studio**. You can clone this repository or import the project from Android Studio.
 
+## API Level Required
+`API level 29`
+
 # Features
 Functionalities of selfcare include:
 - **Account Management**: Create and authenticate account through Google Firebase Authentication.
