@@ -31,7 +31,7 @@ Functionalities of selfcare include:
 
 # Screenshots
 **Sign-Up & Log-In Screen**</br>
-<img src="https://github.com/r4dhiDj/COMP90018-selfcare-app/blob/main/screenshots/register.png" height="450"><img src="https://github.com/r4dhiDj/COMP90018-selfcare-app/blob/main/screenshots/menu.png" height="450"></br>
+<img src="https://github.com/r4dhiDj/COMP90018-selfcare-app/blob/main/screenshots/register.png" height="450"><img src="https://github.com/r4dhiDj/COMP90018-selfcare-app/blob/main/screenshots/login.png" height="450"></br>
 **Menu Screen**</br>
 <img src="https://github.com/r4dhiDj/COMP90018-selfcare-app/blob/main/screenshots/menu.png" height="450"></br>
 **Chat**</br>
