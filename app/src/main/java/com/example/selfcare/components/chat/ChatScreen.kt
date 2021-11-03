@@ -192,7 +192,7 @@ private fun addTextToChat(
                 chat.add(Message(message, false))
                 chat.add(Message("I flipped a coin and it landed on $result", true))
             }
-            message.contains("daily history")|| message.contains("daily diary")||message.contains("today")-> {
+            message.contains("daily history")|| message.contains("daily diary")-> {
                 chat.add(Message(message,false))
 //                chat.add(Message("Please wait while I'm preparing the stats...", true))
                 userRef.child("emotions").child(month).child(day).get()
@@ -232,7 +232,7 @@ private fun addTextToChat(
                         chat.add(Message("Sorry I couldn't retrieve your data now.", true))
                     }
             }
-            message.contains("monthly history")|| message.contains("monthly diary")|| message.contains("month history") || message.contains("month diary")|| message.contains("month")-> {
+            message.contains("monthly history")|| message.contains("monthly diary")|| message.contains("month history") || message.contains("month diary")-> {
                 chat.add(Message(message,false))
                 userRef.child("emotions").get().addOnSuccessListener({
                     val counterMap = mutableMapOf<String, Int>()
@@ -273,7 +273,7 @@ private fun addTextToChat(
                 })
 
             }
-            message.contains("weekly history")|| message.contains("weekly diary")|| message.contains("week history") || message.contains("week diary") || message.contains("week") -> {
+            message.contains("weekly history")|| message.contains("weekly diary")|| message.contains("week history") || message.contains("week diary") -> {
                 var firstDay = LocalDate.now().with(DayOfWeek.MONDAY).dayOfMonth
                 var lastDay = firstDay + 6
                 userRef.child("emotions").get().addOnSuccessListener({
