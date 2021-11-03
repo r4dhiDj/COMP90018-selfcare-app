@@ -48,6 +48,7 @@ import java.time.LocalDate
 @Composable
 fun ChatScreen(navController: NavController) {
     var message by remember { mutableStateOf("") }
+    var count by remember {mutableStateOf(0)}
 
     val scrollState = rememberLazyListState()
     val scrollBehavior = remember { TopAppBarDefaults.pinnedScrollBehavior() }
@@ -114,8 +115,8 @@ fun ChatScreen(navController: NavController) {
     }, content = {
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .nestedScroll(scrollBehavior.nestedScrollConnection),
+                .fillMaxSize(),
+                //.nestedScroll(scrollBehavior.nestedScrollConnection),
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
 
@@ -123,8 +124,9 @@ fun ChatScreen(navController: NavController) {
                 chat = chat,
                 onMessageDelete = { message ->
 //                        chat.remove(message)
-                },
-                scrollState = scrollState
+                    },
+                scrollState = scrollState,
+                modifier = Modifier.weight(1f)
             )
 
             UserInput(
@@ -133,18 +135,21 @@ fun ChatScreen(navController: NavController) {
                     message = it
                 },
                 onMessageAdd = {
+                    count+=1 //user input
                     addTextToChat(
                         message = message,
                         chat = chat,
                         userRef = userRef,
                         clearInput = { message = "" }
                     )
+                    count+=1 //reply
                 },
-                onFocusChange = { focused ->
+                onFocusChange = {
+                        focused ->
 
                     if (focused) {
                         scope.launch {
-                            scrollState.scrollToItem(0)
+                            scrollState.scrollToItem(count)
                         }
                     }
 
@@ -402,7 +407,7 @@ private fun addTextToChat(
                         for(fear in book_fear){
                             recommend=recommend+fear+"\n"
                         }
-                        chat.add(Message("I hope one of these book can help you \n"+recommend, true))
+                        chat.add(Message("I hope one of these book can make you feel better! \n"+recommend, true))
                     }else{
                         val movie_fear = movie_to_recommend_fear.asSequence().shuffled().take(recommended_number).toList()
                         movie_to_recommend_fear.removeIf { i -> movie_fear.contains(i) }
@@ -410,7 +415,7 @@ private fun addTextToChat(
                         for(fear in movie_fear){
                             recommend=recommend+fear+"\n"
                         }
-                        chat.add(Message("I hope one of these movie can help you \n"+recommend, true))
+                        chat.add(Message("I hope one of these movie can make you feel better! \n"+recommend, true))
                     }
                     sentiment = "fear"
                 } else {
@@ -422,7 +427,7 @@ private fun addTextToChat(
                         for(bored in book_bored){
                             recommend=recommend+bored+"\n"
                         }
-                        chat.add(Message("I think one of these book can help you from your boredom \n"+recommend, true))
+                        chat.add(Message("I think one of these book can help you from your boredom! \n"+recommend, true))
                     }else{
                         val movie_bored = movie_to_recommend_bored.asSequence().shuffled().take(recommended_number).toList()
                         movie_to_recommend_bored.removeIf { i -> movie_bored.contains(i) }
@@ -430,7 +435,7 @@ private fun addTextToChat(
                         for(bored in movie_bored){
                             recommend=recommend+bored+"\n"
                         }
-                        chat.add(Message("I think one of these movie can help you from your boredom \n"+recommend, true))
+                        chat.add(Message("I think one of these movie can help you from your boredom! \n"+recommend, true))
                     }
                     sentiment = "bored"
                 }

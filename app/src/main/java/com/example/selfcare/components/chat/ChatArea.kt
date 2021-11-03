@@ -1,6 +1,7 @@
 package com.example.selfcare.components.chat
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -26,24 +27,30 @@ import com.google.accompanist.insets.rememberInsetsPaddingValues
 fun ChatArea(
     chat: List<Message>,
     onMessageDelete: (message: Message) -> Unit,
-    scrollState: LazyListState
+    scrollState: LazyListState,
+    modifier: Modifier = Modifier,
 ) {
 
     val scope = rememberCoroutineScope()
-
-    LazyColumn(
-        modifier = Modifier.fillMaxWidth(),
-        state = scrollState,
-        contentPadding = rememberInsetsPaddingValues(
-            insets = LocalWindowInsets.current.statusBars,
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.TopStart
+    ) {
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth(),
+            state = scrollState,
+            contentPadding = rememberInsetsPaddingValues(
+                insets = LocalWindowInsets.current.statusBars,
 //            additionalTop = 90.dp
-        )) {
-        items(chat) { message ->
-            ChatMessage(
-                message = message.text,
-                message.isUser,
-                onClick = { onMessageDelete(message) }
             )
+        ) {
+            items(chat) { message ->
+                ChatMessage(
+                    message = message.text,
+                    message.isUser,
+                    onClick = { onMessageDelete(message) }
+                )
+            }
         }
     }
 }

@@ -7,13 +7,16 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun UserInput(
     message: String,
@@ -39,6 +42,7 @@ fun UserInput(
             ) {
 
                 var lastFocusState by remember { mutableStateOf(false) }
+                val keyboardController = LocalSoftwareKeyboardController.current
 
                 BasicTextField(
                     value = message,
@@ -60,6 +64,7 @@ fun UserInput(
                     ),
                     keyboardActions = KeyboardActions(onSend = {
                         onMessageAdd()
+                        keyboardController?.hide()
                     }),
                     cursorBrush =  SolidColor(LocalContentColor.current),
                     textStyle = LocalTextStyle.current.copy(color = LocalContentColor.current)
