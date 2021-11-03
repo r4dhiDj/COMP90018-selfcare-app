@@ -28,6 +28,12 @@ import com.example.selfcare.presentation.components.screens.RegisterScreen
 import com.example.selfcare.service.AlarmService
 import com.example.selfcare.viewmodels.BreatheViewModel
 
+/**
+ * COMP90018 - SelfCare
+ * [Navigation] represents core Navigation to direct the user around the application
+ * Passess in both [viewModel] and [ReminderViewModel]
+ */
+
 @RequiresApi(Build.VERSION_CODES.Q)
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
@@ -68,8 +74,6 @@ fun Navigation(activityContext: ComponentActivity,
             route = Screen.SettingsScreen.route
         ){
             SettingsScreen(viewModel, navController = navController, activityContext = activityContext)
-
-            //SettingsScreenVM(navController = navController, context, SettingsViewModel() )
         }
         composable(route = Screen.ARActivity.route) {
             context.startActivity(Intent(context, AR_Activity::class.java))

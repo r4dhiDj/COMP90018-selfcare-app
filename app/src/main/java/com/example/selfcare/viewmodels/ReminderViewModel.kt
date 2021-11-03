@@ -22,7 +22,8 @@ import java.util.*
 import javax.inject.Inject
 
 /**
- * The [ReminderViewModel] takes in a [reminderRepository] to request data
+ * The [ReminderViewModel] used to hold state of the Current Reminder being accessed by the user
+ * Also used to write to the local ROOM database via the [reminderRepository]
  */
 
 @HiltViewModel

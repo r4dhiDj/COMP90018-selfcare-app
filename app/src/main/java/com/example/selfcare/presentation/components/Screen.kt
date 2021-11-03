@@ -1,5 +1,10 @@
 package com.example.selfcare.presentation.components
 
+/**
+ * COMP90018 - SelfCare
+ * [Screen] stores references of each screen and their routes
+ */
+
 sealed class Screen(val route: String) {
     object MenuScreen: Screen("menu_screen")
     object ReminderScreen: Screen("reminder_screen/{action}")

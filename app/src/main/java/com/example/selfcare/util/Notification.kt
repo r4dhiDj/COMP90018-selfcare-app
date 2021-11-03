@@ -6,13 +6,15 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.provider.Settings.Global.getString
-import androidx.compose.runtime.Composable
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.getSystemService
 import com.example.selfcare.MainActivity
-import com.example.selfcare.R
+
+/**
+ * COMP90018 - SelfCare
+ * [Notification] creates both the notification channel and intent to send the notification to the
+ * phone
+ */
 
 
 val CHANNEL_ID = "10101010"

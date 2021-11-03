@@ -1,5 +1,11 @@
 package com.example.selfcare.util
 
+
+/**
+ * COMP90018 - SelfCare
+ * Actions used to represent changes in the reminders
+ */
+
 enum class Action {
     ADD,
     UPDATED,

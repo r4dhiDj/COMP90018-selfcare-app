@@ -1,5 +1,10 @@
 package com.example.selfcare.constants
 
+/**
+ * COMP90018 - SelfCare
+ * [Constants] stores constants referring to the reminders database
+ */
+
 object Constants {
 
     const val DATABASE_TABLE = "reminder_table"

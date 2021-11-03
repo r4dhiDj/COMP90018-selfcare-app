@@ -16,6 +16,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.selfcare.R
 
+/**
+ * COMP90018 - SelfCare
+ * [EmptyContent] Composable used to display when there are no reminders in the local database
+ */
+
 @Composable
 fun EmptyContent() {
     Column (

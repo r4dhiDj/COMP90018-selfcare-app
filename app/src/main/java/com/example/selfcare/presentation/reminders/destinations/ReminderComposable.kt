@@ -15,6 +15,13 @@ import com.example.selfcare.service.AlarmService
 import com.example.selfcare.util.Action
 import com.example.selfcare.viewmodels.ReminderViewModel
 
+/**
+ * COMP90018 - SelfCare
+ * [reminderComposable] represents navigation to [CreateReminderScreeen] and handles the navigation
+ * in between reminders via passing a [reminderId]. Also passes in [alarmService] to handle
+ * scheduling of notifications
+ */
+
 fun NavGraphBuilder.reminderComposable(
     navigateToReminderScreen: (Action) -> Unit,
     reminderViewModel: ReminderViewModel,

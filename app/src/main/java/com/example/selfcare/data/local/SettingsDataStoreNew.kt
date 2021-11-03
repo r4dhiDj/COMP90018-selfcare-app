@@ -5,6 +5,11 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * COMP90018 - SelfCare
+ * [SettingsDataStoreNew] retains personalisation settings
+ */
+
 interface SettingsDataStoreNew {
     val isFirstTime: Flow<Boolean>
     val isDarkMode: Flow<Boolean>

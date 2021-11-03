@@ -29,6 +29,10 @@ import com.example.selfcare.viewmodels.BreatheViewModel
 import com.example.selfcare.viewmodels.MainViewModel
 import kotlinx.coroutines.delay
 
+/**
+ * COMP90018 - SelfCare
+ * [BreatheScreen] Primary screen (composable) for interacting with the breathe function
+ */
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun BreatheScreen(navController: NavController,

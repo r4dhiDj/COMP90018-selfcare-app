@@ -5,6 +5,7 @@ import com.example.selfcare.data.model.Reminder
 import kotlinx.coroutines.flow.Flow
 
 /**
+ * COMP90018 - SelfCare
  * Data Access Object - Define all SQL queries used with our database table.
  */
 

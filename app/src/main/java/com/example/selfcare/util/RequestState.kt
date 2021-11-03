@@ -1,6 +1,7 @@
 package com.example.selfcare.util
 
 /**
+ * COMP90018 - SelfCare
  * Request state used to verify the state of loading the database
  */
 

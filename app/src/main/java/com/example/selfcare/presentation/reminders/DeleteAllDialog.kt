@@ -3,8 +3,13 @@ package com.example.selfcare.presentation.reminders
 
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+
+/**
+ * COMP90018 - SelfCare
+ * [DeleteAllDialog] Dialog used to confirm with the user to delete all reminders
+ */
+
 
 @Composable
 fun DeleteAllDialog(

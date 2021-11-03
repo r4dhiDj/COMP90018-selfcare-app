@@ -1,10 +1,5 @@
 package com.example.selfcare.presentation.reminders
 
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -21,6 +16,13 @@ import com.example.selfcare.MainActivity
 import com.example.selfcare.viewmodels.ReminderViewModel
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+
+/**
+ * COMP90018 - SelfCare
+ * [ReminderContent] represents the content of the reminder including ability to change
+ * features. Includes [TimePicker] to select the time
+ */
+
 
 @Composable
 fun ReminderContent (

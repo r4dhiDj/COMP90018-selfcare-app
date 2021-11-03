@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 /**
+ * COMP90018 - SelfCare
  * [ReminderRepository] serves as model data for displaying reminders
  */
 

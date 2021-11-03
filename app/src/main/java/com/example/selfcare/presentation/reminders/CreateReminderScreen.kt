@@ -10,8 +10,14 @@ import com.example.selfcare.util.Action
 import com.example.selfcare.viewmodels.ReminderViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
+import com.example.selfcare.presentation.reminders.destinations.listComposable
 import com.example.selfcare.service.AlarmService
 
+/**
+ * COMP90018 - SelfCare
+ * [CreateReminderScreen] represents the screen to create a new reminder. Also used to schedule
+ * notifications via the [alarmService]
+ */
 
 @Composable
 fun CreateReminderScreen (

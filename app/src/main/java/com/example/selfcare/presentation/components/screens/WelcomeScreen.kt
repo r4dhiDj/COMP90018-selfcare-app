@@ -15,6 +15,11 @@ import androidx.activity.compose.BackHandler
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
+/**
+ * COMP90018 - SelfCare
+ * [WelcomeScreen] initial welcome screen shown to the user upon successfully logging in
+ */
+
 @Composable
 fun WelcomeScreen(viewModel: MainViewModel,
                   navController: NavController){

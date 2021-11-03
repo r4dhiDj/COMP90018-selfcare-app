@@ -38,6 +38,14 @@ import kotlin.math.abs
 import com.example.selfcare.viewmodels.CoinViewModel
 
 
+/**
+ * COMP90018 - SelfCare
+ * [AR_Activity] represents the main interface for displaying the 'Go Live' function.
+ * Renders all models and objects and includes 'Coin Run' game mechanics and functionality.
+ *
+ * Code Inspired From: https://www.raywenderlich.com/6986535-arcore-with-kotlin-getting-started
+ *
+ */
 class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
     private val TAG: String = AR_Activity::class.java.simpleName
 

@@ -5,8 +5,13 @@ import android.content.Context
 import android.content.Intent
 import com.example.selfcare.constants.Constants
 import com.example.selfcare.presentation.components.sendNotification
+import com.example.selfcare.presentation.reminders.*
 
-
+/**
+ * COMP90018 - SelfCare
+ * [AlarmReceiver] after receiving a scheduled alarm, used to send a push notification to the
+ * phone
+ */
 class AlarmReceiver: BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -21,10 +26,6 @@ class AlarmReceiver: BroadcastReceiver() {
             }
         }
 
-
     }
-
-
-
 
 }

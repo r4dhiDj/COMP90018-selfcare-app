@@ -5,6 +5,7 @@ import androidx.room.PrimaryKey
 import com.example.selfcare.constants.Constants.DATABASE_TABLE
 
 /**
+ * COMP90018 - SelfCare
  * Data Class used to create a table in our database (ROOM)
  */
 

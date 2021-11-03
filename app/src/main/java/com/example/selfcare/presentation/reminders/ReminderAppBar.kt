@@ -16,6 +16,13 @@ import com.example.selfcare.ui.theme.IBMPlexMono
 import com.example.selfcare.ui.theme.Purple700
 import com.example.selfcare.util.Action
 
+/**
+ * COMP90018 - SelfCare
+ * [ReminderAppBar] used to represent different states of the TopAppBar depending on the context
+ * e.g. [NewReminderBar], [ExistingTaskAppBar] as well as actions on these TopAppBars
+ *  [BackAction], [AddAction], [CloseAction], [DeleteAction]
+ */
+
 @Composable
 fun ReminderAppBar(
     selectedReminder: Reminder?,

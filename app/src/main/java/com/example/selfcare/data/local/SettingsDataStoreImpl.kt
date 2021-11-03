@@ -12,6 +12,10 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * COMP90018 - SelfCare
+ * [SettingsDataStoreImpl] stores constants referring to the reminders database
+ */
 
 @JvmSuppressWildcards
 @Singleton

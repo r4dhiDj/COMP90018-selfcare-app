@@ -35,6 +35,11 @@ import com.example.selfcare.viewmodels.MainViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
+/**
+ * COMP90018 - SelfCare
+ * [SettingsScreen] Allows the user to alter personalisation settings
+ */
+
 
 @Composable
 fun SettingsScreen(

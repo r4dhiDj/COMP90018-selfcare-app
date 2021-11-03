@@ -16,7 +16,8 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 /**
- * Dependencies (Objects) can be replacable
+ * COMP90018 - SelfCare
+ * [AppModule] provides a baseApplication, DataStore and UserRepository instances
  */
 
 @Module

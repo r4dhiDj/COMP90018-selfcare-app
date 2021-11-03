@@ -14,7 +14,8 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 /**
- * Used to provide ROOM database builder
+ * COMP90018 - SelfCare
+ * [DatabaseModule] Used to provide ROOM database builder
  */
 
 @Module

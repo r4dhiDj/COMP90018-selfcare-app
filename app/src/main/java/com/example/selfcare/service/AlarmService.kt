@@ -8,6 +8,11 @@ import android.os.Build
 import com.example.selfcare.constants.Constants
 import com.example.selfcare.util.RandomIntUtil
 
+/**
+ * COMP90018 - SelfCare
+ * [AlarmService] used to schedule an alarm via [alarmManager]
+ */
+
 class AlarmService(private val context: Context) {
     private val alarmManager: AlarmManager? =
         context.getSystemService(Context.ALARM_SERVICE) as AlarmManager?
@@ -27,19 +32,6 @@ class AlarmService(private val context: Context) {
 
     }
 
-    // e.g. every week
-    fun setRepetitiveAlarm(timeInMillis: Long) {
-        setAlarm(
-            timeInMillis,
-            getPendingIntent(
-                getIntent().apply {
-                    action = Constants.ACTION_SET_REPETITIVE_ALARM
-                    putExtra(Constants.EXTRA_EXACT_ALARM_TIME, timeInMillis)
-                }
-            )
-        )
-
-    }
 
     private fun setAlarm(
         timeInMillis: Long,

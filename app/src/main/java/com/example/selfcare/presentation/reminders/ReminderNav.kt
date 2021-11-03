@@ -5,7 +5,8 @@ import com.example.selfcare.presentation.components.Screen
 import com.example.selfcare.util.Action
 
 /**
- * Used to aid the passing of arguments between the ReminderScreen and CreateReminderScreens
+ * COMP90018 - SelfCare
+ * Used to aid the passing of arguments between the [ReminderScreen] and [CreateReminderScreen]
  */
 
 class ReminderNav(navController: NavHostController) {

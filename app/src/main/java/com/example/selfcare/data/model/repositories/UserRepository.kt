@@ -9,6 +9,12 @@ import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
+/**
+ * COMP90018 - SelfCare
+ * [UserRepository] functions used to obtain User Information such as [setUserDisplayName] and
+ * [setUserEmail]
+ */
+
 class UserRepository {
 
     fun getUserDisplayName(): String{

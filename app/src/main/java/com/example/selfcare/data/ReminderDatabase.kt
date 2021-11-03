@@ -5,7 +5,10 @@ import androidx.room.RoomDatabase
 import com.example.selfcare.data.model.Reminder
 
 /**
- * Database for the reminders
+ *
+ * COMP90018 - SelfCare
+ *  [ReminderDatabase] Database for the reminders
+ *  Updated schema to version 2 post-migration
  */
 
 @Database(entities = [Reminder::class], version = 2, exportSchema = false)

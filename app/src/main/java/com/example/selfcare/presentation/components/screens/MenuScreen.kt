@@ -33,6 +33,12 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.temporal.ChronoField
 
+/**
+* COMP90018 - SelfCare
+* [MenuScreen] MainMenu for navigating the application
+*/
+
+
 @ExperimentalFoundationApi
 @Composable
 fun MenuScreen(viewModel: MainViewModel, navController: NavController) {
@@ -292,8 +298,3 @@ fun FeatureItem(
 }
 
 
-//@Preview(showBackground = true)
-//@Composable
-//fun DefaultPreview() {
-//    MenuScreen()
-//}

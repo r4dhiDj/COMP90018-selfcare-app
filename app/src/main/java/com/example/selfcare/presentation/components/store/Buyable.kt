@@ -5,6 +5,12 @@ import com.example.selfcare.R
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.IgnoreExtraProperties
 
+/**
+ * COMP90018 - SelfCare
+ * [Buyable] Represents a Buyable item that a user can purchase. Buyables refer to mascots the user
+ * can purchase
+ */
+
 @IgnoreExtraProperties
 data class Buyable(
     val name: String = "Item",

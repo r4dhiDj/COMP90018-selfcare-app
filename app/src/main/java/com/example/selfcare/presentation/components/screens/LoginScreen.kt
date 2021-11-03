@@ -39,6 +39,10 @@ import com.example.selfcare.viewmodels.MainViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
+/**
+ * COMP90018 - SelfCare
+ * [LoginScreen] Initial screen to allow user to login using [Firebase] Authentication
+ */
 
 @Composable
 fun LoginScreen(viewModel: MainViewModel, navController: NavController, activityContext: ComponentActivity){

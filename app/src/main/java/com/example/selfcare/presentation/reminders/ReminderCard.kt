@@ -6,9 +6,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.selfcare.data.model.Reminder
+
+/**
+ * COMP90018 - SelfCare
+ * [ReminderCard] represents a single reminder object as a composable, contains information of
+ * the reminder including the Title and Time
+ */
 
 @ExperimentalMaterialApi
 @Composable

@@ -1,14 +1,12 @@
 package com.example.selfcare
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
-import android.graphics.Color
+import android.app.Application
 import android.os.Build
 import android.os.Bundle
 
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -21,38 +19,31 @@ import com.example.selfcare.ui.theme.SelfCareTheme
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.lifecycle.asLiveData
-
 import androidx.compose.runtime.LaunchedEffect
-//import androidx.lifecycle.asLiveData
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.selfcare.viewmodels.ReminderViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.selfcare.data.local.SettingsDataStoreImpl
 import com.example.selfcare.service.AlarmService
 import com.example.selfcare.viewmodels.MainViewModel
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+
+/**
+ * COMP90018 - SelfCare
+ * [MainActivity] represent main entry point of the application and loads [ReminderViewModel] and
+ * [alarmService]
+ */
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-   // @ExperimentalFoundationApi
-    //lateinit var settingsDataStoreImpl: SettingsDataStoreImpl
-    //val isDarkMode =  mutableStateOf(true)
 
-    // Instantiate ViewModels
+    // Instantiate reminderViewModel and alarmService
     private val reminderViewModel: ReminderViewModel by viewModels()
     lateinit var alarmService: AlarmService
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     @ExperimentalMaterialApi
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //settingsDataStore = SettingsDataStore(this)
-        //setInitialTheme()
-        //observeData()
         alarmService = AlarmService(this)
         setContent {
             val viewModel = hiltViewModel<MainViewModel>()
@@ -60,6 +51,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     @ExperimentalMaterialApi
     @ExperimentalFoundationApi
     @Composable
@@ -81,54 +73,4 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-}
-
-
-
-
-
-
-            /**
-            SelfCareTheme(isDarkMode.value) {
-                // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
-                    createNotificationChannel(this)
-                    Navigation(
-                        this,
-                        this,
-                        reminderViewModel = reminderViewModel
-                    )
-
-                }
-            }
-        }
-    }
-
-
-    @ExperimentalFoundationApi
-    private fun observeData() {
-        settingsDataStore.darkModeFlow.asLiveData().observe(this, {
-            isDarkMode.value = it
-        })
-    }
-
-    @ExperimentalFoundationApi
-    private fun setInitialTheme(){
-        GlobalScope.launch{
-            settingsDataStore.storeDarkMode(
-                false)
-        }
-    }
-}
-    */
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-
 }

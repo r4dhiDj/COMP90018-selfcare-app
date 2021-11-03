@@ -1,13 +1,16 @@
 package com.example.selfcare.viewmodels
 
-import android.media.MediaPlayer
-import android.os.CountDownTimer
-import android.os.Vibrator
+
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
 import androidx.lifecycle.ViewModel
+
+/**
+ * COMP90018 - SelfCare
+ * Used to toggle settings of [BreatheScreen] and set the time according to the picker
+ */
 
 class BreatheViewModel: ViewModel() {
     var isStarted by mutableStateOf(false)

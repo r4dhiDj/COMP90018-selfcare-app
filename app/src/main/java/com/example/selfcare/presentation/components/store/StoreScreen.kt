@@ -36,6 +36,12 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 
+/**
+ * COMP90018 - SelfCare
+ * [StoreScreen] Represents the Store which loads [Buyable] objects and mascots that the user can
+ * purchase to display on [AR_Activity]
+ */
+
 @ExperimentalFoundationApi
 @Composable
 fun StoreScreen (viewModel: MainViewModel, navController : NavController) {

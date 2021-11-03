@@ -36,6 +36,10 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
+/**
+ * COMP90018 - SelfCare
+ * [RegisterScreen] Initial screen to allow user to register using [Firebase] Authentication
+ */
 
 @Composable
 fun RegisterScreen(viewModel: MainViewModel, navController: NavController, activityContext: ComponentActivity){
@@ -231,124 +235,3 @@ fun RegisterScreen(viewModel: MainViewModel, navController: NavController, activ
         }
     }
 }
-
-
-
-
-
-/**
-@Composable
-fun RegisterScreen(viewModel: MainViewModel, navController: NavController, activityContext: ComponentActivity){
-    val auth = Firebase.auth
-    var email by remember {mutableStateOf("")}
-    var password by remember {mutableStateOf("")}
-    if (Firebase.auth.currentUser!= null) {
-        navController.popBackStack()
-        navController.navigate(Screen.WelcomeScreen.route)
-        Log.d("inside register screen check user" , Firebase.auth.currentUser.toString())
-    }
-    Card(
-        modifier = Modifier
-            .fillMaxSize(),
-        elevation = 8.dp
-    ) {
-        Column {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 20.dp, bottom = 30.dp, start = 20.dp, end = 20.dp),
-                Arrangement.SpaceBetween,
-                Alignment.CenterVertically,
-            ) {
-                Text(text = "Register as a new user", style = MaterialTheme.typography.h1)
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 20.dp, bottom = 12.dp, start = 20.dp, end = 20.dp),
-                Arrangement.SpaceBetween,
-                Alignment.CenterVertically,
-            ) {
-                OutlinedTextField(
-                    value = email,
-                    onValueChange = { email = it },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Email
-                    ),
-                    label = { Text("Enter your email") })
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 12.dp, bottom = 12.dp, start = 20.dp, end = 20.dp),
-                Arrangement.SpaceBetween,
-                Alignment.CenterVertically
-            )
-            {
-                OutlinedTextField(
-                    value = password,
-                    onValueChange = { password = it },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
-                    label = { Text("Enter your password") },
-                    visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Password
-                    )
-                )
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 40.dp, bottom = 12.dp, start = 20.dp, end = 20.dp),
-                Arrangement.SpaceBetween,
-                Alignment.CenterVertically
-            )
-            {
-                Button(
-                    onClick = {
-                        navController.popBackStack()
-                        navController.navigate(Screen.LoginScreen.route)
-                    }
-                ) {
-                    Text(color = Color.White, text = "Login instead")
-                }
-                Button(
-                    enabled = !(email.trim() == "" || password.trim() == ""),
-                    onClick = {
-                        auth.createUserWithEmailAndPassword(
-                            email.trim(),
-                            password.trim()
-                        )
-                            .addOnCompleteListener(activityContext) { task ->
-                                if (task.isSuccessful) {
-                                    viewModel.setUserEmail(email.trim())
-                                    navController.popBackStack() //so back button doesn't return to register page
-                                    while(Firebase.auth.currentUser== null){
-                                        Log.d("waiting to register","")
-                                    }
-                                    val user = User(email.trim(), 0)
-                                    val database = Firebase.database("https://kotlin-self-care-default-rtdb.firebaseio.com/").reference
-                                    database.child("users").child(Firebase.auth.currentUser!!.uid).setValue(user)
-                                    navController.navigate(Screen.WelcomeScreen.route)
-                                } else {
-                                    Log.d("Auth", "Failed: ${task.exception}")
-                                    Toast.makeText(
-                                        activityContext, "Please enter a valid email.",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            }
-                    }
-                ) {
-                    Text(color = Color.White, text = "Register")
-                }
-
-            }
-
-        }
-    }
-}
-*/

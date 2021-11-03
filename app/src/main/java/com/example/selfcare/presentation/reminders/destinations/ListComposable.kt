@@ -13,6 +13,12 @@ import com.example.selfcare.presentation.reminders.ReminderScreen
 import com.example.selfcare.util.toAction
 import com.example.selfcare.viewmodels.ReminderViewModel
 
+/**
+ * COMP90018 - SelfCare
+ * [listComposable] represents navigation to [ReminderScreen] and handles the navigation
+ */
+
+
 @ExperimentalMaterialApi
 fun NavGraphBuilder.listComposable(
     navigateToReminder: (reminderId: Int) -> Unit,

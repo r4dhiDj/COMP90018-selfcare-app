@@ -31,6 +31,7 @@ import com.example.selfcare.util.RequestState
 import kotlinx.coroutines.launch
 
 /**
+ * COMP90018 - SelfCare
  * [ReminderScreen] is the key screen to display the Reminders to the user and for them to edit and update
  * All of this data is formatted in a way that
  * the reminder screen can take the information and display it
