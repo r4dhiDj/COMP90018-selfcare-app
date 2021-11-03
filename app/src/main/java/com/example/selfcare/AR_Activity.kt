@@ -16,8 +16,6 @@ import android.widget.*
 import androidx.activity.viewModels
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import com.example.selfcare.databinding.ArActivityBinding
 import com.google.ar.core.*
 import com.google.ar.core.exceptions.*
@@ -25,8 +23,8 @@ import java.io.IOException
 import java.util.concurrent.ArrayBlockingQueue
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
-import com.example.selfcare.presentation.components.helpers.*
-import com.example.selfcare.presentation.components.rendering.*
+import com.example.selfcare.components.helpers.*
+import com.example.selfcare.components.rendering.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.ktx.auth

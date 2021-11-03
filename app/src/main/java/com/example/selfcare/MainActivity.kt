@@ -1,6 +1,5 @@
 package com.example.selfcare
 
-import android.app.Application
 import android.os.Build
 import android.os.Bundle
 
@@ -10,19 +9,20 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.selfcare.presentation.components.Navigation
-import com.example.selfcare.presentation.components.*
+import com.example.selfcare.components.Navigation
 import com.example.selfcare.ui.theme.SelfCareTheme
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material3.ExperimentalMaterial3Api
+
 import androidx.compose.runtime.LaunchedEffect
+//import androidx.lifecycle.asLiveData
 import com.example.selfcare.viewmodels.ReminderViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.selfcare.service.AlarmService
+import com.example.selfcare.util.createNotificationChannel
 import com.example.selfcare.viewmodels.MainViewModel
 
 /**
@@ -32,6 +32,7 @@ import com.example.selfcare.viewmodels.MainViewModel
  */
 
 
+@ExperimentalMaterial3Api
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @ExperimentalMaterial3Api
     @RequiresApi(Build.VERSION_CODES.Q)
     @ExperimentalMaterialApi
     @ExperimentalFoundationApi

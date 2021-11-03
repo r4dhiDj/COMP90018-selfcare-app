@@ -1,4 +1,4 @@
-package com.example.selfcare.presentation.components
+package com.example.selfcare.components
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Path

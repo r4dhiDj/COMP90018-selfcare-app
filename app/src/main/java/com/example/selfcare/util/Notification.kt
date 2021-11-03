@@ -1,4 +1,4 @@
-package com.example.selfcare.presentation.components
+package com.example.selfcare.util
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.selfcare.MainActivity
@@ -20,6 +21,7 @@ import com.example.selfcare.MainActivity
 val CHANNEL_ID = "10101010"
 var notificationId = 1
 
+@ExperimentalMaterial3Api
 fun sendNotification(context: Context, notifTitle: String, notifText: String){
 
     val intent = Intent(context, MainActivity::class.java).apply {
