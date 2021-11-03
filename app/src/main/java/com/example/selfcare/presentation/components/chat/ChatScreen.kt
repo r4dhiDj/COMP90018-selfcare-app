@@ -1,6 +1,5 @@
 package com.example.selfcare.presentation.components
 
-import android.R.attr
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
@@ -22,40 +21,40 @@ import org.json.JSONObject
 
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-// for text2speech
-import android.app.Activity
-import android.speech.tts.TextToSpeech
-import android.speech.tts.TextToSpeech.OnInitListener
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 
 
 //import org.json.simple.JSONObject;
 
-import kotlinx.coroutines.launch
-// for text2speech
 import androidx.compose.foundation.background
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.example.selfcare.data.model.repositories.UserRepository
 import com.example.selfcare.presentation.components.chat.Message
 import com.example.selfcare.ui.theme.*
-import com.example.selfcare.viewmodels.MainViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.example.selfcare.viewmodels.MainViewModel
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.util.*
 
 
 @Composable
-fun ChatScreen(navController: NavController) {
+fun ChatScreen(viewModel: MainViewModel,navController: NavController) {
+//    val userRepository: UserRepository
+
+    var username by remember { mutableStateOf("") }
+    LaunchedEffect(key1 = viewModel.displayName.value, viewModel.email.value){
+        viewModel.getUsername()
+        username = viewModel.displayName.value
+    }
     var user1Message by remember { mutableStateOf("") }
     var user2Message by remember { mutableStateOf("") }
     val chat = remember {
@@ -129,7 +128,7 @@ fun ChatScreen(navController: NavController) {
                             .padding(8.dp)
                     )
                     UserArea(
-                        userName = stringResource(id = R.string.user2_name),
+                        userName = username,
                         avatar = R.drawable.girl,
                         message = user2Message,
                         onMessageChanged = {
@@ -182,31 +181,25 @@ private fun addTextToChat(
             // calender
             user2Message.contains("hello") -> {
                 chat.add(Message(user2Message, false))
-                chat.add(Message("Morning! how its going", true))
-            }
-            // history
-            user2Message.contains("what") -> {
-                chat.add(Message(user2Message, false))
-                chat.add(Message("MALAM! how its going", true))
+                chat.add(Message("Howdy! how its going", true))
             }
             user2Message.contains("flip") || user2Message.contains("coin") -> {
                 val r = (0..1).random()
                 val result = if (r == 0) "heads" else "tails"
                 chat.add(Message(user2Message, false))
                 chat.add(Message("I flipped a coin and it landed on $result", true))
-
             }
             user2Message.contains("time") || user2Message.contains("clock") -> {
                 chat.add(Message(user2Message, false))
                 chat.add(Message(dateTime.toString(), true))
             }
-            user2Message.contains("history") -> {
+            user2Message.contains("daily history")|| user2Message.contains("daily diary")|| user2Message.contains("history") || user2Message.contains("diary")-> {
+                chat.add(Message(user2Message,false))
 //                chat.add(Message("Please wait while I'm preparing the stats...", true))
                 userRef.child("emotions").child(month).child(day).get()
                     .addOnSuccessListener {
                         var totalCount = 0.0
                         val counter = mutableMapOf<String, Int>()
-
                         for (child in it.children) {
                             totalCount += 1
                             if (counter.containsKey(child.value)) {
@@ -224,6 +217,7 @@ private fun addTextToChat(
                         if ( sorted.isEmpty() ) {
                             chat.add(Message("Seems that you haven't written anything today.", true))
                         } else {
+
                             var msg = "Breakdown of your feelings today:\n"
                             for ((sentiment, count) in sorted) {
                                 msg += String.format(
@@ -239,11 +233,95 @@ private fun addTextToChat(
                         chat.add(Message("Sorry I couldn't retrieve your data now.", true))
                     }
             }
-            else -> {
-//                val tts = TextToSpeech()
-//                tts.setLanguage(Locale.US);
+            user2Message.contains("monthly history")|| user2Message.contains("monthly diary")|| user2Message.contains("month history") || user2Message.contains("month diary")|| user2Message.contains("month")-> {
+                chat.add(Message(user2Message,false))
+                userRef.child("emotions").get().addOnSuccessListener({
+                    val counterMap = mutableMapOf<String, Int>()
+                    var totalCount = 0
+                    for (child in it.children) {
+                        var value: Map<String, Any> = (child.value as Map<String, Any>?)!!
+                        value.forEach({
+                            var innerValue: Map<String, Any> = it.value as Map<String, Any>
+                            innerValue.forEach({
+                                var expressionValue: String = it.value as String
+                                var mapCount = 0
+                                if (counterMap.containsKey(expressionValue)) {
+                                    mapCount = counterMap.get(expressionValue)!!
+                                }
+                                totalCount = totalCount + 1
+                                mapCount = mapCount + 1
+                                counterMap.put(expressionValue, mapCount)
+                            })
+                        })
+                    }
+                    if (totalCount == 0) {
+                        chat.add(Message(user2Message,false))
+                        chat.add(Message("Seems that you haven't written anything this month.", true))
+                    }
+                    else {
+                        val sorted = counterMap.toList().sortedByDescending { (_, value) -> value }
+                        var msg = "Breakdown of your feelings today:\n"
+                        for ((sentiment, count) in sorted) {
+                            var percent: Double = (count * 100)/(totalCount * 1.0)
+                            msg += String.format(
+                                "%s: %.2f %% ",
+                                sentiment,
+                                percent
+                            )
+                        }
+                        chat.add(Message(msg, true))
+                    }
+                })
 
-//                Log.d("emotion",pd.emotion(user2Message))
+            }
+            user2Message.contains("weekly history")|| user2Message.contains("weekly diary")|| user2Message.contains("week history") || user2Message.contains("week diary") || user2Message.contains("week") -> {
+                var firstDay = LocalDate.now().with(DayOfWeek.MONDAY).dayOfMonth
+                var lastDay = firstDay + 6
+                userRef.child("emotions").get().addOnSuccessListener({
+                    val counterMap = mutableMapOf<String, Int>()
+                    var totalCount = 0
+                    for (child in it.children) {
+                        var id: String = child.key!!
+                        var value: Map<String, Any> = (child.value as Map<String, Any>?)!!
+                        value.forEach({
+                            var innerKey: String = it.key
+                            var dayValue: Int = innerKey.toInt()
+                            if(dayValue <= lastDay && dayValue >= firstDay) {
+                                var innerValue: Map<String, Any> = it.value as Map<String, Any>
+                                innerValue.forEach({
+                                    var expressionValue: String = it.value as String
+                                    var mapCount = 0
+                                    if (counterMap.containsKey(expressionValue)) {
+                                        mapCount = counterMap.get(expressionValue)!!
+                                    }
+                                    totalCount = totalCount + 1
+                                    mapCount = mapCount + 1
+                                    counterMap.put(expressionValue, mapCount)
+                                })
+                            }
+                        })
+                    }
+                    if (totalCount == 0) {
+                        chat.add(Message(user2Message,false))
+                        chat.add(Message("Seems that you haven't written anything this week.", true))
+                    }
+                    else {
+                        val sorted = counterMap.toList().sortedByDescending { (_, value) -> value }
+                        var msg = "Breakdown of your feelings week:\n"
+                        for ((sentiment, count) in sorted) {
+                            var percent: Double = (count * 100)/(totalCount * 1.0)
+                            msg += String.format(
+                                "%s: %.2f %% ",
+                                sentiment,
+                                percent
+                            )
+                        }
+                        chat.add(Message(user2Message,false))
+                        chat.add(Message(msg, true))
+                    }
+                })
+            }
+            else -> {
                 val json = JSONObject(pd.emotion(user2Message))
                 val sentiment: String
 
@@ -255,73 +333,111 @@ private fun addTextToChat(
                 var fear = json.getJSONObject("emotion").getString("Fear")
                 var bored = json.getJSONObject("emotion").getString("Bored")
 
+                val book_movie = mutableListOf("book","movie")
+                var choosen = book_movie.random()
+                val recommended_number = 3
+                val movie_to_recommend_sad = mutableListOf("La La Land","Up!","Mamma Mia!","Toy Story","Little Miss Sunshine","Moana")
+                val movie_to_recommend_angry = mutableListOf("Falling Down","Fury Road","The Shawshank Redemption","Anger Management","Revenge of the Nerds","Blue Ruin")
+                val movie_to_recommend_fear = mutableListOf("It’s Kind of a Funny Story","Frozen","The Lord of the Rings: Return of the King","Back to the Future","Big Hero 6","Legally Blonde")
+                val movie_to_recommend_bored = mutableListOf("Palm Springs","Uncut Gems!","Hamilton","Dirty Dancing","The Matrix","The Lovebirds")
+
+                val book_to_recommend_sad = mutableListOf("Hyperbole and a Half","Milk and Honey","Mooncop","Difficult Women","Furiously Happy","The Color Purple")
+                val book_to_recommend_angry = mutableListOf("Way of the Peaceful Warrior","Man's Search for Meaning","The Dance of Anger","Letting Go of Anger: The Ten Most Common Anger Styles and What To Do About Them","Who Moved My Cheese","How To Be a Stoic")
+                val book_to_recommend_bored = mutableListOf("Radio Silence","Harry Potter Series","Maze Runner","Lost In A Book","The 100","Magonia")
+                val book_to_recommend_fear = mutableListOf("The Hitchhiker’s Guide to the Galaxy","Crooked Little Heart","The Power of Now","The Worry Trick","12 Rules for Life: An Antidote to Chaos","Still Life with Breadcrumb")
+
                 if (angry > happy && angry > excited && angry > sad && angry > fear && angry > bored) {
                     chat.add(Message(user2Message, false))
-                    chat.add(Message("Well someone is angry", true))
+                    if(choosen.equals("book")){
+                        val book_angry = book_to_recommend_angry.asSequence().shuffled().take(recommended_number).toList()
+                        book_to_recommend_angry.removeIf { i -> book_angry.contains(i) }
+                        var recommend = ""
+                        for(angry in book_angry){
+                            recommend=recommend+angry+"\n"
+                        }
+                        chat.add(Message("I hope one of these book can help to soothe your anger \n"+recommend, true))
+                    }else{
+                        val movie_angry = movie_to_recommend_angry.asSequence().shuffled().take(recommended_number).toList()
+                        movie_to_recommend_angry.removeIf { i -> movie_angry.contains(i) }
+                        var recommend = ""
+                        for(angry in movie_angry){
+                            recommend=recommend+angry+"\n"
+                        }
+                        chat.add(Message("I hope one of these movie can help to soothe your anger \n"+recommend, true))
+                    }
                     sentiment = "angry"
                 } else if (happy > angry && happy > excited && happy > sad && happy > fear && happy > bored) {
                     chat.add(Message(user2Message, false))
-                    chat.add(Message("Well someone is happy", true))
+                    chat.add(Message("That's great! keep it up!", true))
                     sentiment = "happy"
                 } else if (excited > angry && excited > happy && excited > sad && excited > fear && excited > bored) {
                     chat.add(Message(user2Message, false))
-                    chat.add(Message("Well someone is excited", true))
+                    chat.add(Message("That's great! keep it up!", true))
                     sentiment = "excited"
                 } else if (sad > angry && sad > happy && sad > excited && sad > fear && sad > bored) {
                     chat.add(Message(user2Message, false))
-                    chat.add(Message("Well someone is sad", true))
                     sentiment = "sad"
+                    if(choosen.equals("book")){
+                        val book_sad = book_to_recommend_sad.asSequence().shuffled().take(recommended_number).toList()
+                        book_to_recommend_sad.removeIf { i -> book_sad.contains(i) }
+                        var recommend = ""
+                        for(sad in book_sad){
+                            recommend=recommend+sad+"\n"
+                        }
+                        chat.add(Message("I hope one of these book can cheer you up! \n"+recommend, true))
+                    }else{
+                        val movie_sad = movie_to_recommend_sad.asSequence().shuffled().take(recommended_number).toList()
+                        movie_to_recommend_sad.removeIf { i -> movie_sad.contains(i) }
+                        var recommend = ""
+                        for(sad in movie_sad){
+                            recommend=recommend+sad+"\n"
+                        }
+                        chat.add(Message("I hope one of these movie can cheer you up! \n"+recommend, true))
+                    }
                 } else if (fear > angry && fear > happy && fear > sad && fear > excited && fear > bored) {
                     chat.add(Message(user2Message, false))
-                    chat.add(Message("Well someone is fear", true))
+                    if(choosen.equals("book")){
+                        val book_fear = book_to_recommend_fear.asSequence().shuffled().take(recommended_number).toList()
+                        book_to_recommend_fear.removeIf { i -> book_fear.contains(i) }
+                        var recommend = ""
+                        for(fear in book_fear){
+                            recommend=recommend+fear+"\n"
+                        }
+                        chat.add(Message("I hope one of these book can help you \n"+recommend, true))
+                    }else{
+                        val movie_fear = movie_to_recommend_fear.asSequence().shuffled().take(recommended_number).toList()
+                        movie_to_recommend_fear.removeIf { i -> movie_fear.contains(i) }
+                        var recommend = ""
+                        for(fear in movie_fear){
+                            recommend=recommend+fear+"\n"
+                        }
+                        chat.add(Message("I hope one of these movie can help you \n"+recommend, true))
+                    }
                     sentiment = "fear"
                 } else {
                     chat.add(Message(user2Message, false))
-                    chat.add(Message("Well someone is bored", true))
+                    if(choosen.equals("book")){
+                        val book_bored = book_to_recommend_bored.asSequence().shuffled().take(recommended_number).toList()
+                        book_to_recommend_bored.removeIf { i -> book_bored.contains(i) }
+                        var recommend = ""
+                        for(bored in book_bored){
+                            recommend=recommend+bored+"\n"
+                        }
+                        chat.add(Message("I think one of these book can help you from your boredom \n"+recommend, true))
+                    }else{
+                        val movie_bored = movie_to_recommend_bored.asSequence().shuffled().take(recommended_number).toList()
+                        movie_to_recommend_bored.removeIf { i -> movie_bored.contains(i) }
+                        var recommend = ""
+                        for(bored in movie_bored){
+                            recommend=recommend+bored+"\n"
+                        }
+                        chat.add(Message("I think one of these movie can help you from your boredom \n"+recommend, true))
+                    }
                     sentiment = "bored"
                 }
 
                 userRef.child("emotions").child(month).child(day).child(time)
                     .setValue(sentiment)
-
-
-                //alternative is combine the emotion by adding them suggestion was adding
-                // happy with excited, sad, fear and bored as one and angry as separated.
-//                var happy_mood = happy+excited
-//                var sad_mood = fear+bored+fear
-//                var angry_mood = angry
-//
-//                if (happy_mood>sad_mood && happy_mood>angry_mood){
-//                    chat.add(Message(user2Message,false))
-//                    chat.add(Message("Well someone is happy mood!",true))
-//                }else if(sad_mood>happy_mood && sad_mood>angry_mood){
-//                    chat.add(Message(user2Message,false))
-//                    chat.add(Message("Well someone is sad, how can i help you?",true))
-//                }else if(angry_mood>happy_mood&&angry_mood>sad_mood){
-//                    chat.add(Message(user2Message,false))
-//                    chat.add(Message("Well someone is not having a good day",true))
-//                }
-
-
-                // get the sentiment
-//                Log.d("emotion",pd.sentiment(user2Message))
-//                val json = JSONObject(pd.sentiment(user2Message))
-//                var positive = json.getJSONObject("sentiment").getString("positive")
-//                var negative = json.getJSONObject("sentiment").getString("negative")
-//                var neutral = json.getJSONObject("sentiment").getString("neutral")
-//                if (positive>negative && positive>neutral){
-//                    chat.add(Message(user2Message,false))
-//                    chat.add(Message("Well someone is on good mood!",true))
-//                }
-//
-//                else if (negative>positive && negative>neutral){
-//                    chat.add(Message(user2Message,false))
-//                    chat.add(Message("Well someone is on bad mood!",true))
-//                }
-//                else if(neutral>negative && neutral>positive) {
-//                    chat.add(Message(user2Message,false))
-//                    chat.add(Message("Well someone is on neutral mood!",true))
-//                }
             }
         }
     }

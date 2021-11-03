@@ -75,7 +75,7 @@ fun Navigation(activityContext: ComponentActivity,
             context.startActivity(Intent(context, AR_Activity::class.java))
         }
         composable(route = Screen.ChatScreen.route) {
-            ChatScreen(navController = navController)
+            ChatScreen(viewModel,navController = navController)
         }
         composable(route = Screen.LoginScreen.route) {
             LoginScreen(viewModel, navController = navController, activityContext)
