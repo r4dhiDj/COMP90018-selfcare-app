@@ -20,7 +20,7 @@ Functionalities of selfcare include:
 - **Architecture**: MVVM
 - **Local storage**: ROOM Database, DataStore
 - **Remote storage**: Firebase Realtime Database
-- **View Model**: Dagger-Hilt Dependency Injection
+- **View Models**: Loaded via Dagger-Hilt Dependency Injection
 - **Sentiment Analysis**: Komprehend.io (paralleldots API)
 - **Augmented Reality**: AR Core
 - **User Authentication**: Firebase Authentication
@@ -31,14 +31,20 @@ Functionalities of selfcare include:
 
 # Screenshots
 **Sign-Up & Log-In Screen**</br>
+<img src="https://github.com/r4dhiDj/COMP90018-selfcare-app/blob/main/screenshots/register.png" height="450"><img src="https://github.com/r4dhiDj/COMP90018-selfcare-app/blob/main/screenshots/menu.png" height="450"></br>
 **Menu Screen**</br>
-<img src="https://github.com/r4dhiDj/COMP90018-selfcare-app/blob/main/screenshots/Menu%20screen.png" width=20% height=20%></br>
+<img src="https://github.com/r4dhiDj/COMP90018-selfcare-app/blob/main/screenshots/menu.png" height="450"></br>
 **Chat**</br>
 **Go-Live**</br>
-<img src="https://github.com/r4dhiDj/COMP90018-selfcare-app/blob/main/screenshots/Go-live.png" width=20% height=20%></br>
+<img src="https://github.com/r4dhiDj/COMP90018-selfcare-app/blob/main/screenshots/golive.png" height="450"></br>
 **Reminders**</br>
+<img src="https://github.com/r4dhiDj/COMP90018-selfcare-app/blob/main/screenshots/reminders.png" height="450"></br>
 **Breathe**</br>
+<img src="https://github.com/r4dhiDj/COMP90018-selfcare-app/blob/main/screenshots/breathe.png" height="450"></br>
 **Store**</br>
+<img src="https://github.com/r4dhiDj/COMP90018-selfcare-app/blob/main/screenshots/store.png" height="450"></br>
 **Settings**</br>
+<img src="https://github.com/r4dhiDj/COMP90018-selfcare-app/blob/main/screenshots/settings.png" height="450"></br>
+
 
 
