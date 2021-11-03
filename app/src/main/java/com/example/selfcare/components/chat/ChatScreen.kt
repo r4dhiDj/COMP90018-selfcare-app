@@ -192,11 +192,7 @@ private fun addTextToChat(
                 chat.add(Message(message, false))
                 chat.add(Message("I flipped a coin and it landed on $result", true))
             }
-            message.contains("time") || message.contains("clock") -> {
-                chat.add(Message(message, false))
-                chat.add(Message(dateTime.toString(), true))
-            }
-            message.contains("daily history")|| message.contains("daily diary")|| message.contains("history") || message.contains("diary")-> {
+            message.contains("daily history")|| message.contains("daily diary")||message.contains("today")-> {
                 chat.add(Message(message,false))
 //                chat.add(Message("Please wait while I'm preparing the stats...", true))
                 userRef.child("emotions").child(month).child(day).get()
