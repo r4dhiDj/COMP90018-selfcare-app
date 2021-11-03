@@ -260,7 +260,7 @@ private fun addTextToChat(
                     }
                     else {
                         val sorted = counterMap.toList().sortedByDescending { (_, value) -> value }
-                        var msg = "Breakdown of your feelings today:\n"
+                        var msg = "Breakdown of your feelings this month:\n"
                         for ((sentiment, count) in sorted) {
                             var percent: Double = (count * 100)/(totalCount * 1.0)
                             msg += String.format(
@@ -307,7 +307,7 @@ private fun addTextToChat(
                     }
                     else {
                         val sorted = counterMap.toList().sortedByDescending { (_, value) -> value }
-                        var msg = "Breakdown of your feelings week:\n"
+                        var msg = "Breakdown of your feelings this week:\n"
                         for ((sentiment, count) in sorted) {
                             var percent: Double = (count * 100)/(totalCount * 1.0)
                             msg += String.format(
