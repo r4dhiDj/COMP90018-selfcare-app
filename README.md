@@ -38,6 +38,7 @@ Functionalities of selfcare include:
 **Menu Screen**</br>
 <img src="https://github.com/r4dhiDj/COMP90018-selfcare-app/blob/main/screenshots/menu.png" height="450"></br>
 **Chat**</br>
+<img src="https://github.com/r4dhiDj/COMP90018-selfcare-app/blob/main/screenshots/chat.png" height="450"></br>
 **Go-Live**</br>
 <img src="https://github.com/r4dhiDj/COMP90018-selfcare-app/blob/main/screenshots/golive.png" height="450"></br>
 **Reminders**</br>
