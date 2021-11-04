@@ -9,7 +9,7 @@ import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material3.ExperimentalMaterial3Api
+
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
@@ -30,7 +30,7 @@ import com.example.selfcare.components.screens.RegisterScreen
 import com.example.selfcare.service.AlarmService
 import com.example.selfcare.viewmodels.BreatheViewModel
 
-@ExperimentalMaterial3Api
+
 @RequiresApi(Build.VERSION_CODES.Q)
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi

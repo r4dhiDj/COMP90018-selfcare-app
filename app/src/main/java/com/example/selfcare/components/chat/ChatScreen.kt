@@ -12,9 +12,6 @@ import androidx.navigation.NavController
 import java.sql.Date
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
-
-import androidx.compose.material3.TopAppBarDefaults
-
 import com.paralleldots.paralleldots.App;
 import org.json.JSONObject
 
@@ -27,7 +24,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material3.ExperimentalMaterial3Api
+
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -43,14 +40,13 @@ import com.google.firebase.ktx.Firebase
 import java.time.DayOfWeek
 import java.time.LocalDate
 
-@ExperimentalMaterial3Api
+
 @Composable
 fun ChatScreen(navController: NavController) {
     var message by remember { mutableStateOf("") }
     var count by remember {mutableStateOf(0)}
 
     val scrollState = rememberLazyListState()
-    val scrollBehavior = remember { TopAppBarDefaults.pinnedScrollBehavior() }
 
     val chat = remember {
         mutableStateListOf(

@@ -1,6 +1,6 @@
 package com.example.selfcare.components.reminders.destinations
 
-import androidx.compose.material3.ExperimentalMaterial3Api
+
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -22,7 +22,7 @@ import com.example.selfcare.viewmodels.ReminderViewModel
  * scheduling of notifications
  */
 
-@ExperimentalMaterial3Api
+
 fun NavGraphBuilder.reminderComposable(
     navigateToReminderScreen: (Action) -> Unit,
     reminderViewModel: ReminderViewModel,

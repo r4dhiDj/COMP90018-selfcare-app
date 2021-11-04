@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.ExperimentalMaterial3Api
+
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
@@ -25,7 +25,7 @@ import com.google.android.material.timepicker.TimeFormat
  */
 
 
-@ExperimentalMaterial3Api
+
 @Composable
 fun ReminderContent (
     title: String,
@@ -84,7 +84,7 @@ fun ReminderContent (
 
 
 
-@ExperimentalMaterial3Api
+
 @Composable
 fun TimePicker(
     activity: MainActivity,
@@ -138,7 +138,7 @@ fun TimePicker(
  * Displays the time picker to the user
  */
 
-@ExperimentalMaterial3Api
+
 fun showTimePicker(
     activity: MainActivity,
     reminderViewModel: ReminderViewModel,

@@ -5,7 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import androidx.compose.material3.ExperimentalMaterial3Api
+
 import com.example.selfcare.constants.Constants
 import com.example.selfcare.util.RandomIntUtil
 
@@ -14,7 +14,7 @@ import com.example.selfcare.util.RandomIntUtil
  * [AlarmService] used to schedule an alarm via [alarmManager]
  */
 
-@ExperimentalMaterial3Api
+
 class AlarmService(private val context: Context) {
     private val alarmManager: AlarmManager? =
         context.getSystemService(Context.ALARM_SERVICE) as AlarmManager?

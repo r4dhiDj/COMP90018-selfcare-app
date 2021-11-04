@@ -15,7 +15,7 @@ import com.example.selfcare.ui.theme.SelfCareTheme
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material3.ExperimentalMaterial3Api
+
 
 import androidx.compose.runtime.LaunchedEffect
 //import androidx.lifecycle.asLiveData
@@ -32,7 +32,7 @@ import com.example.selfcare.viewmodels.MainViewModel
  */
 
 
-@ExperimentalMaterial3Api
+
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @ExperimentalMaterial3Api
+
     @RequiresApi(Build.VERSION_CODES.Q)
     @ExperimentalMaterialApi
     @ExperimentalFoundationApi
