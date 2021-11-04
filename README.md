@@ -1,11 +1,22 @@
 # COMP90018-selfcare-app
 
-selfcare is an app built using Kotlin and Jetpack Compose designed for users to have better awareness of their mental health, productivity and to help them better engage with their surroundings. It promotes both movement and relaxation for those who have been physically inactive or feeling fatigued due to  lockdown.
+SelfCare is an app built using Kotlin and Jetpack Compose designed for users to have better awareness of their mental health, productivity and to help them better engage with their surroundings. It promotes both movement and relaxation for those who have been physically inactive or feeling fatigued due to  lockdown.
 
 To run this app, you need to use **Android Studio**. You can clone this repository or import the project from Android Studio.
 
 ## API Level Required
 `API level 29`
+
+## How to Run the App
+<ol><li>Preliminaries:
+<ul><li> Install Android Studio</li>
+ <li>Install an Android Virtual Device with API Level 29, ensuring that Back Camera is set to VirtualScene</li>
+  </ul></li>
+  <li>Open Android Studio and import the repo folder as a project</li>
+  <li>Sync Gradle dependencies and build the project</li>
+<li> Ensure that the configuration to be built is called “app” and the virtual device that you have installed is selected</li>
+  <li>Run the “app” configuration to start the application</li>
+
 
 # Features
 Functionalities of selfcare include:
