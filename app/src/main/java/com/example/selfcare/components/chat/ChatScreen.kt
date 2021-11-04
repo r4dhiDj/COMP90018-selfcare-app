@@ -31,7 +31,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -143,15 +142,20 @@ fun ChatScreen(navController: NavController) {
                         clearInput = { message = "" }
                     )
                     count+=1 //reply
+                    Thread.sleep(1000)
+                    scope.launch{
+                        scrollState.scrollToItem(count)
+                    }
                 },
                 onFocusChange = {
                         focused ->
 
-                    if (focused) {
-                        scope.launch {
-                            scrollState.scrollToItem(count)
-                        }
-                    }
+//                    if (focused) {
+//                        Log.d("chat_scroll", count.toString())
+//                        scope.launch {
+//                            scrollState.scrollToItem(count)
+//                        }
+//                    }
 
                     textFieldFocusState = focused
                 },
@@ -171,7 +175,7 @@ private fun addTextToChat(
     message: String,
     chat: SnapshotStateList<Message>,
     userRef: DatabaseReference,
-    clearInput: () -> Unit
+    clearInput: () -> Unit,
 ) {
     GlobalScope.launch {
         // get calendar
