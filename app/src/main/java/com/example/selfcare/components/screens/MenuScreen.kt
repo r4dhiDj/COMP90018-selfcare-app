@@ -2,6 +2,7 @@ package com.example.selfcare.components
 
 import android.content.Intent
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -255,6 +256,11 @@ fun FeatureItem(
                     "go live" -> {
 //                        feature.navController.navigate(Screen.ARActivity.route)
                         context.startActivity(Intent(context, AR_Activity::class.java))
+                        Toast.makeText(
+                            context,
+                            "Loading Go Live...",
+                            Toast.LENGTH_SHORT
+                        ).show()
 
                     }
                     "reminders" -> {
