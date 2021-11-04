@@ -249,7 +249,6 @@ fun FeatureItem(
                         feature.navController.navigate(Screen.ChatScreen.route)
                     }
                     "go live" -> {
-                        feature.navController.popBackStack()
                         feature.navController.navigate(Screen.ARActivity.route)
                     }
                     "reminders" -> {
