@@ -16,6 +16,8 @@ import android.widget.*
 import androidx.activity.viewModels
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.app.NavUtils
+import com.example.selfcare.components.Screen
 import com.example.selfcare.databinding.ArActivityBinding
 import com.google.ar.core.*
 import com.google.ar.core.exceptions.*
@@ -108,7 +110,7 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
     private lateinit var binding: ArActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme)
+        super.onCreate(savedInstanceState)
 
         val user = Firebase.auth.currentUser
         var uid: MutableState<String> = mutableStateOf("")
@@ -121,9 +123,6 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
        this.user = database.getReference("users/${uid.value}")
 
-
-
-        super.onCreate(savedInstanceState)
 
         binding = ArActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -160,8 +159,6 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
             Log.e("firebase", "Error getting data", it)
         }
 
-
-
     }
 
     fun onAddButtonClicked(view: View) {
@@ -189,9 +186,10 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
     }
 
 //    override fun onBackPressed() {
-//        Log.d(TAG, "onBackPressed: left the activity")
-//        super.onBackPressed();
+////        NavUtils.navigateUpFromSameTask(this)
+//        super.onBackPressed()
 //    }
+
 
 
     fun settingsPressed(view: View) {
@@ -434,6 +432,7 @@ class AR_Activity : AppCompatActivity() , GLSurfaceView.Renderer{
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
+        Log.d(TAG, "onWindowFocusChanged: window changed")
 
         FullScreenHelper.setFullScreenOnWindowFocusChanged(this, hasFocus)
     }

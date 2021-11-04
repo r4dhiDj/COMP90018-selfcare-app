@@ -1,5 +1,6 @@
 package com.example.selfcare.components
 
+import android.content.Intent
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -18,12 +19,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.selfcare.AR_Activity
 import com.example.selfcare.ui.theme.*
 import com.example.selfcare.R
 import com.example.selfcare.components.screens.Feature
@@ -239,6 +242,7 @@ fun FeatureItem(
         //   horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
+        val context = LocalContext.current
 
         Column(modifier = Modifier
             .fillMaxSize()
@@ -249,7 +253,9 @@ fun FeatureItem(
                         feature.navController.navigate(Screen.ChatScreen.route)
                     }
                     "go live" -> {
-                        feature.navController.navigate(Screen.ARActivity.route)
+//                        feature.navController.navigate(Screen.ARActivity.route)
+                        context.startActivity(Intent(context, AR_Activity::class.java))
+
                     }
                     "reminders" -> {
                         feature.navController.popBackStack()

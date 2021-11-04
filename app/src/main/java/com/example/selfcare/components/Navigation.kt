@@ -72,11 +72,10 @@ fun Navigation(activityContext: ComponentActivity,
         ){
             SettingsScreen(viewModel, navController = navController, activityContext = activityContext)
 
-            //SettingsScreenVM(navController = navController, context, SettingsViewModel() )
         }
-        composable(route = Screen.ARActivity.route) {
-            context.startActivity(Intent(context, AR_Activity::class.java))
-        }
+//        composable(route = Screen.ARActivity.route) {
+//            context.startActivity(Intent(context, AR_Activity::class.java))
+//        }
         composable(route = Screen.ChatScreen.route) {
             ChatScreen(navController = navController)
         }
