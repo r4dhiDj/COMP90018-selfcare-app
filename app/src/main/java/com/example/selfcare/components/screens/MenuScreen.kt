@@ -259,9 +259,8 @@ fun FeatureItem(
                         Toast.makeText(
                             context,
                             "Loading Go Live...",
-                            Toast.LENGTH_SHORT
+                            Toast.LENGTH_LONG
                         ).show()
-
                     }
                     "reminders" -> {
                         feature.navController.popBackStack()
