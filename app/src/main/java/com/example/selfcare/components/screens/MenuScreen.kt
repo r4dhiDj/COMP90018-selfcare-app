@@ -159,6 +159,10 @@ fun GreetingSection(
             modifier = Modifier.padding(0.dp, 30.dp),
             textAlign = TextAlign.Center,
             text = when {
+
+                name.isEmpty() -> {
+                    "Welcome back!"
+                }
                 currentDateTime.isBefore(noon) -> {
                     "Good morning, $name!"
                 }

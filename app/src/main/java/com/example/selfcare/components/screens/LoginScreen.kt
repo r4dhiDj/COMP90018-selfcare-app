@@ -53,7 +53,11 @@ fun LoginScreen(viewModel: MainViewModel, navController: NavController, activity
 
     val focusManager = LocalFocusManager.current
 
+    var loading by remember {mutableStateOf(false)}
+
     fun login() {
+
+        loading = true
 
         if (email.isNotEmpty() && password.isNotEmpty()) {
             auth.signInWithEmailAndPassword(
@@ -65,12 +69,14 @@ fun LoginScreen(viewModel: MainViewModel, navController: NavController, activity
                         viewModel.setUserEmail(email.trim())
                         Log.d("inside on complete", email)
                         navController.popBackStack() //so back button doesn't return to register page
-                        while(Firebase.auth.currentUser== null){
-                            Log.d("waiting to login","")
+                        while (Firebase.auth.currentUser == null) {
+                            Log.d("waiting to login", "")
                         }
+                        loading = false
                         navController.navigate(Screen.WelcomeScreen.route)
                     } else {
-                        Log.d("Login", "Failed: ${task.exception}")
+                        loading = false
+                        Log.d("Auth", "Failed: ${task.exception}")
                         Toast.makeText(
                             activityContext, "Invalid email or password.",
                             Toast.LENGTH_SHORT
@@ -192,14 +198,15 @@ fun LoginScreen(viewModel: MainViewModel, navController: NavController, activity
                     ),
                     keyboardActions = KeyboardActions(onDone = {
                         focusManager.clearFocus()
-                        login()
                     }),
                 )
                 Spacer(modifier = Modifier.padding(20.dp))
                 Button(
-                    enabled = !(email.trim() == "" || password.trim() ==""),
+                    enabled = !(email.trim() == "" || password.trim() =="") && !(loading),
                     onClick = {
-                        login()
+                        if (!(loading)) {
+                            login()
+                        }
                     }
                 ) {
                     Text(color = Color.White, text = "Login")

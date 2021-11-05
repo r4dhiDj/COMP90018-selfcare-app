@@ -52,7 +52,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     @RequiresApi(Build.VERSION_CODES.Q)
     @ExperimentalMaterialApi
     @ExperimentalFoundationApi

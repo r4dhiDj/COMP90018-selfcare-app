@@ -52,9 +52,13 @@ fun RegisterScreen(viewModel: MainViewModel, navController: NavController, activ
         navController.navigate(Screen.WelcomeScreen.route)
     }
 
+    var loading by remember {mutableStateOf(false)}
+
     val focusManager = LocalFocusManager.current
 
     fun register() {
+
+        loading = true
 
         if (email.isNotEmpty() && password.isNotEmpty()) {
 
@@ -80,9 +84,11 @@ fun RegisterScreen(viewModel: MainViewModel, navController: NavController, activ
                                 Firebase.database("https://kotlin-self-care-default-rtdb.firebaseio.com/").reference
                             database.child("users").child(Firebase.auth.currentUser!!.uid)
                                 .setValue(user)
+                            loading = false
                             navController.popBackStack()
                             navController.navigate(Screen.WelcomeScreen.route)
                         } else {
+                            loading = false
                             Log.d("Auth", "Failed: ${task.exception}")
                             Toast.makeText(
                                 activityContext, "Invalid email or password.",
@@ -92,6 +98,9 @@ fun RegisterScreen(viewModel: MainViewModel, navController: NavController, activ
                     }
             }
         }
+
+
+
     }
 
     Box(
@@ -207,14 +216,15 @@ fun RegisterScreen(viewModel: MainViewModel, navController: NavController, activ
                     ),
                     keyboardActions = KeyboardActions(onDone = {
                         focusManager.clearFocus()
-                        register()
                     }),
                 )
                 Spacer(modifier = Modifier.padding(20.dp))
                 Button(
-                    enabled = !(email.trim() == "" || password.trim() == ""),
+                    enabled = !(email.trim() == "" || password.trim() == "") && !(loading),
                     onClick = {
-                        register()
+                        if (!loading) {
+                            register()
+                        }
                     }
 
                 ) {
@@ -235,3 +245,4 @@ fun RegisterScreen(viewModel: MainViewModel, navController: NavController, activ
         }
     }
 }
+
