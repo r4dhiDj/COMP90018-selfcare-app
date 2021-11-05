@@ -15,7 +15,7 @@ To run this app, you need to use **Android Studio**. You can clone this reposito
   <li>Open Android Studio and import the repo folder as a project</li>
   <li>Sync Gradle dependencies and build the project</li>
 <li> Ensure that the configuration to be built is called “app” and the virtual device that you have installed is selected</li>
-  <li>Run the “app” configuration to start the application</li>
+  <li>Run the “app” configuration to start the application</li></ol>
 
 
 # Features
